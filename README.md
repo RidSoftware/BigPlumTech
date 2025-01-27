@@ -2,7 +2,7 @@
 Main repository for heriot-watt yr3 software engineering project
 
 ## Notes on working with git
-== work with git however you want, this is just a couple tips if you want ==
+work with git however you want, this is just a couple tips if you want.
 ### If you haven't already, send your username to the teams meassage and I'll give you access!!! ###
 Firstly, make sure that you have set up an SSH key for your profile, this is a bit annoying but spend a bit of time and you'll get it working.
 If not gimme a shout, I'll try and keep ontop of git for y'all *-Calum*
