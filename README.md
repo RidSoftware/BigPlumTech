@@ -30,10 +30,10 @@ You should create a new branch whenever you intend to do any work. \
 I propose that we only permit commits to main and merging of major branches when we have a team meeting. \
 \
 I have created a couple branches that we can use to organise us a bit:
-- main (we don't mess with this)
-- FrontEnd
-- BackEnd
-- Database
+	- main (we don't mess with this)
+	- FrontEnd
+	- BackEnd
+	- Database
 
 
 
@@ -41,6 +41,6 @@ I have created a couple branches that we can use to organise us a bit:
 3. 🔄 **Keeping up-to-date**
 Whenever we are doing work we want to be up-to-date with our teams, \
 **BEFORE** you start working or **PUSHING CHANGES** you **gotta**:
--Pull any updates from your team branch
--
--
+	- Pull any updates from your team branch
+	-
+	-
