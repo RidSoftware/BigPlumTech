@@ -10,7 +10,7 @@ app.listen(port, () => {
     console.log(`Server running at http:${port}`);
 });
 
-app.use(express.use('frontEnd'));
+app.use(express.static('frontEnd'));
 
 //basic example of get call
 app.get('/api/data', (req, res) => {
