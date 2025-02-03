@@ -1,1 +1,118 @@
-idk how you intend to organise your work grant... so have a dump file :)
+SQL Dump File for the creation of the MariaDB Database and corresponding Tables. Either copy commands into MariaDB console or into a visual tool such as MySQL Workbench or HeidiSQL.
+
+--------------------
+User Details Table
+
+CREATE TABLE `userdetails` (
+	`UserID` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`Password` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`Username` VARCHAR(20) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`Email` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`HomeID` INT(3) UNSIGNED NOT NULL,
+	`Admin` ENUM('Y','N') NOT NULL DEFAULT 'N' COLLATE 'utf8mb4_unicode_ci',
+	PRIMARY KEY (`UserID`) USING BTREE,
+	UNIQUE INDEX `UNIQUE FIELD` (`Email`, `Username`) USING BTREE,
+	INDEX `FK_userdetails_homedetails` (`HomeID`) USING BTREE,
+	CONSTRAINT `FK_userdetails_homedetails` FOREIGN KEY (`HomeID`) REFERENCES `homedetails` (`HomeID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COMMENT='Table containing user details'
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+--------------------
+Universal Devices Table
+
+CREATE TABLE `alldevices` (
+	`DeviceID` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DeviceName` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`DeviceType` ENUM('Robot','EnergyGeneration','EnergyUsage') NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`Status` ENUM('On','Off') NOT NULL DEFAULT 'Off' COLLATE 'utf8mb4_unicode_ci',
+	`Location/Room` VARCHAR(25) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`HomeID` INT(3) UNSIGNED NOT NULL DEFAULT '0',
+	PRIMARY KEY (`DeviceID`) USING BTREE,
+	INDEX `FK_alldevices_homedetails` (`HomeID`) USING BTREE,
+	CONSTRAINT `FK_alldevices_homedetails` FOREIGN KEY (`HomeID`) REFERENCES `homedetails` (`HomeID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COMMENT='Table containing information on devices of all categories.'
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+--------------------
+Home Details Table
+
+CREATE TABLE `homedetails` (
+	`HomeID` INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`NoOfResidents` INT(3) UNSIGNED NOT NULL,
+	`TotalEnergyUsage (Daily)` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`TotalEnergyUsage (Weekly)` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`TotalEnergyUsage (Monthly)` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`TotalEnergyGeneration (Daily)` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`TotalEnergyGeneration (Weekly)` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`TotalEnergyGeneration (Monthly)` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`HomeManager` VARCHAR(30) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	PRIMARY KEY (`HomeID`) USING BTREE
+)
+COMMENT='table containing house details'
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+--------------------
+Energy Generation Table
+
+CREATE TABLE `energygeneration` (
+	`Column 1` INT(11) NULL DEFAULT NULL
+)
+COMMENT='detailed energy and device information on devices that generate energy.'
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+--------------------
+Energy Usage Table
+
+CREATE TABLE `energyusage` (
+	`Column 1` INT(11) NULL DEFAULT NULL
+)
+COMMENT='detailed energy information on devices that use energy.'
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+--------------------
+Robots Table
+
+CREATE TABLE `robots` (
+	`RobotRecord` INT(3) UNSIGNED NOT NULL,
+	`DeviceID` INT(5) UNSIGNED NOT NULL,
+	`DeviceName` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`EnergyUsage` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`UsageTime (Daily)` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`UsageTime (Weekly)` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`UsageTime (Monthly)` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	PRIMARY KEY (`RobotRecord`) USING BTREE,
+	INDEX `FK_robots_alldevices` (`DeviceID`) USING BTREE,
+	CONSTRAINT `FK_robots_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COMMENT='detailed information on devices of category robot.'
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
