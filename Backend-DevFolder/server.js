@@ -1,6 +1,4 @@
 const express = require('express');
-const db = require('./DB/DBConnection')
-
 const app = express();
 const port = 8080;
 
@@ -12,27 +10,8 @@ app.listen(port, () => {
     console.log(`Server running at http:${port}`);
 });
 
-app.use(express.static('frontEnd'));
-
-
-
-
-
-////http call handling
-// |||||||
-// VVVVVVV
-
-
-//basic example of get call
 app.get('/api/data', (req, res) => {
     res.json({message: "data fetch"})
 });
 
-app.get('/api/test', (req, res) => {
-    try {  
-        const [rows] = await 
-    }
-
-
-
-});
+app.use(express.static('Frontend-DevFolder'));
