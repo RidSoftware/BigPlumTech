@@ -10,5 +10,12 @@ WHERE homeid = DESIREDHOMEIDNUMBER and `location/room` = CURRENTROOM;
 --put placeholders in because we should already know these in the context of program?
 
 SELECT *
-FROM alldevices1
+FROM alldevices
 WHERE homeid = DESIREDHOMEIDNUMBER;
+--same here but just whole house
+
+UPDATE alldevices
+SET `Status` = if(`Status` = 'On', 'Off', 'On')
+WHERE Deviceid = DESIREDDEVICEIDNUMBER;
+
+--This toggles the device on or off so we can do both in 1 query, first column is our conidition, second is what it returns if condition is true, third column is our else statment
