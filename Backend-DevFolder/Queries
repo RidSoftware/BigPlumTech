@@ -8,3 +8,7 @@ FROM alldevices
 WHERE homeid = DESIREDHOMEIDNUMBER and `location/room` = CURRENTROOM;
 
 --put placeholders in because we should already know these in the context of program?
+
+SELECT *
+FROM alldevices1
+WHERE homeid = DESIREDHOMEIDNUMBER;
