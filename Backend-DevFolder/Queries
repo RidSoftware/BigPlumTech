@@ -1,6 +1,6 @@
 INSERT INTO alldevices (`DeviceName`, `DeviceType`, `Status`, `location/room`, `HomeID`)
 VALUES('lights','Robot','On', 'livingroom', DESIREDHOMEIDNUMBER);
-
+--also we should somehow retain houseID on our system to reference for like relogging in?
 --we insert into specific fields and not device id because device id autoincrements, so to not mess with it we just let it go up itself because if we say inserted 10, then it would start to autoincrement from 10, so keeping it consistently going up from 0 instead makes it more consistent;
 
 SELECT *
