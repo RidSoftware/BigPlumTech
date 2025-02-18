@@ -1,7 +1,11 @@
 const express = require('express');
 //const db = require('./DB/DBConnection');
+const cors = require("cors");
 
 const app = express();
+	app.use(cors()); //requests will be blocked if this isnt included
+	app.use(express.json());
+	
 const port = 8080;
 
 app.get('/', (req,res) => {
@@ -31,8 +35,9 @@ app.get('/api/data', (req, res) => {
 app.post("/api/register", (req, res) => {
     const {fullname, email, password, usertype} = req.body;
 
+	console.log("Recived formData: ", req.body);
     if (!fullname || !email || !password || !usertype) {
-        return res.status(400).json({message: "All fields not recieved from post."});
+        return res.status(400).json({message: "All fields not recieved from post...   ${fullname} ${email} ${password} ${usertype}"});
     }
 
     console.log("Recived formData: ", req.body);

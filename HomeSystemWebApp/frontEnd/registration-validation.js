@@ -40,7 +40,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 
     try {
         // Send form data to the server
-        let response = await fetch("http://localhost:8080/api/registerFormSubmission", {
+        let response = await fetch("http://localhost:8080/api/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
