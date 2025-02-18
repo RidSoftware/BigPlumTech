@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head> validation test </head>
+<body>
+	<h1> Test file </h1>
+
+	
+		Name
+		<input type = "text" name = "deviceName" id = "name">
+		<br> <br>
+		<button onclick = "valid()"> submit </button> 
+	
+		<p id = "accepted"> </p>
+<script type="text/javascript">
+	function valid(){
+		const blacklist = ["'", '"', "\\0", "\\n", "\\r", "\\", "\\Z", "--", ";", "/*", "\\*", "(", ")", "=", "|", "%", "_"]; //list of common escape characters, a slash has been added before each so the second slashes can be recognised 
+		var device = document.getElementById("name").value;
+		for(let i = 0; i < blacklist.length; i++){
+		//looping through each member of list, if any match then we reject it.
+		
+		if(device.includes(blacklist[i])){
+			document.getElementById("accepted").innerHTML = "Not Valid"
+			return
+
+		}
+	}		//in later build this would also include the actual data being sent to database, but here is just pure example input validation for database
+			document.getElementById("accepted").innerHTML = "accepted"
+	}
+</script>
+
+</body>
+</html>
