@@ -35,7 +35,6 @@ app.get('/api/data', (req, res) => {
 app.post("/api/register", (req, res) => {
     const {fullname, email, password, userType} = req.body;
 
-	console.log("Recived formData: ", req.body);
 
     if (!fullname || !email || !password || !userType) {
         return res.status(400).json({message: `All fields not recieved from post...   ${fullname} ${email} ${password} ${userType}`});
@@ -43,6 +42,10 @@ app.post("/api/register", (req, res) => {
 
 
     console.log("Recived formData: ", req.body);
+
+	
+
+    
     res.json({message: "Registration recieved (not validated sql insertion)"});
 });
 

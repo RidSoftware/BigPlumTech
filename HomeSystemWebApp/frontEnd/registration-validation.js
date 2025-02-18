@@ -7,6 +7,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     let confirmPassword = document.getElementById("confirmPassword").value;
     let userType = document.getElementById("userType").value;
     let terms = document.getElementById("terms").checked;
+		////////////
     let errorMessage = document.getElementById("errorMessage");
 
     if (fullname === "" || email === "" || password === "" || confirmPassword === "" || userType === "") {
@@ -41,6 +42,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 
     try {
         // Send form data to the server
+			////////
         let response = await fetch("http://localhost:8080/api/register", {
             method: "POST",
             headers: {
@@ -48,7 +50,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
             },
             body: JSON.stringify(formData)
         });
-
+			//////
         let result = await response.json();
 
         if (response.ok) {
@@ -67,6 +69,8 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 
 //closing the event listener
 });
+
+
 
     // Show admin code field if Home Manager is selected
     document.getElementById('userType').addEventListener('change', function () {
