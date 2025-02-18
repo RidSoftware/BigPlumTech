@@ -1,5 +1,6 @@
 # BigPlumTech
 Main repository for heriot-watt yr3 software engineering project
+(will add installation/configuration instructions for you guys when i get the time)
 
 ## Notes on working with git
 work with git however you want, this is just a couple tips if you want. \
