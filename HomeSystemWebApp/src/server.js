@@ -1,11 +1,16 @@
+// BIG NOTE: once ive got reliable dataflow and have restructured directory strucure, I will add a .env file and show how to configure locally
+// also will write a brief note on how i reccomend you add your work
+
 const express = require('express');
 //const db = require('./DB/DBConnection');
 const cors = require("cors");
 
+const mysql = require('mysql2');
+
 const app = express();
 	app.use(cors()); //requests will be blocked if this isnt included
 	app.use(express.json());
-	
+
 const port = 8080;
 
 app.get('/', (req,res) => {
@@ -43,11 +48,50 @@ app.post("/api/register", (req, res) => {
 
     console.log("Recived formData: ", req.body);
 
-	
 
-    
+
+
     res.json({message: "Registration recieved (not validated sql insertion)"});
 });
+
+
+
+
+
+
+
+
+//DB CONNECTION infile (will move once im confident with functionality)
+//this is set for my(calum) mariadb installation
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "SmallPlum",
+    password: "PlumPassword",
+    database: "plumEnergyDatabase",
+    port: 3306
+});
+
+//connect to mariadb
+db.connect(err => {
+	if (err) {
+		console.error('Database connection failed: ', err);
+		return;
+	}
+	console.log('Node connected to MariaDB!');
+});
+
+// FETCH USER EXAMPLE
+app.get('/users', (req, res) => {
+	db.query('SELECT * FROM userdetails', (err, results) => {
+		if (err) {
+			console.error(err);
+			res.status(500).send('Error fetching users');
+		} else {
+			res.json(results);
+		}
+	});
+});
+
 
 
 
