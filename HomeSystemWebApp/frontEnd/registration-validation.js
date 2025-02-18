@@ -35,6 +35,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     }
 
 
+
 	//creates the data object from the form to send to the backend via POST
 	let formData = {	fullname, email, password, userType		};
 
@@ -63,7 +64,8 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         errorMessage.textContent = "An error occurred while submitting the form.";
     }
 
-    
+
+//closing the event listener
 });
 
     // Show admin code field if Home Manager is selected
