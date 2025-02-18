@@ -13,7 +13,7 @@
 		<p id = "accepted"> </p>
 <script type="text/javascript">
 	function valid(){
-		const blacklist = ["'", '"', "\\0", "\\n", "\\r", "\\", "\\Z"]; //list of common escape characters, a slash has been added before each so the second slashes can be recognised 
+		const blacklist = ["'", '"', "\\0", "\\n", "\\r", "\\", "\\Z", "--", ";", "/*", "\\*", "(", ")", "=", "|", "%", "_"]; //list of common escape characters, a slash has been added before each so the second slashes can be recognised 
 		var device = document.getElementById("name").value;
 		for(let i = 0; i < blacklist.length; i++){
 		//looping through each member of list, if any match then we reject it.
