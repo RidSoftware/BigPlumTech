@@ -8,8 +8,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "--- Do whatever the hell you want in the DevFolders, \\ but please be more reserved with pushing stuff in here, this will be or production version. \\",
   "dependencies": {
     "express": "^4.21.2"
-  }
+  },
+  "devDependencies": {}
 }
