@@ -1,27 +1,29 @@
 // BIG NOTE: once ive got reliable dataflow and have restructured directory strucure, I will add a .env file and show how to configure locally
 // also will write a brief note on how i reccomend you add your work
 
-const express = require('express');
+
 //const db = require('./DB/DBConnection');
 const cors = require("cors");
-
 const mysql = require('mysql2');
-
+const express = require('express');
 const app = express();
-	app.use(cors()); //requests will be blocked if this isnt included
-	app.use(express.json());
+const path = require('path'); //this is needed to give the server access to ../ directories
 
+app.use(cors()); //requests will be blocked if this isnt included
+app.use(express.json()); // needed for working with json
+
+//subject to change per machine (will set this in .env later)
 const port = 8080;
+
+
+//gives the server access to frontend directory so we can serve to users
+app.use(express.static(path.join(__dirname, '../frontEnd')));
+
+//this is to check if the server is running; for now localhost:8080
 
 app.get('/', (req,res) => {
     res.send('server up');
 });
-
-app.listen(port, () => {
-    console.log(`Server running at http:${port}`);
-});
-
-app.use(express.static('frontEnd'));
 
 
 
@@ -30,7 +32,6 @@ app.use(express.static('frontEnd'));
 ////http call handling (will move this once were confortable)
 // |||||||
 // VVVVVVV
-
 
 //basic example of get call
 app.get('/api/data', (req, res) => {
@@ -57,12 +58,8 @@ app.post("/api/register", (req, res) => {
 
 
 
-
-
-
-
 //DB CONNECTION infile (will move once im confident with functionality)
-//this is set for my(calum) mariadb installation
+//this is conifiged for my(calum) mariadb installation (an dotenv set up will allow us to make this dynamic for individual machines)
 const db = mysql.createConnection({
     host: "localhost",
     user: "SmallPlum",
@@ -106,3 +103,17 @@ app.get('/users', (req, res) => {
     // }
 // });
 
+
+
+
+
+
+
+
+
+
+// OPENS THE PORT
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
