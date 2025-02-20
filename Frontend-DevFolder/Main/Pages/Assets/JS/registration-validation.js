@@ -39,13 +39,28 @@ document.getElementById("registrationForm").addEventListener("submit", function(
     errorMessage.textContent = "";
 });
 
-    // Show admin code field if Home Manager is selected
-    document.getElementById('userType').addEventListener('change', function () {
-        const adminField = document.getElementById('adminCodeField');
-        if (this.value === 'homeManager') {
-            adminField.classList.remove('hidden');
-        } else {
-            adminField.classList.add('hidden');
-        }
-    });
+// Admin Code Visibility & Generation
+document.getElementById("userType").addEventListener("change", function() {
+    const adminCodeField = document.getElementById("adminCodeField");
+    const adminCodeInput = document.getElementById("adminCode");
 
+    if (this.value === "homeManager") {
+        adminCodeField.classList.remove("hidden");
+        adminCodeInput.value = Math.floor(10000 + Math.random() * 90000); // Generate 5-digit code
+    } else {
+        adminCodeField.classList.add("hidden");
+        adminCodeInput.value = "";
+    }
+});
+
+// Password Visibility Toggle
+document.getElementById("togglePassword").addEventListener("click", function() {
+    const passwordField = document.getElementById("password");
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        this.classList.replace("fa-eye-slash", "fa-eye");
+    } else {
+        passwordField.type = "password";
+        this.classList.replace("fa-eye", "fa-eye-slash");
+    }
+});
