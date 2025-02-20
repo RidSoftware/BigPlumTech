@@ -56,46 +56,65 @@ nav ul li a:hover {
     color: #007BFF;
 }
 
-/* Auth Toggle Buttons */
+/*Auth Toggle Buttons */
 .auth-toggle {
     display: flex;
     align-items: center;
-    border-radius: 20px;
-    background: #dcf5e3; 
-    padding: 2px;
+    border-radius: 30px;
+    background: #dcf5e3; /* Light green background */
+    padding: 4px;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-/* Shared Button Styles */
-.auth-toggle button {
-    border: none;
-    padding: 15px 20px;
-    cursor: pointer;
+/*Auth Buttons */
+.auth-toggle a {
+    text-decoration: none;
+    flex: 1;
+    text-align: center;
     font-size: 15px;
     font-weight: bold;
-    border-radius: 20px;
-    transition: 0.3s;
-    flex: 1; /* Equal button spacing */
-    background: transparent; /* Default inactive state */
-    color: #333;
+    padding: 12px 24px;
+    border-radius: 25px;
+    transition: all 0.3s;
 }
 
-/* Active (Selected) Button */
-.auth-toggle button.active {
+/*Register Button - Fully Green */
+.auth-toggle a.active {
     background: #28a745;
     color: white;
 }
 
-/* Hover Effect */
-.auth-toggle button:hover {
-    background: #218838;
-    color: white;
+/* Log in Button Default */
+.auth-toggle a {
+    background: transparent;
+    color: #333;
 }
 
-#login-btn:hover {
-    background: #c5e6cd; 
+/*  Hover Effects */
+.auth-toggle a.active:hover {
+    background: #218838;
+}
+
+.auth-toggle a:not(.active):hover {
+    background: #c5e6cd;
     color: #333;
+}
+
+/* Profile Icon */
+.profile-icon a {
+    font-size: 24px;
+    color: #333;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.profile-icon a:hover {
+    color: #007BFF;
+    transform: scale(1.1);
+}
+
+.profile-icon a i {
+    font-size: 30px;
 }
 
 /* Footer */
