@@ -4,33 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Big Plum Tech</title>
-    <link rel="stylesheet" href="/Software Engineering Project 2/Main/Pages/Assets/CSS/Login-Registration.css">
+    <link rel="stylesheet" href="/Pages/Assets/CSS/Login-Registration.css">
+    <script src="/Pages/Assets/JS/content-loader.js"></script>
 </head>
 <body>
-    <!--Navbar-->
-    <div id="navbar"></div>
     
-    <!--Login component-->
-    <div class="container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <label for="email">Email:</label>
-            <input placeholder="Email" type="email" id="email" name="email" required>
+    <div class="container-login">
+        <!-- Left Section: Promo Text -->
+        <div class="promo-text">
+            <h2>Welcome Back!</h2>
+            <p>Login to your Big Plum Tech account and access exclusive features.</p>
+            <p>Seamless experience with high security and reliability.</p>
+        </div>
 
-            <label for="password" >Password:</label>
-            <input placeholder="Password" type="password" id="password" name="password" required>
+        <!-- Right Section: Login Form -->
+        <div class="form-box">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input placeholder="Email" type="email" id="email" name="email" required>
 
-            <button type="submit" class="submit-button">Login</button>
-        </form>
-        <p id="loginErrorMessage" class="error-message"></p>
-        <p>Don't have an account? <a href="Registration.html">Register here</a></p>
+                <label for="password">Password:</label>
+                <input placeholder="Password" type="password" id="password" name="password" required>
+
+                <button type="submit" class="submit-button">Login</button>
+            </form>
+            <p id="loginErrorMessage" class="error-message"></p>
+            <p>Don't have an account? <a href="registration.html">Register here</a></p>
+        </div>
     </div>
 
-    <!--Footer-->
+    <!-- Footer -->
     <div id="footer"></div>
-
-    <!--Script for content loading-->
-    <script src="/Software Engineering Project 2/Main/Pages/Assets/JS/content-loader.js"></script>
-
 </body>
 </html>

@@ -4,72 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration | Big Plum Tech</title>
-    <link rel="stylesheet" href="/Software Engineering Project 2/Main/Pages/Assets/CSS/Login-Registration.css">
-    <script defer src="/Software Engineering Project 2/Main/Pages/Assets/JS/registration-validation.js"></script>
-
+    <link rel="stylesheet" href="/Pages/Assets/CSS/Login-Registration.css">
+    <script defer src="/Pages/Assets/JS/registration-validation.js"></script>
+    <script src="/Pages/Assets/JS/content-loader.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
-    <!--Navbar-->
-    <duv id="navbar"></duv>
 
-    <div class="container">
-        <h2>Register for Big Plum Tech Home System</h2><br>
-        <form id="registrationForm">
-            <label for="first-name">First Name:</label>
-            <input placeholder="First name" type="text" id="fullname" name="fullname" required>
+    <div class="page-container">
+        <!-- Left Section: Registration Form -->
+        <div class="container-registration">
+            <h2>Register for Big Plum Tech!</h2>
+            <form id="registrationForm">
+                <label for="fullname">Full Name:</label>
+                <input placeholder="Full name" type="text" id="fullname" name="fullname" required>
 
-            <label for="last-name">Last Name:</label>
-            <input placeholder="Last Name" type="text" id="fullname" name="fullname" required>
+                <label for="email">Email:</label>
+                <input placeholder="Email" type="email" id="email" name="email" required>
 
-            <label for="email">Email:</label>
-            <input placeholder="Email" type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <div class="password-container">
+                    <input placeholder="Password" type="password" id="password" name="password" required>
+                    <i class="fa fa-eye" id="togglePassword"></i>
+                </div>
+                
+                <label for="confirmPassword">Confirm Password:</label>
+                <input placeholder="Confirm Password" type="password" id="confirmPassword" name="confirmPassword" required>
 
-            <label for="password">Password:</label>
-            <input placeholder="Password" type="password" id="password" name="password" required>
+                <label for="userType">User Type:</label>
+                <select id="userType" name="userType" required>
+                    <option value="">Select</option>
+                    <option value="homeUser">Home User</option>
+                    <option value="homeManager">Home Manager</option>
+                </select>
 
-            <label for="confirmPass">Confirm Password:</label>
-            <input placeholder="Repeated Password" type="password" id="confirmPass" name="confirmPass" required>
+                <!-- Admin Code Field (Hidden by Default) -->
+                <div id="adminCodeField" class="hidden">
+                    <label for="adminCode">Admin Code:</label>
+                    <input type="text" id="adminCode" name="adminCode" readonly>
+                </div>
 
-            <label for="userType">User Type:</label>
-            <select id="userType" name="userType" required>
-                <option value="">Select</option>
-                <option value="homeUser">Home User</option>
-                <option value="homeManager">Home Manager</option>
-            </select>
+                <p class="terms">I agree to the Terms & Conditions</p>
+                <label class="terms-style">
+                    <input type="checkbox" id="terms" required>
+                </label>
 
-            <!--Admin code field is hidden by default-->
-            <div id="adminCodeField" class="hidden">
-                <label for="adminCode">Admin Code Number:</label>
-                <input type="text" id="adminCode" name="adminCode">
-            </div>
+                <button type="submit" class="submit-button">Register</button>
+            </form>
+            <p>Already have an account? <a href="Login.html">Login here</a></p>
+        </div>
 
-            <p class="terms">I agree to the Terms & Conditions</p>
-
-            <label class="terms-style">
-                 <input type="checkbox" id="terms" required>
-            </label>
-
-            <button type="submit" class="submit-button">Register</button>
-
-            <!--Theres an href going to a page that decide if its admin, or user, if its admin, admin needs to add
-            Fix admin code in the Home page
-            Generation code
-            2 level of access
-            User feedback 
-            Display some data 
-            Gamification-->
-            <!--The manager register, receives a 5 digit code that relates to the home manager, so when the user add the -->
-        </form>
-
-        <p id="errorMessage" class="error-message"></p>
-        <p>Already have an account? <a href="login.html">Login here</a></p>
+        <!-- Right Section: Promo Text -->
+        <div class="promo-text">
+            <h2>Join Big Plum Tech</h2>
+            <p>Experience seamless control over your smart home.</p>
+            <p>Sign up today and manage your home with ease.</p>
+        </div>
     </div>
 
-    <!--Footer-->
+    <!-- Footer -->
     <div id="footer"></div>
-    
-    <!--Script for page loading-->
-    <script src="/Software Engineering Project 2/Main/Pages/Assets/JS/content-loader.js"></script>
 
 </body>
 </html>
