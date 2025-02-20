@@ -10,7 +10,7 @@
 header {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(10px);
-    padding: 20px;
+    padding: 15px 30px;
     position: fixed;
     width: 100%;
     top: 0;
@@ -22,18 +22,29 @@ header {
     z-index: 100;
 }
 
+/* Navbar Logo */
 header h1 {
     font-size: 28px;
     color: #007BFF;
+    font-weight: 600;
     animation: fadeIn 1.5s ease-in-out;
 }
 
+/* Navbar List */
 nav ul {
     list-style: none;
     display: flex;
+    align-items: center;
     gap: 20px;
 }
 
+/* Navbar Items */
+nav ul li {
+    display: flex;
+    align-items: center;
+}
+
+/* Navbar Links */
 nav ul li a {
     text-decoration: none;
     color: #333;
@@ -43,6 +54,48 @@ nav ul li a {
 
 nav ul li a:hover {
     color: #007BFF;
+}
+
+/* Auth Toggle Buttons */
+.auth-toggle {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    background: #dcf5e3; 
+    padding: 2px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Shared Button Styles */
+.auth-toggle button {
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 20px;
+    transition: 0.3s;
+    flex: 1; /* Equal button spacing */
+    background: transparent; /* Default inactive state */
+    color: #333;
+}
+
+/* Active (Selected) Button */
+.auth-toggle button.active {
+    background: #28a745;
+    color: white;
+}
+
+/* Hover Effect */
+.auth-toggle button:hover {
+    background: #218838;
+    color: white;
+}
+
+#login-btn:hover {
+    background: #c5e6cd; 
+    color: #333;
 }
 
 /* Footer */
