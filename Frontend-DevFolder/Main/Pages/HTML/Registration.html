@@ -14,18 +14,21 @@
 
     <div class="container">
         <h2>Register for Big Plum Tech Home System</h2><br>
-        <form id="registrationForm">z
-            <label for="fullname">Full Name:</label>
-            <input type="text" id="fullname" name="fullname" required>
+        <form id="registrationForm">
+            <label for="first-name">First Name:</label>
+            <input placeholder="First name" type="text" id="fullname" name="fullname" required>
+
+            <label for="last-name">Last Name:</label>
+            <input placeholder="Last Name" type="text" id="fullname" name="fullname" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input placeholder="Email" type="email" id="email" name="email" required>
 
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input placeholder="Password" type="password" id="password" name="password" required>
 
             <label for="confirmPass">Confirm Password:</label>
-            <input type="password" id="confirmPass" name="confirmPass" required>
+            <input placeholder="Repeated Password" type="password" id="confirmPass" name="confirmPass" required>
 
             <label for="userType">User Type:</label>
             <select id="userType" name="userType" required>
@@ -46,7 +49,7 @@
                  <input type="checkbox" id="terms" required>
             </label>
 
-            <button type="submit">Register</button>
+            <button type="submit" class="submit-button">Register</button>
 
             <!--Theres an href going to a page that decide if its admin, or user, if its admin, admin needs to add
             Fix admin code in the Home page
