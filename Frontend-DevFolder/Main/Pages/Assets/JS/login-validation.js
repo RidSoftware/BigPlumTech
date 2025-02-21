@@ -51,3 +51,45 @@ document.getElementById("togglePassword").addEventListener("click", function() {
         this.classList.replace("fa-eye", "fa-eye-slash");
     }
 });
+
+document.getElementById("forgotPasswordLink").addEventListener("click", function() {
+    document.getElementById("forgotPasswordModal").style.display = "block";
+});
+
+document.getElementById("closeModal").addEventListener("click", function() {
+    document.getElementById("forgotPasswordModal").style.display = "none";
+});
+
+document.getElementById("resetPasswordButton").addEventListener("click", function() {
+    let resetEmail = document.getElementById("resetEmail").value.trim();
+    let resetErrorMessage = document.getElementById("resetErrorMessage");
+
+    // Reset previous errors
+    resetErrorMessage.textContent = "";
+    resetErrorMessage.style.display = "none";
+
+    // Retrieve stored users from Local Storage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Find the user by email
+    let user = users.find(user => user.email === resetEmail);
+
+    if (!user) {
+        resetErrorMessage.textContent = "Email not found!";
+        resetErrorMessage.style.display = "block";
+        return;
+    }
+
+    // Generate a new temporary password
+    let tempPassword = Math.random().toString(36).slice(-8); // Random 8-character string
+    user.password = tempPassword;
+
+    // Save updated users back to Local Storage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("A temporary password has been generated: " + tempPassword + ". Please log in and change it.");
+
+    // Close the modal
+    document.getElementById("forgotPasswordModal").style.display = "none";
+});
+

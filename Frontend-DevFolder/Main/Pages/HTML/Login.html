@@ -12,7 +12,7 @@
 <body>
 
     <div class="page-container">
-        
+
         <!-- Left Section: Promotional Content -->
         <div class="promo-text">
             <h2>Welcome Back!</h2>
@@ -36,10 +36,26 @@
                 <p id="loginErrorMessage" class="error-message"></p>
         
                 <button type="submit" class="submit-button">Login</button>
+
+                <p><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
             </form>
             <br>
             <p>Don't have an account? <a href="Registration.html">Register here</a></p>
-        </div>        
+        </div>
+        
+        <!-- This is just example, we can omit this or change it later on -->
+        <!-- Forgot Password Modal (Initially Hidden) -->
+        <div id="forgotPasswordModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <h2>Reset Password</h2>
+                <p>Enter your registered email to reset your password.</p>
+                <input type="email" id="resetEmail" placeholder="Enter your email">
+                <p id="resetErrorMessage" class="error-message"></p>
+                <button id="resetPasswordButton">Reset Password</button>
+            </div>
+        </div>
+
     </div>
 
     <div class="return-href">
