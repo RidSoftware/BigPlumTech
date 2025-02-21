@@ -3,39 +3,44 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
 
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value;
-    let errorMessage = document.getElementById("loginErrorMessage"); // Make sure this exists in HTML
+    let errorMessage = document.getElementById("loginErrorMessage"); 
+    
+    errorMessage.textContent = "";
+    errorMessage.style.display = "none";
 
-    if (!email.includes("@") || !email.includes(".")) {
-        errorMessage.textContent = "Enter a valid email!";
+    // Retrieve the list of users from localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if the email exists in the stored users
+    let currentUser = users.find(user => user.email === email);
+
+    if (!currentUser) {
+        errorMessage.textContent = "User not found. Please register first.";
+        errorMessage.style.display = "block";
         return;
     }
 
-    if (password !== correctPassword) {
-        errorMessage.textContent = "Wrong Password, Re-enter Password!";
+    // Check if the password matches
+    if (currentUser.password !== password) {
+        errorMessage.textContent = "Wrong password! Please try again.";
+        errorMessage.style.display = "block";
         return;
     }
+
+    // Set login status in localStorage
+    currentUser.isLoggedIn = true;
+
+    // Update localStorage with new login status
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("lastLoggedInEmail", email);
+
+    alert("Login Successful! Welcome back, " + currentUser.firstname);
+
+    // Redirect to homepage
+    window.location.href = "index.html";
 });
 
-// Testing purposes, for comparing user data and set isloggedin to true
-document.getElementById("loginForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    let username = localStorage.getItem("username");
-
-    if (!username) {
-        alert("User not registered. Please register first.");
-        return;
-    }
-
-    // Set login status
-    localStorage.setItem("isLoggedIn", "true");
-
-    alert("Login Successful! Welcome back, " + username);
-    window.location.href = "index.html"; // Redirect to homepage
-});
-
-
-// Password Visibility Toggle for Login Page
+// Password Visibility Toggle
 document.getElementById("togglePassword").addEventListener("click", function() {
     const passwordField = document.getElementById("password");
     if (passwordField.type === "password") {
