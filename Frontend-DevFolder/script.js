@@ -1,29 +1,29 @@
 // Preset categories
 const categories = ['All', 'Living Room', 'Kitchen', 'Bedroom'];
 
-// Example of an initial product list to see how filtering works immediately
+// Initial products
 let products = [
-  { name: 'Living Room Lamp', category: 'Living Room', type: 'Light' },
-  { name: 'Kitchen Light', category: 'Kitchen', type: 'Light' },
-  { name: 'Bedroom AC', category: 'Bedroom', type: 'Air Conditioning' },
+  { name: 'Light', category: 'Living Room', type: 'Light' },
+  { name: 'Light', category: 'Kitchen', type: 'Light' },
+  { name: 'Air Conditioning', category: 'Bedroom', type: 'Air Conditioning' },
 ];
 
-// Once the page loads, set everything up
 document.addEventListener('DOMContentLoaded', () => {
-  // Build category navigation
-  const categoryList = document.getElementById('categoryList');
+  // Build category buttons
+  const categoryNav = document.getElementById('categoryNav');
   categories.forEach(category => {
-    const li = document.createElement('li');
-    li.textContent = category;
-    // When category is clicked, filter products
-    li.addEventListener('click', () => filterProducts(category));
-    categoryList.appendChild(li);
+    const button = document.createElement('button');
+    button.textContent = category;
+    button.classList.add('category-button');
+    // On click, filter the products
+    button.addEventListener('click', () => filterProducts(category));
+    categoryNav.appendChild(button);
   });
 
-  // Show all products at first
+  // Display all products initially
   displayProducts(products);
 
-  // Handle "Add Product" form submission
+  // Handle form submission
   const form = document.getElementById('addProductForm');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -31,35 +31,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Adds a product to our `products` array and refreshes the display
+// Adds a new product with auto-generated name (same as type)
 function addProduct() {
-  const nameInput = document.getElementById('productName');
   const categorySelect = document.getElementById('productCategory');
   const typeSelect = document.getElementById('productType');
 
-  // Create a new product object
   const newProduct = {
-    name: nameInput.value,
+    name: typeSelect.value,
     category: categorySelect.value,
     type: typeSelect.value
   };
 
-  // Push it to our products array
   products.push(newProduct);
 
-  // Reset the form
-  nameInput.value = '';
+  // Reset form to defaults
   categorySelect.value = 'Living Room';
   typeSelect.value = 'Light';
 
-  // Display all products (or display the category you just added to)
+  // Display updated products
   displayProducts(products);
 }
 
-// Displays the given list of products in the #productsContainer
+// Display the provided list of products
 function displayProducts(productList) {
   const container = document.getElementById('productsContainer');
-  container.innerHTML = ''; // Clear previous display
+  container.innerHTML = ''; // Clear previous
 
   productList.forEach(product => {
     const card = document.createElement('div');
@@ -73,7 +69,7 @@ function displayProducts(productList) {
   });
 }
 
-// Filters products based on the chosen category
+// Filter products by category
 function filterProducts(category) {
   if (category === 'All') {
     displayProducts(products);

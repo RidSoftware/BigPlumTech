@@ -1,0 +1,89 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+/* Section Titles */
+section h2 {
+  margin-bottom: 10px;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+}
+
+select, input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Horizontal Category Buttons */
+#categoryNav {
+  display: flex;         /* Lay out buttons in a row */
+  gap: 15px;             /* Space between buttons */
+  margin: 10px 0;        /* Spacing under the "Smart Products" heading */
+}
+
+.category-button {
+  cursor: pointer;
+  padding: 6px 12px;
+  background: #ddd;
+  border: none;
+  border-radius: 4px;
+  font: inherit;         /* Use the same font as the page */
+}
+
+.category-button:hover {
+  background: #ccc;
+}
+
+/* Products Container */
+#productsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.productCard {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 15px;
+  min-width: 150px;
+  max-width: 200px;
+}
+
+.productCard h3 {
+  margin-bottom: 8px;
+}
+
+.productCard p {
+  margin-bottom: 4px;
+}

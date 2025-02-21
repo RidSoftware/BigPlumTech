@@ -2,28 +2,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Smart Home</title>
-  <link rel="stylesheet" href="style.css">
+  <title>User Dashboard (Horizontal Buttons)</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Header / Title -->
+  <!-- Main Title -->
   <header>
-    <h1>Smart Home Management</h1>
-    <nav>
-      <ul id="categoryList"></ul>
-    </nav>
+    <h1>User Dashboard</h1>
   </header>
 
   <!-- Section: Add New Product -->
   <section>
     <h2>Add a New Smart Product</h2>
     <form id="addProductForm">
-      <!-- Product Name -->
-      <div class="form-group">
-        <label for="productName">Name:</label>
-        <input type="text" id="productName" required>
-      </div>
-
       <!-- Select Category -->
       <div class="form-group">
         <label for="productCategory">Category:</label>
@@ -52,12 +43,17 @@
     </form>
   </section>
 
-  <!-- Section: Display Products -->
+  <!-- Section: Smart Products -->
   <section>
     <h2>Smart Products</h2>
+
+    <!-- Horizontal category buttons -->
+    <nav id="categoryNav"></nav>
+
+    <!-- Products Container -->
     <div id="productsContainer"></div>
   </section>
 
   <script src="script.js"></script>
 </body>
-</
+</html>
