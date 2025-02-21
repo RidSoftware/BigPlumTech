@@ -10,56 +10,79 @@ document.getElementById("registrationForm").addEventListener("submit", function(
     let terms = document.getElementById("terms").checked;
     let errorMessage = document.getElementById("errorMessage");
 
+    errorMessage.textContent = "";
+    errorMessage.style.display = "none";
+
     if (firstname === "" || lastname === "" || email === "" || password === "" || confirmPassword === "" || userType === "") {
         errorMessage.textContent = "All fields are required!";
+        errorMessage.style.display = "block";   
         return;
     }
 
     if (!email.includes("@") || !email.includes(".")) {
         errorMessage.textContent = "Enter a valid email!";
+        errorMessage.style.display = "block";   
         return;
     }
 
     if (password.length < 6) {
         errorMessage.textContent = "Password must be at least 6 characters!";
+        errorMessage.style.display = "block";   
         return;
     }
 
     if (password !== confirmPassword) {
         errorMessage.textContent = "Passwords do not match!";
+        errorMessage.style.display = "block";   
         return;
     }
 
     if (!terms) {
         errorMessage.textContent = "You must agree to the Terms & Conditions!";
+        errorMessage.style.display = "block";   
+        return;
+    }
+    
+    // Retrieve existing users from localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if the user already exists
+    let existingUser = users.find(user => user.email === email);
+    if (existingUser) {
+        errorMessage.textContent = "This email is already registered!";
         return;
     }
 
-    // If validation passes, store data and redirect
-    localStorage.setItem("username", firstname + " " + lastname);
-    localStorage.setItem("userType", userType);
-    localStorage.setItem("isLoggedIn", "false"); // User registered but not logged in
+    // Create new user object
+    let newUser = {
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        userType: userType,
+        adminCode: adminCode,
+        isLoggedIn: false
+    };
 
-    console.log("User Registered:", firstname + " " + lastname);
-    console.log("User Type:", userType);
+    // Save the new user to localStorage
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Store the last registered email to identify the correct user in the confirmation page
+    localStorage.setItem("lastRegisteredEmail", email);
+
+    console.log("User Registered:", newUser);
 
     // Redirect to confirmation page
     window.location.href = "/Pages/HTML/ConfirmationMessage.html";
+
+    errorMessage.textContent = "";
 });
 
-// Admin Code Visibility & Generation
-document.getElementById("userType").addEventListener("change", function() {
-    const adminCodeField = document.getElementById("adminCodeField");
-    const adminCodeInput = document.getElementById("adminCode");
+// Reset form on page load
+window.onload = function() {
+    document.getElementById("registrationForm").reset();
+};
 
-    if (this.value === "homeManager") {
-        adminCodeField.classList.remove("hidden");
-        adminCodeInput.value = Math.floor(10000 + Math.random() * 90000); // Generate 5-digit code
-    } else {
-        adminCodeField.classList.add("hidden");
-        adminCodeInput.value = "";
-    }
-});
 
 // Password Visibility Toggle
 document.getElementById("togglePassword").addEventListener("click", function() {

@@ -2,8 +2,9 @@
 <html lang="en">
 
 <head>
-    <title> Confirmation Message | </title>
-    <link rel="stylesheet" href="/Pages/Assets/CSS/ConfirmationMessage.css">
+    <title>Confirmation Message | Big Plum Tech</title>
+    <link rel="stylesheet" href="/Pages/Assets/CSS/Message-confirmation.css">
+    <script src="/Pages/Assets/JS/message-confirmation.js"></script>
 </head>
 
 <body>
@@ -12,12 +13,13 @@
         <h2>Thank you for registering!</h2>
         <p>Your account has been successfully created.</p>
 
-        <div id="Admin-code" class="hidden">
-            <p>Admin code: <span id="adminCode"></span></p>
+        <!-- Admin Code Section (Hidden by Default) -->
+        <div id="admin-code-section" style="display: none;">
+            <p><strong>Your Admin Code:</strong> <span id="adminCode"></span></p>
+            <p><em>(Please save this code for future reference.)</em></p>
         </div>
 
-        <p>Click <a href="Login.html">here</a> to login.</p>
+        <p>Click <a href="Login.html">here</a> to log in.</p>
     </div>
 </body>
-
 </html>
