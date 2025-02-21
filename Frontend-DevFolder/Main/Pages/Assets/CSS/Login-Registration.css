@@ -160,6 +160,28 @@ body {
     font-size: 14px;
 }
 
+/* Return to homepage style */
+.return-href {
+    position: absolute;
+    left: 50px; 
+    bottom: 100px; 
+    font-size: 25px;
+    font-weight: bold;
+    color: #0056b3; 
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.return-href:hover {
+    color: #0056b3; 
+    text-decoration: none;
+    transform: scale(1.1); 
+}
+
+#return-id {
+    text-decoration: none;
+}
+
 /*Responsive Adjustments */
 @media (max-width: 1024px) {
     .page-container {
@@ -178,5 +200,11 @@ body {
     .container-registration, .container-login {
         max-width: 80%;
         text-align: center;
+    }
+
+    .return-href {
+        right: 20px; /* Move closer for small screens */
+        bottom: 50px; /* Adjust for small screens */
+        font-size: 14px;
     }
 }
