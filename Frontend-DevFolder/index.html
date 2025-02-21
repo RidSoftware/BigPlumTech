@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header / Title -->
+  <header>
+    <h1>Smart Home Management</h1>
+    <nav>
+      <ul id="categoryList"></ul>
+    </nav>
+  </header>
+
+  <!-- Section: Add New Product -->
+  <section>
+    <h2>Add a New Smart Product</h2>
+    <form id="addProductForm">
+      <!-- Product Name -->
+      <div class="form-group">
+        <label for="productName">Name:</label>
+        <input type="text" id="productName" required>
+      </div>
+
+      <!-- Select Category -->
+      <div class="form-group">
+        <label for="productCategory">Category:</label>
+        <select id="productCategory" required>
+          <option value="Living Room">Living Room</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="All">All</option>
+        </select>
+      </div>
+
+      <!-- Select Product Type -->
+      <div class="form-group">
+        <label for="productType">Type:</label>
+        <select id="productType" required>
+          <option value="Light">Light</option>
+          <option value="Curtain">Curtain</option>
+          <option value="Main Door">Main Door</option>
+          <option value="Robot">Robot</option>
+          <option value="Air Conditioning">Air Conditioning</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit">Add Product</button>
+    </form>
+  </section>
+
+  <!-- Section: Display Products -->
+  <section>
+    <h2>Smart Products</h2>
+    <div id="productsContainer"></div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</
