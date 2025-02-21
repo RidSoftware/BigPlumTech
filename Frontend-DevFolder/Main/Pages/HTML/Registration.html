@@ -13,9 +13,12 @@
 <body>
 
     <div class="page-container">
+        
         <!-- Left Section: Registration Form -->
         <div class="container-registration">
             <h2>Register for Big Plum Tech!</h2>
+            <br>
+
             <form id="registrationForm">
                 <label for="fullname">Full Name:</label>
                 <input placeholder="Full name" type="text" id="fullname" name="fullname" required>
@@ -39,19 +42,14 @@
                     <option value="homeManager">Home Manager</option>
                 </select>
 
-                <!-- Admin Code Field (Hidden by Default) -->
-                <div id="adminCodeField" class="hidden">
-                    <label for="adminCode">Admin Code:</label>
-                    <input type="text" id="adminCode" name="adminCode" readonly>
-                </div>
-
-                <p class="terms">I agree to the Terms & Conditions</p>
+                <p class="terms" style="text-align: center;">I agree to the Terms & Conditions</p>
                 <label class="terms-style">
                     <input type="checkbox" id="terms" required>
                 </label>
 
                 <button type="submit" class="submit-button">Register</button>
             </form>
+            <br>
             <p>Already have an account? <a href="Login.html">Login here</a></p>
         </div>
 
