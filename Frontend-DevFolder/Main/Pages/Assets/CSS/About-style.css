@@ -57,26 +57,6 @@ body.dark-mode {
     background: #007BFF;
 }
 
-
-/*Sections*/
-section {
-    padding: 100px 20px 50px;
-    margin: 20px auto;
-    max-width: 1000px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 15px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    animation: slideIn 1.5s ease-out;
-}
-
-h2 {
-    gap: 10px;
-    text-align: center;
-    color: #007BFF;
-    margin-bottom: 20px;
-}
-
 /*Features with hover animation*/
 .features {
     display: flex;
