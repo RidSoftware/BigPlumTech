@@ -37,10 +37,14 @@ function displayProducts(productList) {
   productList.forEach(product => {
     const card = document.createElement('div');
     card.classList.add('productCard');
-    // Removed the type display; the title already reflects the product type.
+    // Updated product card markup with iOS slider toggle for on/off functionality
     card.innerHTML = `
       <h3>${product.name}</h3>
       <p>Category: ${product.category}</p>
+      <label class="switch">
+        <input type="checkbox" class="toggle">
+        <span class="slider round"></span>
+      </label>
     `;
     container.appendChild(card);
   });
