@@ -1,8 +1,8 @@
 document.getElementById("registrationForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    let firstname = document.getElementById("firstname").value;
-    let lastname = document.getElementById("lastname").value;
+    let firstname = document.getElementById("firstname").value.trim();
+    let lastname = document.getElementById("lastname").value.trim();
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value;
     let confirmPassword = document.getElementById("confirmPassword").value;
@@ -13,43 +13,51 @@ document.getElementById("registrationForm").addEventListener("submit", function(
     errorMessage.textContent = "";
     errorMessage.style.display = "none";
 
+    // Validation Checks
     if (firstname === "" || lastname === "" || email === "" || password === "" || confirmPassword === "" || userType === "") {
         errorMessage.textContent = "All fields are required!";
-        errorMessage.style.display = "block";   
+        errorMessage.style.display = "block";
         return;
     }
 
     if (!email.includes("@") || !email.includes(".")) {
         errorMessage.textContent = "Enter a valid email!";
-        errorMessage.style.display = "block";   
+        errorMessage.style.display = "block";
         return;
     }
 
     if (password.length < 6) {
         errorMessage.textContent = "Password must be at least 6 characters!";
-        errorMessage.style.display = "block";   
+        errorMessage.style.display = "block";
         return;
     }
 
     if (password !== confirmPassword) {
         errorMessage.textContent = "Passwords do not match!";
-        errorMessage.style.display = "block";   
+        errorMessage.style.display = "block";
         return;
     }
 
     if (!terms) {
         errorMessage.textContent = "You must agree to the Terms & Conditions!";
-        errorMessage.style.display = "block";   
+        errorMessage.style.display = "block";
         return;
     }
-    
-    // Retrieve existing users from localStorage
+
+    // Generate Admin Code only for Home Managers
+    let adminCode = "";
+    if (userType === "homeManager") {
+        adminCode = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit code
+    }
+
+    // Retrieve existing users from localStorage (Make sure it doesn't get overwritten)
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
     // Check if the user already exists
     let existingUser = users.find(user => user.email === email);
     if (existingUser) {
         errorMessage.textContent = "This email is already registered!";
+        errorMessage.style.display = "block";
         return;
     }
 
@@ -63,26 +71,23 @@ document.getElementById("registrationForm").addEventListener("submit", function(
         isLoggedIn: false
     };
 
-    // Save the new user to localStorage
+    // Append new user to existing users array
     users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("users", JSON.stringify(users)); // Now it won't overwrite existing data
 
     // Store the last registered email to identify the correct user in the confirmation page
     localStorage.setItem("lastRegisteredEmail", email);
 
     console.log("User Registered:", newUser);
-
+    
     // Redirect to confirmation page
     window.location.href = "/Pages/HTML/ConfirmationMessage.html";
-
-    errorMessage.textContent = "";
 });
 
 // Reset form on page load
 window.onload = function() {
     document.getElementById("registrationForm").reset();
 };
-
 
 // Password Visibility Toggle
 document.getElementById("togglePassword").addEventListener("click", function() {

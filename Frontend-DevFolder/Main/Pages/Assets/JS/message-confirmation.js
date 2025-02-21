@@ -21,12 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update UI for confirmation message
     document.querySelector(".message-container h2").textContent = `Thank you for registering, ${currentUser.firstname}!`;
 
-    // Generate Admin Code only for Home Managers
-    let adminCode = "";
-    if (currentUser.userType === "homeManager") {
-        adminCode = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit code
-    }
-
     // If the user is a Home Manager, show the Admin Code
     if (currentUser.userType === "homeManager" && currentUser.adminCode) {
         document.getElementById("admin-code-section").style.display = "block";
