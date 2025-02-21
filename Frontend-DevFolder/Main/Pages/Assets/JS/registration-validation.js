@@ -1,7 +1,8 @@
 document.getElementById("registrationForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    let fullname = document.getElementById("fullname").value.trim();
+    let fullname = document.getElementById("firstname").value;
+    let lastname = document.getElementById("lastname").value;
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value;
     let confirmPassword = document.getElementById("confirmPassword").value;
@@ -9,7 +10,7 @@ document.getElementById("registrationForm").addEventListener("submit", function(
     let terms = document.getElementById("terms").checked;
     let errorMessage = document.getElementById("errorMessage");
 
-    if (fullname === "" || email === "" || password === "" || confirmPassword === "" || userType === "") {
+    if (firstname === "" || lastname === "" || email === "" || password === "" || confirmPassword === "" || userType === "") {
         errorMessage.textContent = "All fields are required!";
         return;
     }
@@ -34,9 +35,16 @@ document.getElementById("registrationForm").addEventListener("submit", function(
         return;
     }
 
-    alert("Registration Successful!");
-    document.getElementById("registrationForm").reset();
-    errorMessage.textContent = "";
+    // If validation passes, store data and redirect
+    localStorage.setItem("username", firstname + " " + lastname);
+    localStorage.setItem("userType", userType);
+    localStorage.setItem("isLoggedIn", "false"); // User registered but not logged in
+
+    console.log("User Registered:", firstname + " " + lastname);
+    console.log("User Type:", userType);
+
+    // Redirect to confirmation page
+    window.location.href = "/Pages/HTML/ConfirmationMessage.html";
 });
 
 // Admin Code Visibility & Generation

@@ -9,19 +9,31 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         errorMessage.textContent = "Enter a valid email!";
         return;
     }
-    
-    // Simulated correct password (Replace this with a real authentication system)
-    let correctPassword = "123456"; // Temporary password for testing
 
     if (password !== correctPassword) {
         errorMessage.textContent = "Wrong Password, Re-enter Password!";
         return;
     }
-
-    alert("Login Successful!");
-    document.getElementById("loginForm").reset();
-    errorMessage.textContent = "";
 });
+
+// Testing purposes, for comparing user data and set isloggedin to true
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    let username = localStorage.getItem("username");
+
+    if (!username) {
+        alert("User not registered. Please register first.");
+        return;
+    }
+
+    // Set login status
+    localStorage.setItem("isLoggedIn", "true");
+
+    alert("Login Successful! Welcome back, " + username);
+    window.location.href = "index.html"; // Redirect to homepage
+});
+
 
 // Password Visibility Toggle for Login Page
 document.getElementById("togglePassword").addEventListener("click", function() {
