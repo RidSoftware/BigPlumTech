@@ -1,17 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Function to load a component
+    // Function to load a component only if the element exists on the page
     function loadComponent(elementId, filePath) {
-        fetch(filePath)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById(elementId).innerHTML = data;
-            })
-            .catch(error => console.error(`Error loading ${filePath}:`, error));
+        const element = document.getElementById(elementId);
+        if (element) { // Only load if the div exists in the HTML
+            fetch(filePath)
+                .then(response => response.text())
+                .then(data => {
+                    element.innerHTML = data;
+                })
+                .catch(error => console.error(`Error loading ${filePath}:`, error));
+        }
     }
 
-    // Load Navbar
+    // Load Navbar only if the page contains a div with id="navbar"
     loadComponent("navbar", "Navbar.html");
 
-    // Load Footer
+    // Load Footer (Always loads because every page includes a div with id="footer")
     loadComponent("footer", "Footer.html");
 });
