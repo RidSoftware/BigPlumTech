@@ -2,54 +2,21 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>User Dashboard (Horizontal Buttons)</title>
+  <title>User Dashboard</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Main Title -->
+  <!-- Main Header -->
   <header>
     <h1>User Dashboard</h1>
+    <button id="addProductButton" class="primary-button">Add New Smart Product</button>
   </header>
 
-  <!-- Section: Add New Product -->
-  <section>
-    <h2>Add a New Smart Product</h2>
-    <form id="addProductForm">
-      <!-- Select Category -->
-      <div class="form-group">
-        <label for="productCategory">Category:</label>
-        <select id="productCategory" required>
-          <option value="Living Room">Living Room</option>
-          <option value="Kitchen">Kitchen</option>
-          <option value="Bedroom">Bedroom</option>
-          <option value="All">All</option>
-        </select>
-      </div>
-
-      <!-- Select Product Type -->
-      <div class="form-group">
-        <label for="productType">Type:</label>
-        <select id="productType" required>
-          <option value="Light">Light</option>
-          <option value="Curtain">Curtain</option>
-          <option value="Main Door">Main Door</option>
-          <option value="Robot">Robot</option>
-          <option value="Air Conditioning">Air Conditioning</option>
-        </select>
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit">Add Product</button>
-    </form>
-  </section>
-
-  <!-- Section: Smart Products -->
+  <!-- Smart Products Section -->
   <section>
     <h2>Smart Products</h2>
-
     <!-- Horizontal category buttons -->
     <nav id="categoryNav"></nav>
-
     <!-- Products Container -->
     <div id="productsContainer"></div>
   </section>

@@ -14,11 +14,29 @@ body {
 /* Header */
 header {
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 header h1 {
   font-size: 1.8rem;
   margin-bottom: 10px;
+}
+
+/* Primary Button */
+.primary-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.primary-button:hover {
+  background-color: #45a049;
 }
 
 /* Section Titles */
@@ -45,9 +63,9 @@ select, input {
 
 /* Horizontal Category Buttons */
 #categoryNav {
-  display: flex;         /* Lay out buttons in a row */
-  gap: 15px;             /* Space between buttons */
-  margin: 10px 0;        /* Spacing under the "Smart Products" heading */
+  display: flex;
+  gap: 15px;
+  margin: 10px 0;
 }
 
 .category-button {
@@ -56,7 +74,7 @@ select, input {
   background: #ddd;
   border: none;
   border-radius: 4px;
-  font: inherit;         /* Use the same font as the page */
+  font: inherit;
 }
 
 .category-button:hover {
@@ -71,13 +89,19 @@ select, input {
   margin-top: 10px;
 }
 
+/* Product Card */
 .productCard {
   background: #ffffff;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 200px;           /* Fixed width */
+  height: 70px;          /* Fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: 15px;
-  min-width: 150px;
-  max-width: 200px;
 }
 
 .productCard h3 {
