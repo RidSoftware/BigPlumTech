@@ -1,68 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadProducts();
+    // Update the time immediately, then every second
+    updateTime();
+    setInterval(updateTime, 1000);
+  
+    // If you want dynamic data for the usage/cost, you could update it here
+    // e.g., fetch from an API or do calculations, then:
+    // document.getElementById('currentKW').textContent = '2.3';
+    // document.getElementById('dailyUsage').textContent = '50 kWh';
+    // document.getElementById('estimatedCost').textContent = '£5.50';
   });
   
-  function loadProducts() {
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    const tbody = document.getElementById('productTable').getElementsByTagName('tbody')[0];
-    tbody.innerHTML = ''; // Clear existing rows
+  function updateTime() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
   
-    products.forEach((product, index) => {
-      const row = document.createElement('tr');
+    // 12-hour format
+    const isAm = hours < 12;
+    const displayHour = hours % 12 || 12;
+    const displayMin = minutes < 10 ? '0' + minutes : minutes;
+    const amPm = isAm ? 'AM' : 'PM';
   
-      // Name cell
-      const nameCell = document.createElement('td');
-      nameCell.textContent = product.name;
-      row.appendChild(nameCell);
-  
-      // Category cell
-      const categoryCell = document.createElement('td');
-      categoryCell.textContent = product.category;
-      row.appendChild(categoryCell);
-  
-      // Type cell
-      const typeCell = document.createElement('td');
-      typeCell.textContent = product.type;
-      row.appendChild(typeCell);
-  
-      // Actions cell
-      const actionsCell = document.createElement('td');
-  
-      // Edit button
-      const editButton = document.createElement('button');
-      editButton.textContent = 'Edit';
-      editButton.classList.add('action-button', 'edit-button');
-      editButton.addEventListener('click', () => editProduct(index));
-      actionsCell.appendChild(editButton);
-  
-      // Delete button
-      const deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Delete';
-      deleteButton.classList.add('action-button', 'delete-button');
-      deleteButton.addEventListener('click', () => deleteProduct(index));
-      actionsCell.appendChild(deleteButton);
-  
-      row.appendChild(actionsCell);
-      tbody.appendChild(row);
-    });
-  }
-  
-  function editProduct(index) {
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    const newName = prompt("Enter new product name:", products[index].name);
-    if (newName !== null) {
-      products[index].name = newName;
-      localStorage.setItem('products', JSON.stringify(products));
-      loadProducts();
-    }
-  }
-  
-  function deleteProduct(index) {
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    if (confirm("Are you sure you want to delete this product?")) {
-      products.splice(index, 1);
-      localStorage.setItem('products', JSON.stringify(products));
-      loadProducts();
-    }
+    const timeString = `${displayHour}:${displayMin} ${amPm}`;
+    document.getElementById('currentTime').textContent = timeString;
   }
   

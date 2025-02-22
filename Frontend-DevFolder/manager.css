@@ -40,3 +40,82 @@
     color: #555;
   }
   
+  /* Energy Card Container */
+  .energy-card {
+    width: 420px;
+    background-color: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .energy-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .energy-card-header h2 {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  #currentTime {
+    font-size: 0.9rem;
+    color: #999;
+  }
+  
+  /* Usage Section */
+  .energy-card-usage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .energy-card-usage h3 {
+    font-size: 1.5rem;
+    color: #007bff; /* Blue for emphasis */
+    margin-bottom: 5px;
+  }
+  
+  /* Horizontal Rule styling */
+  .energy-card hr {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 5px 0;
+  }
+  
+  /* Stats Row */
+  .energy-card-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Individual Stat Container */
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .stat-icon {
+    font-size: 1.4rem;
+    color: #555;
+  }
+  
+  .stat-info span {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .stat-info p {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 2px;
+  }
+  

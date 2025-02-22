@@ -15,8 +15,44 @@
       </div>
     </div>
   </header>
+
+  <!-- Energy Usage Card Section -->
   <section>
-    <p>Manager functionalities will be implemented here.</p>
+    <div class="energy-card">
+      <div class="energy-card-header">
+        <h2>Current Energy Usage</h2>
+        <span id="currentTime">9:41 AM</span>
+      </div>
+
+      <div class="energy-card-usage">
+        <h3><span id="currentKW">2.1</span> kW</h3>
+        <p>Your home's power draw at this moment.</p>
+      </div>
+
+      <hr />
+
+      <div class="energy-card-stats">
+        <!-- 24-Hr Usage -->
+        <div class="stat">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-info">
+            <span id="dailyUsage">48 kWh</span>
+            <p>24-Hr Usage</p>
+          </div>
+        </div>
+
+        <!-- Estimated Cost -->
+        <div class="stat">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <span id="estimatedCost">£5.20</span>
+            <p>Estimated Cost</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
+
+  <script src="manager.js"></script>
 </body>
 </html>
