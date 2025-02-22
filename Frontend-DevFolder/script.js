@@ -23,13 +23,88 @@ document.addEventListener('DOMContentLoaded', () => {
     categoryNav.appendChild(button);
   });
 
-  // Initially display all products
+  // Initially display all products (plus the add-new product card)
   displayProducts(products);
+
+  // ===== Initialize Chart.js for Energy Usage =====
+  const ctx = document.getElementById('myChart').getContext('2d');
+
+  // Example data for two lines: "This Week" and "Last Week"
+  const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dataThisWeek = [20, 30, 35, 50, 51, 40, 35];
+  const dataLastWeek = [15, 25, 28, 35, 45, 35, 30];
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'This Week',
+          data: dataThisWeek,
+          borderColor: 'rgba(59,130,246,1)',
+          backgroundColor: 'rgba(59,130,246,0.1)',
+          fill: true,
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 4,
+          pointBorderWidth: 2,
+          pointBackgroundColor: '#ffffff',
+          pointBorderColor: 'rgba(59,130,246,1)'
+        },
+        {
+          label: 'Last Week',
+          data: dataLastWeek,
+          borderColor: 'rgba(192,192,192,0.7)',
+          backgroundColor: 'rgba(192,192,192,0.1)',
+          fill: true,
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 4,
+          pointBorderWidth: 2,
+          pointBackgroundColor: '#ffffff',
+          pointBorderColor: 'rgba(192,192,192,0.7)'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,  // Allows flexible resizing
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: '#555' }
+        },
+        y: {
+          beginAtZero: true,
+          max: 60,
+          grid: {
+            color: 'rgba(220,220,220,0.3)',
+            drawBorder: false
+          },
+          ticks: { color: '#555' }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          displayColors: false,
+          callbacks: {
+            label: function(context) {
+              return context.parsed.y;
+            }
+          }
+        }
+      }
+    }
+  });
 });
 
-/**
- * Renders the product cards and a plus card at the end
- */
 function displayProducts(productList) {
   const container = document.getElementById('productsContainer');
   container.innerHTML = '';
@@ -61,9 +136,6 @@ function displayProducts(productList) {
   container.appendChild(plusCard);
 }
 
-/**
- * Filters the displayed products by category
- */
 function filterProducts(category) {
   let products = JSON.parse(localStorage.getItem('products')) || [];
   if (category !== 'All') {

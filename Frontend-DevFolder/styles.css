@@ -27,9 +27,8 @@ header {
 }
 
 .logo {
-  /* Increase these values to make the logo bigger or smaller */
-  width: 100px;
-  height: 1-0px;
+  width: 60px;
+  height: 60px;
 }
 
 .header-text h2 {
@@ -44,7 +43,7 @@ header {
   margin: 0;
 }
 
-/* Primary Button (Used on addProduct.html Return, etc.) */
+/* Primary Button */
 .primary-button {
   padding: 8px 16px;
   background-color: #4CAF50;
@@ -175,11 +174,11 @@ select, input {
   transform: translateX(20px);
 }
 
-/* The "Plus Card" to add new products */
+/* "Plus Card" to add new products */
 .add-card {
   width: 70px;
   height: 70px;
-  border-radius: 50%; /* Perfect circle */
+  border-radius: 50%;
   background-color: #4CAF50;
   color: #fff;
   display: flex;
@@ -189,9 +188,20 @@ select, input {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   cursor: pointer;
   border: none;
-  /* No border or use a small border if you prefer:
-     border: 1px solid #ccc; */
 }
 .add-card:hover {
   background-color: #45a049;
+}
+
+/* Chart Container: remove center alignment, keep design */
+.chart-container {
+  width: 100%;
+  max-width: 600px;    /* Adjust as needed */
+  height: 300px;       /* For a nice aspect ratio */
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  /* Removed margin: 0 auto; to align left */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: relative;
 }

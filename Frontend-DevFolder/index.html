@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Smart Home</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Include Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <!-- Main Header with Big Logo and Welcome Text -->
@@ -17,13 +19,20 @@
     </div>
   </header>
 
+  <!-- Energy Usage Graph Section -->
+  <section>
+    <h2>Energy Usage</h2>
+    <!-- Chart Container for styling, left-aligned -->
+    <div class="chart-container">
+      <canvas id="myChart"></canvas>
+    </div>
+  </section>
+
   <!-- Smart Products Section -->
   <section>
     <h2>Smart Products</h2>
-
     <!-- Horizontal category buttons -->
     <nav id="categoryNav"></nav>
-
     <!-- Products Container (cards + plus card) -->
     <div id="productsContainer"></div>
   </section>
