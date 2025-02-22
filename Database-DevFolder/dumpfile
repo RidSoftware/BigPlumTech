@@ -9,7 +9,7 @@ CREATE TABLE `userdetails` (
 	`UserID` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`Password` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	`Username` VARCHAR(20) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
-	`Email` VARCHAR(50) CHECK (Email LIKE '%@%.%') NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`Email` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
 	`HomeID` INT(3) UNSIGNED NOT NULL,
 	`Admin` ENUM('Y','N') NOT NULL DEFAULT 'N' COLLATE 'utf8mb4_unicode_ci',
 	PRIMARY KEY (`UserID`) USING BTREE,
@@ -29,7 +29,7 @@ CREATE TABLE `alldevices` (
 	`DeviceID` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`DeviceName` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
 	`DeviceType` ENUM('Robot','EnergyGeneration','EnergyUsage') NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	`Status` ENUM('On','Off') NOT NULL DEFAULT 'Off' COLLATE 'utf8mb4_unicode_ci',
+	`Status` ENUM('On','Off','N/A') NOT NULL DEFAULT 'Off' COLLATE 'utf8mb4_unicode_ci',
 	`Location/Room` VARCHAR(25) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	`HomeID` INT(3) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`DeviceID`) USING BTREE,
@@ -48,7 +48,9 @@ CREATE TABLE `homedetails` (
 	`HomeID` INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`NoOfResidents` INT(3) UNSIGNED NOT NULL,
 	`HomeManager` VARCHAR(30) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
-	PRIMARY KEY (`HomeID`) USING BTREE
+	`AdminCode` VARCHAR(5) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	PRIMARY KEY (`HomeID`) USING BTREE,
+	UNIQUE INDEX `UNIQUE CODE` (`AdminCode`) USING BTREE
 )
 COMMENT='table containing house details'
 COLLATE='utf8mb4_unicode_ci'
