@@ -69,25 +69,24 @@
 
     <!--This script is temporary, will put them in a proper js file, reason is: MIME error in browser-->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript Loaded"); // Debugging message
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("JavaScript Loaded"); // Debugging message
 
-    // Select all elements with the fade-in class
-    const fadeInElements = document.querySelectorAll(".fade-in");
+        // Select all elements with the fade-in class
+        const fadeInElements = document.querySelectorAll(".fade-in");
 
-    // Intersection Observer for detecting when elements are in view
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible"); // Apply fade-in effect
-                observer.unobserve(entry.target); // Stop observing once visible
-            }
-        });
-    }, { threshold: 0.2 }); // Trigger when 20% of the element is visible
+        // Intersection Observer for detecting when elements are in view
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible"); // Apply fade-in effect
+                    observer.unobserve(entry.target); // Stop observing once visible
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
 
-    fadeInElements.forEach(el => observer.observe(el));
-});
-
+        fadeInElements.forEach(el => observer.observe(el));
+    });
     </script>
 </body>
 </html>
