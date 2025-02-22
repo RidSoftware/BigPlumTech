@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       type: typeSelect.value
     };
   
-    // Retrieve existing products from localStorage, add the new product, and save it back
+    // Retrieve existing products from localStorage, add the new product, and save it
     let products = JSON.parse(localStorage.getItem('products')) || [];
     products.push(newProduct);
     localStorage.setItem('products', JSON.stringify(products));

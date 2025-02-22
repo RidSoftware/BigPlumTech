@@ -7,7 +7,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #f5f7fa;
+  background: #ffffff;  /* Full white background */
   padding: 20px;
 }
 
@@ -19,12 +19,32 @@ header {
   justify-content: space-between;
 }
 
-header h1 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
+/* Left side of header: big logo + welcome text */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-/* Primary Button */
+.logo {
+  /* Increase these values to make the logo bigger or smaller */
+  width: 100px;
+  height: 1-0px;
+}
+
+.header-text h2 {
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.header-text p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0;
+}
+
+/* Primary Button (Used on addProduct.html Return, etc.) */
 .primary-button {
   padding: 8px 16px;
   background-color: #4CAF50;
@@ -39,9 +59,10 @@ header h1 {
   background-color: #45a049;
 }
 
-/* Section Titles */
+/* Section Title */
 section h2 {
   margin-bottom: 10px;
+  color: #333;
 }
 
 /* Form Group */
@@ -89,19 +110,25 @@ select, input {
   margin-top: 10px;
 }
 
-/* Product Card */
+/* Product Card: Rounded Oval Shape */
 .productCard {
+  width: 200px;
+  height: 70px;
   background: #ffffff;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 200px;           /* Fixed width */
-  height: 80px;           /* Fixed height */
+  border-radius: 40px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: space-around;
   text-align: center;
-  padding: 15px;
+  padding: 0 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.productCard h3,
+.productCard p {
+  margin: 0;
+  color: #333;
 }
 
 /* iOS Slider Toggle Style */
@@ -110,7 +137,7 @@ select, input {
   display: inline-block;
   width: 40px;
   height: 20px;
-  margin-top: 5px;
+  margin-left: 5px;
 }
 
 .switch input {
@@ -122,10 +149,7 @@ select, input {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
   border-radius: 20px;
@@ -138,7 +162,7 @@ select, input {
   width: 16px;
   left: 2px;
   bottom: 2px;
-  background-color: white;
+  background-color: #fff;
   transition: 0.4s;
   border-radius: 50%;
 }
@@ -151,11 +175,23 @@ select, input {
   transform: translateX(20px);
 }
 
-/* Rounded slider */
-.slider.round {
-  border-radius: 20px;
+/* The "Plus Card" to add new products */
+.add-card {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%; /* Perfect circle */
+  background-color: #4CAF50;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+  border: none;
+  /* No border or use a small border if you prefer:
+     border: 1px solid #ccc; */
 }
-
-.slider.round:before {
-  border-radius: 50%;
+.add-card:hover {
+  background-color: #45a049;
 }

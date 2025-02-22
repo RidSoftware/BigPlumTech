@@ -1,9 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Navigate to addProduct.html when the button is clicked
-  document.getElementById('addProductButton').addEventListener('click', () => {
-    window.location.href = 'addProduct.html';
-  });
-
   // Load products from localStorage or initialize with default products
   let products = JSON.parse(localStorage.getItem('products'));
   if (!products) {
@@ -28,19 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
     categoryNav.appendChild(button);
   });
 
+  // Initially display all products
   displayProducts(products);
 });
 
+/**
+ * Renders the product cards and a plus card at the end
+ */
 function displayProducts(productList) {
   const container = document.getElementById('productsContainer');
   container.innerHTML = '';
+
+  // Render each product as a card
   productList.forEach(product => {
     const card = document.createElement('div');
     card.classList.add('productCard');
-    // Updated product card markup with iOS slider toggle for on/off functionality
     card.innerHTML = `
-      <h3>${product.name}</h3>
-      <p>Category: ${product.category}</p>
+      <div>
+        <h3>${product.name}</h3>
+        <p>${product.category}</p>
+      </div>
       <label class="switch">
         <input type="checkbox" class="toggle">
         <span class="slider round"></span>
@@ -48,8 +50,20 @@ function displayProducts(productList) {
     `;
     container.appendChild(card);
   });
+
+  // Add a final "plus card" to create new products
+  const plusCard = document.createElement('div');
+  plusCard.classList.add('add-card');
+  plusCard.textContent = '+';
+  plusCard.addEventListener('click', () => {
+    window.location.href = 'addProduct.html';
+  });
+  container.appendChild(plusCard);
 }
 
+/**
+ * Filters the displayed products by category
+ */
 function filterProducts(category) {
   let products = JSON.parse(localStorage.getItem('products')) || [];
   if (category !== 'All') {

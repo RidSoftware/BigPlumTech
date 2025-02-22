@@ -2,22 +2,29 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>User Dashboard</title>
+  <title>Smart Home</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Main Header -->
+  <!-- Main Header with Big Logo and Welcome Text -->
   <header>
-    <h1>User Dashboard</h1>
-    <button id="addProductButton" class="primary-button">Add New Smart Product</button>
+    <div class="header-left">
+      <img src="logo.png" alt="Smart Home Logo" class="logo">
+      <div class="header-text">
+        <h2>Welcome</h2>
+        <p>To Your Home Page</p>
+      </div>
+    </div>
   </header>
 
   <!-- Smart Products Section -->
   <section>
     <h2>Smart Products</h2>
+
     <!-- Horizontal category buttons -->
     <nav id="categoryNav"></nav>
-    <!-- Products Container -->
+
+    <!-- Products Container (cards + plus card) -->
     <div id="productsContainer"></div>
   </section>
 
