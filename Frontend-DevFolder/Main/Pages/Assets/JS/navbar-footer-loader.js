@@ -1,18 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-    function loadComponent(elementId, filePath, callback) {
+    function loadComponent(elementId, filePath) {
         fetch(filePath)
             .then(response => response.text())
             .then(data => {
                 const element = document.getElementById(elementId);
                 if (element) {
                     element.innerHTML = data;
-                    if (callback) callback();
+                    if (elementId === "navbar") {
+                        document.dispatchEvent(new Event("navbarLoaded")); // Dispatch event
+                    }
                 }
             })
             .catch(error => console.error(`Error loading ${filePath}:`, error));
     }
 
-    loadComponent("navbar", "/Pages/HTML/Navbar.html", initializeSidebar);
+    loadComponent("navbar", "/Pages/HTML/Navbar.html");
     loadComponent("footer", "/Pages/HTML/Footer.html");
 
     function initializeSidebar() {
@@ -21,8 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const profileIcon = document.getElementById("profile-icon");
         const closeSidebar = document.getElementById("close-sidebar");
         const sidebarMenu = document.getElementById("sidebar-menu");
-        const sidebarUsername = document.getElementById("sidebar-username");
-        const sidebarRole = document.getElementById("sidebar-role");
 
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
@@ -113,4 +113,55 @@ document.addEventListener("DOMContentLoaded", function () {
             overlay.style.visibility = "hidden";
         });
     }
+
+    document.addEventListener("navbarLoaded", function () {
+        const navLinks = document.getElementById("nav-links");
+        const registerBtn = document.getElementById("register-btn");
+        const loginBtn = document.getElementById("login-btn");
+    
+        if (!navLinks) {
+            console.error("ERROR: 'nav-links' element not found!");
+            return;
+        }
+    
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+        let currentUser = users.find(user => user.email === lastLoggedInEmail);
+    
+        console.log("Current User:", currentUser);
+    
+        if (currentUser && currentUser.isLoggedIn) {
+            console.log("👤 User logged in:", currentUser.firstname);
+    
+            // Hide Register & Login Buttons
+            if (registerBtn) registerBtn.style.display = "none";
+            if (loginBtn) loginBtn.style.display = "none";
+    
+            // Update Navbar Links for Logged-in Users
+            navLinks.innerHTML = `
+                <li><a href="Dashboard.html"><i class="fa fa-th-large"></i> Dashboard</a></li>
+                <li><a href="Overview.html"><i class="fa fa-bar-chart"></i> Overview</a></li>
+                <li><a href="Analytic.html"><i class="fa fa-line-chart"></i> Analytic</a></li>
+                ${currentUser.userType === "homeManager" ? 
+                    `<li><a href="Device-handling.html"><i class="fa fa-cogs"></i> Device Handling</a></li>` 
+                    : ''
+                }
+            `;
+        } else {
+            console.log("No user logged in. Keeping default navbar.");
+    
+            // Show Register & Login Buttons
+            if (registerBtn) registerBtn.style.display = "inline-block";
+            if (loginBtn) loginBtn.style.display = "inline-block";
+    
+            // Default Navbar Links
+            navLinks.innerHTML = `
+                <li><a href="index.html">Home</a></li>
+                <li><a href="About.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+            `;
+        }
+    
+        initializeSidebar();
+    });
 });

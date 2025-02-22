@@ -37,7 +37,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     alert("Login Successful! Welcome back, " + currentUser.firstname);
 
     // Redirect to homepage
-    window.location.href = "index.html";
+    window.location.href = "Overview.html";
 });
 
 // Password Visibility Toggle
