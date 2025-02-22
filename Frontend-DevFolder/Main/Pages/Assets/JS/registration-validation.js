@@ -67,6 +67,7 @@ document.getElementById("registrationForm").addEventListener("submit", function(
         lastname: lastname,
         email: email,
         userType: userType,
+        password: password,
         adminCode: adminCode,
         isLoggedIn: false
     };

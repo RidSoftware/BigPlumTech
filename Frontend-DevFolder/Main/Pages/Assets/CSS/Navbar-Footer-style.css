@@ -9,7 +9,7 @@
 
 /* Navbar */
 header {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     padding: 15px 30px;
     position: fixed;
@@ -21,54 +21,66 @@ header {
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 100;
+    transition: transform 0.4s ease-in-out;
+}
+
+/* Navbar Moves Up */
+.nav-up {
+    transform: translateY(-100px);
 }
 
 /* Navbar Logo */
-header h1 {
-    font-size: 28px;
+.logo {
+    font-size: 24px;
+    font-weight: bold;
     color: #007BFF;
-    font-weight: 600;
-    animation: fadeIn 1.5s ease-in-out;
+    text-decoration: none;
 }
 
-/* Navbar List */
-nav ul {
-    list-style: none;
+/* Navbar Centered Items */
+.nav-container {
+    flex: 1;
     display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-/* Navbar Items */
-nav ul li {
-    display: flex;
-    align-items: center;
+    justify-content: center;
 }
 
 /* Navbar Links */
-nav ul li a {
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links li a {
     text-decoration: none;
     color: #333;
     font-weight: 600;
     transition: color 0.3s;
 }
 
-nav ul li a:hover {
+.nav-links li a:hover {
     color: #007BFF;
 }
 
-/*Auth Toggle Buttons */
+/* Right Menu (Register, Login, Profile Icon) */
+.right-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Authentication Toggle */
 .auth-toggle {
     display: flex;
     align-items: center;
     border-radius: 30px;
-    background: #dcf5e3; /* Light green background */
+    background: #dcf5e3;
     padding: 4px;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
 }
 
-/*Auth Buttons */
+/* Auth Buttons */
 .auth-toggle a {
     text-decoration: none;
     flex: 1;
@@ -80,49 +92,126 @@ nav ul li a:hover {
     transition: all 0.3s;
 }
 
-/*Register Button - Fully Green */
+/* Active Register Button */
 .auth-toggle a.active {
     background: #28a745;
     color: white;
 }
 
-/* Log in Button Default */
-.auth-toggle a {
-    background: transparent;
-    color: #333;
-}
-
-/*  Hover Effects */
-.auth-toggle a.active:hover {
-    background: #218838;
-}
-
-.auth-toggle a:not(.active):hover {
-    background: #c5e6cd;
-    color: #333;
-}
-
 /* Profile Icon */
-.profile-icon a {
-    font-size: 24px;
+.profile-icon {
+    cursor: pointer;
+    font-size: 30px;
     color: #333;
     transition: color 0.3s, transform 0.3s;
 }
 
-.profile-icon a:hover {
+.profile-icon:hover {
     color: #007BFF;
     transform: scale(1.1);
 }
 
-.profile-icon a i {
-    font-size: 30px;
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    right: -320px;
+    top: 0;
+    height: 100%;
+    width: 320px;
+    background: white;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.4s ease-in-out;
+    padding: 20px;
+    z-index: 1001;
 }
 
-/* Footer */
-footer {
-    background: rgba(0, 123, 255, 0.8);
+/* Sidebar Open */
+.sidebar.show {
+    right: 0;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Sidebar Close Button */
+.close-btn {
+    font-size: 22px;
+    cursor: pointer;
+    color: red;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+    padding: 15px;
+}
+
+.sidebar-menu li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.sidebar-menu li:last-child {
+    border-bottom: none;
+}
+
+/* Sidebar Buttons */
+.sidebar-menu button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar-menu button:hover {
+    opacity: 0.8;
+}
+
+/* Logout Button */
+#logout-btn {
+    background-color: red;
     color: white;
+}
+
+#logout-btn:hover {
+    background-color: darkred;
+}
+
+/* Sidebar Blur Effect */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+/* Show Overlay */
+.sidebar.show + #overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+#footer {
+    margin-top: auto;
     padding: 15px;
     text-align: center;
-    border-radius: 0 1 15px 15px;
+    width: 100%;
+    font-size: 14px;
+    background: #007BFF;
+    color: white;
 }
