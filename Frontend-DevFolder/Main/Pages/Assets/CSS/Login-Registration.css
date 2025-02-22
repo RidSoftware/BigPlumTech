@@ -29,24 +29,42 @@ body {
     padding: 15px 0;
 }
 
-/* Promo Text */
+/* Promo Section*/
 .promo-text {
-    flex: 1;
-    max-width: 38%;
+    max-width: 400px;
     text-align: left;
-    padding-left: 20px;
-}
-
-.promo-text h2 {
-    font-size: 26px;
-    color: #007BFF;
-    margin-bottom: 12px;
-}
-
-.promo-text p {
-    font-size: 14px;
     color: #333;
-    margin-bottom: 8px;
+}
+
+/* Promo Title */
+.promo-text h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007BFF;
+    margin-bottom: 10px;
+}
+
+/* Promo Bullet List */
+.promo-text ul {
+    list-style: none;
+    padding: 0;
+}
+
+.promo-text ul li {
+    font-size: 16px;
+    color: #222;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Custom Bullet */
+.promo-text ul li::before {
+    content: "✔";
+    color: #007BFF;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 /* Registration & Login Containers */
