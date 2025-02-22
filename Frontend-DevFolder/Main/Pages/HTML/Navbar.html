@@ -3,6 +3,7 @@
 <head>
     <title>Navbar | Big Plum Tech</title>
     <link rel="stylesheet" href="/Pages/Assets/CSS/Navbar-Footer-style.css">
+        <link rel="stylesheet" href="/Pages/Assets/CSS/Sidebar-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script defer src="/Pages/Assets/JS/content-loader.js"></script>
 </head>
@@ -22,8 +23,8 @@
 
         <div class="right-menu">
             <div class="auth-toggle">
-                <a href="Registration.html" class="auth-button active">Register</a>
-                <a href="Login.html" class="auth-button">Log in</a>
+                <a href="Registration.html" id="register-btn" class="auth-button active">Register</a>
+                <a href="Login.html" id="login-btn" class="auth-button">Log in</a>
             </div>
 
             <!-- Profile Icon (Triggers Sidebar) -->
@@ -36,9 +37,10 @@
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <div class="sidebar-header">
-            <h1 id="sidebar-title" >Sidebar Menu</h1>
+            <h1>SideBar Menu</h1>
             <span id="close-sidebar" class="close-btn">&times;</span>
         </div>
+
         <ul id="sidebar-menu" class="sidebar-menu">
             <!-- Menu items dynamically added -->
         </ul>
@@ -46,6 +48,7 @@
 
     <!-- Background Overlay -->
     <div id="overlay"></div>
+
 
 </body>
 </html>

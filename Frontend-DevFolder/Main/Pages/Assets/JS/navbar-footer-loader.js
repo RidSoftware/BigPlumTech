@@ -16,76 +16,86 @@ document.addEventListener("DOMContentLoaded", function () {
     loadComponent("footer", "/Pages/HTML/Footer.html");
 
     function initializeSidebar() {
-        const navbar = document.getElementById("navbar");
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("overlay");
         const profileIcon = document.getElementById("profile-icon");
         const closeSidebar = document.getElementById("close-sidebar");
-        const sidebarMenu = document.getElementById("sidebar-menu"); 
-        const registerBtn = document.querySelector(".auth-button.active");
-        const loginBtn = document.querySelector(".auth-button:not(.active)");
+        const sidebarMenu = document.getElementById("sidebar-menu");
+        const sidebarUsername = document.getElementById("sidebar-username");
+        const sidebarRole = document.getElementById("sidebar-role");
 
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
         function updateSidebar() {
             let users = JSON.parse(localStorage.getItem("users")) || [];
             let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-
-            console.log("🔹 All Users:", users);
-            console.log("🔹 Last Logged In Email:", lastLoggedInEmail);
-
             let currentUser = users.find(user => user.email === lastLoggedInEmail);
-
+        
             sidebarMenu.innerHTML = ""; // Clear previous content
-
+        
             if (!currentUser) {
                 sidebarMenu.innerHTML = `
-                    <li><h3>Please Register First!</h3><p>Please register first to access this feature!</p></li>
-                    <li><button onclick="window.location.href='Registration.html'">Register Now</button></li>
+                    <div class="sidebar-message">
+                        <strong>Please Register First!</strong>
+                        <p>To access personalized features, please register.</p>
+                    </div>
+                    <button class="sidebar-button" onclick="window.location.href='Registration.html'">Register Now</button>
                 `;
-
-                // Ensure register & login buttons are visible
-                registerBtn.classList.remove("hidden");
-                loginBtn.classList.remove("hidden");
-
             } else if (!currentUser.isLoggedIn) {
                 sidebarMenu.innerHTML = `
-                    <li><h3>Please Log In!</h3></li>
-                    <li><button onclick="window.location.href='Login.html'">Login Now</button></li>
+                    <div class="sidebar-message">
+                        <strong>Log In Required</strong>
+                        <p>You need to log in to access your dashboard.</p>
+                    </div>
+                    <button class="sidebar-button" onclick="window.location.href='Login.html'">Log In</button>
                 `;
-
-                // Ensure register & login buttons are visible
-                registerBtn.classList.remove("hidden");
-                loginBtn.classList.remove("hidden");
-
             } else {
                 sidebarMenu.innerHTML = `
-                    <li><h3>Welcome, ${currentUser.firstname}!</h3></li>
+                    <div class="sidebar-user">
+                        <img src="default-avatar.png" alt="User Avatar">
+                        <h3>${currentUser.firstname}</h3>
+                        <p>${currentUser.userType === "homeManager" ? "Admin" : "User"}</p>
+                    </div>
+        
+                    <h4 class="sidebar-section-title">Main Menu</h4>
+                    <hr>
+                    <li><i class="fa fa-th-large"></i><a href="Dashboard.html"> Dashboard</a></li>
+                    <li><i class="fa fa-bar-chart"></i><a href="Overview.html"> Overview</a></li>
+                    <li><i class="fa fa-line-chart"></i><a href="Analytic.html"> Analytic</a></li>
+        
+                    <h4 class="sidebar-section-title">General</h4>
+                    <hr>
+                    <li><i class="fa fa-flag"></i><a href="Reports.html"> Reports</a></li>
+                    <li><i class="fa fa-bell"></i><a href="Notifications.html"> Notifications</a></li>
+        
                     ${currentUser.userType === "homeManager" ? `
-                        <li><button onclick="window.location.href='manage-users.html'">Manage Users</button></li>
-                        <li><button onclick="window.location.href='view-reports.html'">View Reports</button></li>
-                    ` : `
-                        <li><button onclick="window.location.href='profile.html'">My Profile</button></li>
-                    `}
-                    <li><button id="logout-btn">Log Out</button></li>
+                        <h4 class="sidebar-section-title">Admin Controls</h4>
+                        <hr>
+                        <li><i class="fa fa-file-text"></i><a href="Generate-report.html"> Generate Report</a></li>
+                        <li><i class="fa fa-cogs"></i><a href="Device-handling.html"> Device Handling</a></li>
+                    ` : ''}
+        
+                    <h4 class="sidebar-section-title">Account</h4>
+                    <hr>
+                    <li><i class="fa fa-user"></i><a href="profile.html"> Profile</a></li>
+                    <li><i class="fa fa-cog"></i><a href="settings.html"> Settings</a></li>
+        
+                    <button id="logout-btn"><i class="fa fa-sign-out"></i> Log Out</button>
                 `;
-
-                // Hide register & login buttons after login
-                registerBtn.classList.add("hidden");
-                loginBtn.classList.add("hidden");
-
+        
                 document.getElementById("logout-btn").addEventListener("click", function () {
                     currentUser.isLoggedIn = false;
-                    localStorage.setItem("users", JSON.stringify(users)); // Update LocalStorage
+                    localStorage.setItem("users", JSON.stringify(users));
                     localStorage.removeItem("lastLoggedInEmail");
                     alert("Logged out!");
                     window.location.reload();
                 });
             }
         }
+        
 
         profileIcon.addEventListener("click", function () {
-            updateSidebar(); // Refresh user info
+            updateSidebar();
             sidebar.classList.add("show");
             overlay.style.opacity = "1";
             overlay.style.visibility = "visible";
@@ -102,15 +112,5 @@ document.addEventListener("DOMContentLoaded", function () {
             overlay.style.opacity = "0";
             overlay.style.visibility = "hidden";
         });
-
-        // Hide buttons immediately if user is already logged in
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-        let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-        let currentUser = users.find(user => user.email === lastLoggedInEmail && user.isLoggedIn);
-
-        if (currentUser) {
-            registerBtn.classList.add("hidden");
-            loginBtn.classList.add("hidden");
-        }
     }
 });
