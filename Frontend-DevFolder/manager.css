@@ -40,9 +40,9 @@
     color: #555;
   }
   
-  /* Energy Card Container */
+  /* Energy Usage Card */
   .energy-card {
-    width: 420px;
+    width: 420px; /* Adjusted width */
     background-color: #ffffff;
     border-radius: 24px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -50,6 +50,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 20px;
   }
   
   .energy-card-header {
@@ -68,7 +69,6 @@
     color: #999;
   }
   
-  /* Usage Section */
   .energy-card-usage {
     display: flex;
     flex-direction: column;
@@ -81,21 +81,18 @@
     margin-bottom: 5px;
   }
   
-  /* Horizontal Rule styling */
   .energy-card hr {
     border: none;
     border-top: 1px solid #e0e0e0;
     margin: 5px 0;
   }
   
-  /* Stats Row */
   .energy-card-stats {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   
-  /* Individual Stat Container */
   .stat {
     display: flex;
     align-items: center;
@@ -117,5 +114,57 @@
     font-size: 0.75rem;
     color: #666;
     margin-top: 2px;
+  }
+  
+  /* Energy Consumption Chart Section */
+  .energy-stats-container {
+    max-width: 650px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  
+  /* Toggle Button */
+  .toggle-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #45a049;
+  }
+  
+  #chartTitle {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  /* Fixing the chart size */
+  #energyChart {
+    width: 600px !important;
+    height: 300px !important;
+  }
+  
+  #chartFooter {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  /* Section margins */
+  .energy-card-section,
+  .chart-section {
+    margin-bottom: 20px;
   }
   
