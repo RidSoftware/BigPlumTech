@@ -28,6 +28,10 @@ body {
     animation: fadeIn 1s ease-in-out;
 }
 
+.hero-content h3 {
+    animation: fadeIn 1s ease-in-out;
+}
+
 .hero-content p {
     font-size: 1.4rem;
     margin: 15px 0;
