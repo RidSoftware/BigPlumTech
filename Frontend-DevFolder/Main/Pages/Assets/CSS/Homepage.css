@@ -1,0 +1,154 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+    color: #333;
+    text-align: center;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #007BFF;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin: 15px 0;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 25px;
+    margin-top: 15px;
+    background: #28a745;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #218838;
+}
+
+/* Features Section */
+.features {
+    padding: 60px 30px;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.feature-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.feature-item {
+    width: 250px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.feature-item i {
+    font-size: 40px;
+    color: #007BFF;
+}
+
+/* General Scroll Animations */
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add spacing between sections */
+.features, .testimonials, .cta {
+    margin-top: 100px; /* More spacing between sections */
+    padding: 80px 30px;
+}
+
+/* Feature Grid Fix */
+.feature-grid {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+/* Feature Cards */
+.feature-item {
+    width: 280px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+}
+
+/* Make sure it fades in properly */
+.feature-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+/* Testimonials */
+.testimonials {
+    padding: 50px 20px;
+    background: #f0f0f0;
+}
+
+.testimonial {
+    font-style: italic;
+    margin: 15px 0;
+}
+
+/* CTA Section */
+.cta {
+    padding: 50px 20px;
+    background: #007BFF;
+    color: white;
+}
+
+.cta h2 {
+    font-size: 2rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
