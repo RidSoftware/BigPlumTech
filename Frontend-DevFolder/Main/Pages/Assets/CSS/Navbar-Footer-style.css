@@ -92,6 +92,10 @@ header {
     transition: all 0.3s;
 }
 
+#login-btn {
+    color: black;
+}
+
 /* Active Register Button */
 .auth-toggle a.active {
     background: #28a745;
