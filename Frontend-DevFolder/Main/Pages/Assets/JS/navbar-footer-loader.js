@@ -77,8 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
         
                     <h4 class="sidebar-section-title">Account</h4>
                     <hr>
-                    <li><i class="fa fa-user"></i><a href="profile.html"> Profile</a></li>
-                    <li><i class="fa fa-cog"></i><a href="settings.html"> Settings</a></li>
+                    <li><i class="fa fa-user"></i><a href="Profile.html"> Profile</a></li>
+                    <li><i class="fa fa-cog"></i><a href="Settings.html"> Settings</a></li>
         
                     <button id="logout-btn"><i class="fa fa-sign-out"></i> Log Out</button>
                 `;
