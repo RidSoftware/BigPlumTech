@@ -29,4 +29,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Redirect back to the dashboard
     window.location.href = 'index.html';
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Add Product Button - Redirect after form submission
+    document.getElementById("addProductForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevents the default form submission
+
+        // Simulate saving product (Optional)
+        alert("Product added successfully!");
+
+        // Redirect to dashboard
+        window.location.href = "/Pages/HTML/Dashboard.html"; // Change to your actual dashboard path
+    });
+
+    // Return Button - Redirect to dashboard immediately
+    document.getElementById("returnButton").addEventListener("click", function () {
+        window.location.href = "/Pages/HTML/Dashboard.html"; // Change to your actual dashboard path
+    });
+});
+
   
