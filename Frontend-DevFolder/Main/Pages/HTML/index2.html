@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Home</title>
+  <link rel="stylesheet" href="/Pages/Assets/CSS/styles.css">
+  <!-- Include Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Main Header with Big Logo and Welcome Text -->
+  <header>
+    <div class="header-left">
+      <img src="logo.png" alt="Smart Home Logo" class="logo">
+      <div class="header-text">
+        <h2>Welcome</h2>
+        <p>To Your Home Page</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Energy Usage Graph Section -->
+  <section>
+    <h2>Energy Usage</h2>
+    <div class="chart-container">
+      <canvas id="myChart"></canvas>
+    </div>
+  </section>
+
+  <!-- Smart Products Section -->
+  <section>
+    <h2>Smart Products</h2>
+    <!-- Horizontal category buttons -->
+    <nav id="categoryNav"></nav>
+    <!-- Products Container (cards + plus card) -->
+    <div id="productsContainer"></div>
+  </section>
+
+  <script src="/Pages/Assets/JS/script.js"></script>
+</body>
+</html>
