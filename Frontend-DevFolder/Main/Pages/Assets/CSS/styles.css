@@ -4,43 +4,21 @@
     padding: 0;
     box-sizing: border-box;
   }
+
+  .content {
+    flex: 1; 
+}
+
   
   body {
     font-family: Arial, sans-serif;
-    background: #ffffff;  /* Full white background */
-    padding: 20px;
-  }
-  
-  /* Header */
-  header {
-    margin-bottom: 20px;
+    background: #ffffff;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .logo {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .header-text h2 {
-    font-size: 1.4rem;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  .header-text p {
-    font-size: 0.9rem;
-    color: #555;
-    margin: 0;
-  }
+    flex-direction: column;
+    min-height: 100vh; /* Ensures full height */
+    padding: 100px; /* Reduce padding */
+}
+
   
   /* Primary Button */
   .primary-button {
@@ -270,3 +248,16 @@
     border: 2px solid #fff;
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
   }
+
+  #footer {
+    margin-top: auto;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    background: #007BFF;
+    color: white;
+    position: relative; /* Ensures it's placed properly */
+    bottom: 0;
+}
+
