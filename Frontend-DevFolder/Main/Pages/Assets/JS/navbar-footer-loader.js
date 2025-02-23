@@ -52,9 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-user">
+                        <h3>Welcome, ${currentUser.firstname}</h3>
                         <img src="default-avatar.png" alt="User Avatar">
-                        <h3>${currentUser.firstname}</h3>
-                        <p>${currentUser.userType === "homeManager" ? "Admin" : "User"}</p>
+                        <div class="user-role">
+                            <i class="fa fa-user-circle" style="font-size: 90px"></i> 
+                            <p>Role: ${currentUser.userType === "homeManager" ? "Admin" : "User"}</p>
+                        </div>
+                        ${currentUser.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>${currentUser.adminCode}</strong></p>` : ""}
                     </div>
         
                     <h4 class="sidebar-section-title">Main Menu</h4>
@@ -80,16 +84,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     <hr>
                     <li><i class="fa fa-user"></i><a href="Profile.html"> Profile</a></li>
                     <li><i class="fa fa-cog"></i><a href="Settings.html"> Settings</a></li>
-        
                     <button id="logout-btn"><i class="fa fa-sign-out"></i> Log Out</button>
                 `;
         
+                // Add logout event listener
                 document.getElementById("logout-btn").addEventListener("click", function () {
                     currentUser.isLoggedIn = false;
                     localStorage.setItem("users", JSON.stringify(users));
                     localStorage.removeItem("lastLoggedInEmail");
                     alert("Logged out!");
-                    window.location.reload();
                     window.location.href = "index.html";
                 });
             }

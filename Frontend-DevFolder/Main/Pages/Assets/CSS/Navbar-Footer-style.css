@@ -130,3 +130,12 @@ header {
     display: none !important;
 }
 
+.admin-code {
+    font-size: 0.9rem;
+    color: #ff5722;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+
+
