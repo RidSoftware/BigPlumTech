@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Manager Dashboard</title>
-  <link rel="stylesheet" href="/Pages/Assets/CSS/manager.css">
+  <link rel="stylesheet" href="/Pages/Assets/CSS/Analytic.css">
   <!-- Include Chart.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/Pages/Assets/JS/navbar-footer-loader.js"></script>
 </head>
 <body>
+  <div id="navbar"></div>
 
   <!-- Header with Logo and Welcome Message -->
-  <header>
     <div class="header-left">
-      <img src="logo.png" alt="Smart Home Logo" class="logo">
       <div class="header-text">
         <h2>Welcome</h2>
-        <p>To Your Manager Dashboard.</p>
+        <p>To the device energy Analytics.</p>
       </div>
     </div>
-  </header>
 
   <!-- Energy Usage Card Section -->
   <section class="energy-card-section">
@@ -79,7 +78,9 @@
       <!-- Device items will be rendered here -->
     </div>
   </section>
+  
+  <div id="footer"></div>
 
-  <script src="/Pages/Assets/JS/manager.js"></script>
+  <script src="/Pages/Assets/JS/analytic.js"></script>
 </body>
 </html>

@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <li><i class="fa fa-th-large"></i><a href="Dashboard.html"> Dashboard</a></li>
                     <li><i class="fa fa-bar-chart"></i><a href="Overview.html"> Overview</a></li>
                     <li><i class="fa fa-line-chart"></i><a href="Analytic.html"> Analytic</a></li>
+                    <li><i class="fa fa-cogs"></i><a href="Device-handling.html"> Device Handling</a></li>
         
                     <h4 class="sidebar-section-title">General</h4>
                     <hr>

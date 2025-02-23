@@ -4,18 +4,19 @@
   <meta charset="UTF-8">
   <title>Add New Smart Product</title>
   <link rel="stylesheet" href="/Pages/Assets/CSS/styles.css">
+  <script src="/Pages/Assets/JS/navbar-footer-loader.js"></script>
 </head>
 <body>
-  <header>
+
+    <div id="navbar"></div>
+
     <div class="header-left">
-      <img src="logo.png" alt="Smart Home Logo" class="logo">
-      <div class="header-text">
+        <div class="header-text">
         <h2>Welcome</h2>
-        <p>To Your Home Page</p>
-      </div>
+        <p>To your device handling.</p><br>
+        </div>
     </div>
-    <button id="returnButton" class="primary-button">Return</button>
-  </header>
+
   <section>
     <form id="addProductForm">
       <div class="form-group">
@@ -37,9 +38,13 @@
           <option value="Air Conditioning">Air Conditioning</option>
         </select>
       </div>
-      <button type="submit" class="primary-button">Add Product</button>
+      <button type="submit" class="primary-button">Add Product</button><br><br>
+      <button id="returnButton" class="primary-button">Return</button>
     </form>
   </section>
+
+  <div id="footer"></div>
+
   <script src="/Pages/Assets/JS/addProduct.js"></script>
 </body>
 </html>
