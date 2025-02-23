@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     localStorage.removeItem("lastLoggedInEmail");
                     alert("Logged out!");
                     window.location.reload();
+                    window.location.href = "index.html";
                 });
             }
         }
