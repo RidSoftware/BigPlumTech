@@ -6,12 +6,15 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-
-body {
+html, body {
     padding-top: 80px;
-    background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+body h2 {
     text-align: center;
-    color: #333;
 }
 
 /* Profile Container */

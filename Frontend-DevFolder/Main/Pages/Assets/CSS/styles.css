@@ -3,13 +3,19 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+}
 
-  .content {
+.content {
     flex: 1; 
 }
 
-  
+body {
+    padding-top: 80px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 /* Centering the Content Wrapper */
 .content-wrapper {
     width: 90%; 
@@ -34,59 +40,59 @@ section {
     gap: 20px;
 }
 
-  /* Section Titles */
-  section h2 {
+/* Section Titles */
+section h2 {
     margin-bottom: 10px;
     color: #333;
-  }
-  
-  /* Form Group */
-  .form-group {
+}
+
+/* Form Group */
+.form-group {
     margin-bottom: 10px;
-  }
-  
-  label {
+}
+
+label {
     display: inline-block;
     width: 120px;
     font-weight: bold;
-  }
-  
-  select, input {
+}
+
+select, input {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  
-  /* Horizontal Category Buttons */
-  #categoryNav {
+}
+
+/* Horizontal Category Buttons */
+#categoryNav {
     display: flex;
     gap: 15px;
     margin: 10px 0;
-  }
-  
-  .category-button {
+}
+
+.category-button {
     cursor: pointer;
     padding: 6px 12px;
     background: #ddd;
     border: none;
     border-radius: 4px;
     font: inherit;
-  }
-  
-  .category-button:hover {
+}
+
+.category-button:hover {
     background: #ccc;
-  }
-  
-  /* Products Container */
-  #productsContainer {
+}
+
+/* Products Container */
+#productsContainer {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
-  }
-  
-  /* Product Card: default (non-AC) */
-  .productCard {
+}
+
+/* Product Card: default (non-AC) */
+.productCard {
     width: 200px;
     min-height: 70px;
     background: #ffffff;
@@ -98,60 +104,60 @@ section {
     text-align: center;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  /* AC Card: bigger, different layout */
-  .ac-card {
-    width: 320px;                /* Larger width for AC */
+}
+
+/* AC Card: bigger, different layout */
+.ac-card {
+    width: 320px;/* Larger width for AC */
     background: #ffffff;
     border: 1px solid #ccc;
-    border-radius: 20px;         /* Less "pill" shaped, more standard rounding */
+    border-radius: 20px;/* Less "pill" shaped, more standard rounding */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     padding: 15px;
     display: flex;
-    flex-direction: column;      /* Stack top row + slider vertically */
-    gap: 10px;                   /* Space between top row and slider container */
-  }
-  
-  /* Top row: name/category + toggle side by side */
-  .top-row {
+    flex-direction: column;/* Stack top row + slider vertically */
+    gap: 10px;/* Space between top row and slider container */
+}
+
+/* Top row: name/category + toggle side by side */
+.top-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  
-  /* Text block on the left in top row */
-  .text-section {
+}
+
+/* Text block on the left in top row */
+.text-section {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* left-align text */
-  }
-  
-  /* iOS Slider Toggle Style */
-  .switch {
+    align-items: flex-start;/* left-align text */
+}
+
+/* iOS Slider Toggle Style */
+.switch {
     position: relative;
     display: inline-block;
     width: 40px;
     height: 20px;
     margin-left: 5px;
-  }
-  
-  .switch input {
+}
+
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0; left: 0; right: 0; bottom: 0;
     background-color: #ccc;
     transition: 0.4s;
     border-radius: 20px;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 16px;
@@ -161,18 +167,18 @@ section {
     background-color: #fff;
     transition: 0.4s;
     border-radius: 50%;
-  }
-  
-  .switch input:checked + .slider {
+}
+
+.switch input:checked + .slider {
     background-color: #4CAF50;
-  }
-  
-  .switch input:checked + .slider:before {
+}
+
+.switch input:checked + .slider:before {
     transform: translateX(20px);
-  }
-  
-  /* "Plus Card" to add new products */
-  .add-card {
+}
+
+/* "Plus Card" to add new products */
+.add-card {
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -185,13 +191,13 @@ section {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     cursor: pointer;
     border: none;
-  }
-  .add-card:hover {
+}
+.add-card:hover {
     background-color: #45a049;
-  }
-  
-  /* Chart Container */
-  .chart-container {
+}
+
+/* Chart Container */
+.chart-container {
     width: 100%;
     max-width: 600px;
     height: 300px;
@@ -200,24 +206,24 @@ section {
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: relative;
-  }
-  
-  /* AC slider container at the bottom */
-  .ac-slider-container {
+}
+
+/* AC slider container at the bottom */
+.ac-slider-container {
     display: flex;
     flex-direction: column;
     gap: 5px;
-  }
-  
-  /* Min/max labels for the slider row */
-  .ac-slider-labels {
+}
+
+/* Min/max labels for the slider row */
+.ac-slider-labels {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
     color: #666;
-  }
-  
-  .temperature-slider {
+}
+
+.temperature-slider {
     -webkit-appearance: none;
     width: 100%;
     height: 4px;
@@ -225,9 +231,9 @@ section {
     border-radius: 2px;
     outline: none;
     cursor: pointer;
-  }
-  
-  .temperature-slider::-webkit-slider-thumb {
+}
+
+.temperature-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 16px;
     height: 16px;
@@ -236,9 +242,9 @@ section {
     cursor: pointer;
     border: 2px solid #fff;
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  }
-  
-  .temperature-slider::-moz-range-thumb {
+}
+
+.temperature-slider::-moz-range-thumb {
     width: 16px;
     height: 16px;
     background: #4CAF50;
@@ -246,7 +252,7 @@ section {
     cursor: pointer;
     border: 2px solid #fff;
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  }
+}
 
 /* Footer */
 #footer {

@@ -189,3 +189,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     displayProducts(products);
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Retrieve user details from localStorage
+    const storedUser = JSON.parse(localStorage.getItem("users"));
+
+    if (storedUser) {
+        // Assuming `lastRegisteredEmail` or `currentLoggedInEmail` is stored to identify the logged-in user
+        const currentEmail = localStorage.getItem("lastRegisteredEmail") || localStorage.getItem("currentLoggedInEmail");
+        
+        // Find the user object matching the current email
+        const currentUser = storedUser.find(user => user.email === currentEmail);
+        
+        if (currentUser) {
+            // Set the name in the profile section
+            document.getElementById("profile-name").textContent = `Welcome back, ${currentUser.firstname}!`;
+        } else {
+            document.getElementById("profile-name").textContent = "Welcome, Guest!";
+        }
+    } else {
+        document.getElementById("profile-name").textContent = "Welcome, Guest!";
+    }
+});
