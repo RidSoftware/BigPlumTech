@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     ${currentUser.userType === "homeManager" ? `
                         <h4 class="sidebar-section-title">Admin Controls</h4>
                         <hr>
-                        <li><i class="fa fa-file-text"></i><a href="Generate-report.html"> Generate Report</a></li>
+                        <li><i class="fa fa-file-text"></i><a href="Generate-Report.html"> Generate Report</a></li>
                         <li><i class="fa fa-cogs"></i><a href="Device-handling.html"> Device Handling</a></li>
                     ` : ''}
         
