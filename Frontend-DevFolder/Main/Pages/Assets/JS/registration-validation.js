@@ -45,12 +45,6 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     }
 
 
-    // Generate Admin Code only for Home Managers
-    let adminCode = "";
-    if (userType === "homeManager") {
-        adminCode = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit code
-    }
-
     // Retrieve existing users from localStorage (Make sure it doesn't get overwritten)
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
