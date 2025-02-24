@@ -1,8 +1,3 @@
-Hey Grant & Steven,
-can you please put some basic instruction in this readme instructing how to implement the mysql db
-
-and some comments on the dumpfile would be useful so we can just ctrl+c, ctrl+v it into mysql without it querying the notes in the file
-
 ## <ins>__Installation Instructions__</ins>
 
 __1.__ Install MariaDB version 11.4.5 [here](https://mariadb.org/download/?t=mariadb&p=mariadb&r=11.7.2&os=windows&cpu=x86_64&pkg=msi&mirror=xtom_ams). </br>
