@@ -6,19 +6,28 @@ body {
     background: #f4f4f4;
     margin: 0;
     padding: 0;
+    padding-top: 20px;
   }
-  
-  /* Main container styling */
+
+
+  .content-wrapper {
+      flex: 1; /* Expands to fill space */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+
   .notifications-container {
     width: 90%;
     max-width: 800px;
-    margin: 120px auto 40px auto; /* extra top margin to avoid navbar collision */
-    padding: 20px;
+    margin: 120px auto 40px auto; /* Ensures it's not touching navbar */
+    padding: 30px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  
+}
+
   /* Section heading */
   .notifications-container h2 {
     text-align: center;
@@ -73,4 +82,15 @@ body {
   .clear-btn:hover {
     background: #c82333;
   }
+
+#footer {
+    margin-top: auto; /* Pushes footer to the bottom */
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    background: #007BFF;
+    color: #fff;
+}
+
   
