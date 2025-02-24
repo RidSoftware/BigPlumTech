@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | Big Plum Tech</title>
+    <link rel="stylesheet" href="../A/C/Login&Registration.css">
+    <script defer src="../A/J/registration-validation.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Register for Big Plum Tech Home System</h2><br>
+        <form id="registrationForm">
+            <label for="fullname">Full Name:</label>
+            <input type="text" id="fullname" name="fullname" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+            <label for="userType">User Type:</label>
+            <select id="userType" name="userType" required>
+                <option value="">Select</option>
+                <option value="homeUser">Home User</option>
+                <option value="homeManager">Home Manager</option>
+            </select>
+
+            <!--Admin code field is hidden by default-->
+            <div id="adminCodeField" class="hidden">
+                <label for="adminCode">Admin Code Number:</label>
+                <input type="text" id="adminCode" name="adminCode">
+            </div>
+
+            <p class="terms">I agree to the Terms & Conditions</p>
+
+            <label class="terms-style">
+                 <input type="checkbox" id="terms" required>
+            </label>
+
+            <button type="submit">Register</button>
+
+            <!--Theres an href going to a page that decide if its admin, or user, if its admin, admin needs to add
+            Fix admin code in the Home page
+            Generation code
+            2 level of access
+            User feedback 
+            Display some data 
+            Gamification-->
+            <!--The manager register, receives a 5 digit code that relates to the home manager, so when the user add the -->
+        </form>
+
+        <p id="errorMessage" class="error-message"></p>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+</body>
+</html>
