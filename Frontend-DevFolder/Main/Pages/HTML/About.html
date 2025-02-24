@@ -4,84 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | Big Plum Tech</title>
-    <link rel="stylesheet" href="/Software Engineering Project 2/Main/Pages/Assets/CSS/About-style.css">
-    
+    <link rel="stylesheet" href="/Pages/Assets/CSS/About-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script defer src="/Pages/Assets/JS/navbar-footer-loader.js"></script>
+    <script defer src="/Pages/Assets/JS/about.js"></script>
 </head>
 <body>
-    <!--Navbar-->
-    <header>
-        <h1>Big Plum Tech</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <!--About section-->
-    <section class="about">
-        <h2>About Big Plum Tech</h2>
-        <p>Welcome to <strong>Big Plum Tech</strong>, your all-in-one smart home management system designed for a sustainable and user-friendly future.</p>
-        <br>
-        <div class="features">
-            <div class="feature">
-                <h3>Energy Monitoring</h3>
-                <p>Track your real-time energy consumption and compare trends over time.</p>
-            </div>
-            <div class="feature">
-                <h3>Smart Device Control</h3>
-                <p>Remotely control and automate smart home appliances with ease.</p>
-            </div>
-            <div class="feature">
-                <h3>Security & Privacy</h3>
-                <p>Advanced encryption and access control ensure your data stays secure.</p>
-            </div>
-        </div>
-        <br>
-        <h2>Why Choose Us?</h2>
-        <div class="reasons">
-            <ul class="reasons">
-                <li>Easy-to-use interface</li>
-                <li>Accessible for all users</li>
-                <li>Cross-platform compatibility</li>
-                <li>Gamification to encourage energy-saving</li>
-            </ul>
-        </div>
+    <!-- Navbar -->
+    <div id="navbar"></div>
 
+    <!-- About Section -->
+    <section class="about fade-in">
+        <div class="container">
+            <h2>Welcome to Big Plum Tech</h2><br>
+            <p>At <strong>Big Plum Tech</strong>, we believe in revolutionizing smart home energy management. 
+                Our <strong>intelligent automation system</strong> is designed to <strong>optimize energy consumption, enhance security, 
+                and provide seamless control of smart devices</strong>.</p>
+        </div>
     </section>
 
-    <!--Team members-->
-    <section class="team">
-        <h2>Meet Our Team</h2>
-        <div class="team-members">
-            <div class="member">
+    <!-- Features Section -->
+    <section class="features fade-in">
+        <h2>Our Core Features</h2><br>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Energy Efficiency</h3>
+                <p>Monitor and optimize energy usage to reduce costs and carbon footprint.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Remote Access</h3>
+                <p>Control smart home devices anytime, anywhere from your mobile app.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Advanced Security</h3>
+                <p>Ensure maximum data protection with encrypted device access.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>AI Automation</h3>
+                <p>Smart AI learns your habits and automates your home's energy use.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission fade-in">
+        <div class="container">
+            <h2>Our Mission</h2>
+            <p>We strive to make smart energy solutions accessible to every home. 
+                Our technology is designed to save energy, reduce waste, and promote a sustainable future.</p>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team fade-in">
+        <h2>Meet Our Team</h2><br>
+        <div class="team-grid">
+            <div class="team-member">
                 <h3>Grant Paterson</h3>
                 <p>Database Developer</p>
             </div>
-            <div class="member">
-                <h3>Calum Murray</h3>
-                <p>Back-End Developer</p>
+            <div class="team-member">
+                <h3>Grant Paterson</h3>
+                <p>Database Developer</p>
             </div>
-            <div class="member">
-                <h3>Adam Rasouli</h3>
-                <p>Front-End Developer</p>
+            <div class="team-member">
+                <h3>Grant Paterson</h3>
+                <p>Database Developer</p>
             </div>
-            <!--more team members will be added here -->
+            <div class="team-member">
+                <h3>Grant Paterson</h3>
+                <p>Database Developer</p>
+            </div>
+            <div class="team-member">
+                <h3>Grant Paterson</h3>
+                <p>Database Developer</p>
+            </div>
+            <div class="team-member">
+                <h3>Grant Paterson</h3>
+                <p>Database Developer</p>
+            </div>
+            <div class="team-member">
+                <h3>Grant Paterson</h3>
+                <p>Database Developer</p>
+            </div>
         </div>
     </section>
 
-    <!--Contact-->
-    <section class="contact">
-        <h2>Get in Touch</h2>
-        <p>Email: <a href="mailto:support@bigplumtech.com">support@bigplumtech.com</a></p>
+    <!-- Call to Action -->
+    <section class="cta fade-in">
+        <h2>Join the Future of Smart Home Energy</h2><br>
+        <a href="Registration.html" class="btn">Get Started Today</a>
     </section>
 
-    <!--Footer-->
-    <footer>
-        <p>© 2025 Big Plum Tech. All rights reserved.</p>
-    </footer>
+    <!-- Footer -->
+    <div id="footer"></div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("JavaScript Loaded");
+    
+        // Select all fade-in elements
+        const fadeInElements = document.querySelectorAll(".fade-in");
+    
+        // Intersection Observer for triggering animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+    
+        fadeInElements.forEach(el => observer.observe(el));
+    });
+</script>
 </body>
 </html>

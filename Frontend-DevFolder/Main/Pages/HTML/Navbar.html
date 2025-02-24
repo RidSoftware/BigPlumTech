@@ -1,19 +1,50 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-
+    <title>Navbar | Big Plum Tech</title>
+    <link rel="stylesheet" href="/Pages/Assets/CSS/Navbar-Footer-style.css">
+    <link rel="stylesheet" href="/Pages/Assets/CSS/Sidebar-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
 <body>
+
     <!-- Navbar -->
-    <header>
-        <h1>Big Plum Tech</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">Contact</a></li>
+    <header id="navbar">
+        <a href="index.html" class="logo">Big Plum Tech</a>
+        
+        <nav class="nav-container">
+            <ul class="nav-links" id="nav-links">
+                <!-- This will be updated dynamically -->
             </ul>
         </nav>
+
+        <div class="right-menu">
+            <div class="auth-toggle">
+                <a href="Registration.html" id="register-btn" class="auth-button active">Register</a>
+                <a href="Login.html" id="login-btn" class="auth-button">Log in</a>
+            </div>
+
+            <!-- Profile Icon (Triggers Sidebar) -->
+            <div class="profile-icon">
+                <i id="profile-icon" class="fa fa-user-circle"></i>
+            </div>
+        </div>
     </header>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>Sidebar Menu</h1>
+            <span id="close-sidebar" class="close-btn">&times;</span>
+        </div>
+
+        <ul id="sidebar-menu" class="sidebar-menu">
+            <!-- Menu items dynamically added -->
+        </ul>
+    </div>
+
+    <!-- Background Overlay -->
+    <div id="overlay"></div>
+
 </body>
 </html>
