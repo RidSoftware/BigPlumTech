@@ -1,4 +1,4 @@
-document.getElementById("registrationForm").addEventListener("submit", function(event) {
+document.getElementById("registrationForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     let firstname = document.getElementById("firstname").value.trim();
@@ -44,45 +44,76 @@ document.getElementById("registrationForm").addEventListener("submit", function(
         return;
     }
 
-    // Generate Admin Code only for Home Managers
-    let adminCode = "";
-    if (userType === "homeManager") {
-        adminCode = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit code
-    }
 
-    // Retrieve existing users from localStorage (Make sure it doesn't get overwritten)
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+//     // Generate Admin Code only for Home Managers
+//     let adminCode = "";
+//     if (userType === "homeManager") {
+//         adminCode = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit code
+//     }
 
-    // Check if the user already exists
-    let existingUser = users.find(user => user.email === email);
-    if (existingUser) {
-        errorMessage.textContent = "This email is already registered!";
-        errorMessage.style.display = "block";
-        return;
-    }
+//     // Retrieve existing users from localStorage (Make sure it doesn't get overwritten)
+//     let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Create new user object
-    let newUser = {
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        userType: userType,
-        password: password,
-        adminCode: adminCode,
-        isLoggedIn: false
-    };
+//     // Check if the user already exists
+//     let existingUser = users.find(user => user.email === email);
+//     if (existingUser) {
+//         errorMessage.textContent = "This email is already registered!";
+//         errorMessage.style.display = "block";
+//         return;
+//     }
 
-    // Append new user to existing users array
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users)); // Now it won't overwrite existing data
+//     // Create new user object
+//     let newUser = {
+//         firstname: firstname,
+//         lastname: lastname,
+//         email: email,
+//         userType: userType,
+//         password: password,
+//         adminCode: adminCode,
+//         isLoggedIn: false
+//     };
 
-    // Store the last registered email to identify the correct user in the confirmation page
-    localStorage.setItem("lastRegisteredEmail", email);
+//     // Append new user to existing users array
+//     users.push(newUser);
+//     localStorage.setItem("users", JSON.stringify(users)); // Now it won't overwrite existing data
 
-    console.log("User Registered:", newUser);
+//     // Store the last registered email to identify the correct user in the confirmation page
+//     localStorage.setItem("lastRegisteredEmail", email);
+
+//     console.log("User Registered:", newUser);
     
-    // Redirect to confirmation page
-    window.location.href = "/Pages/HTML/ConfirmationMessage.html";
+//     // Redirect to confirmation page
+//     window.location.href = "/Pages/HTML/ConfirmationMessage.html";
+// =======
+
+// 	//creates the data object from the form to send to the backend via POST
+// 	let formData = {	fullname, email, password, userType		};
+
+//     try {
+//         // Send form data to the server
+//         let response = await fetch("http://localhost:8080/api/registerFormSubmission", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify(formData)
+//         });
+
+//         let result = await response.json();
+
+//         if (response.ok) {
+//             alert(result.message || "Registration Successful!");
+//             document.getElementById("registrationForm").reset();
+//             errorMessage.textContent = "";
+//         } else {
+//             errorMessage.textContent = result.message || "An error occurred.";
+//         }
+
+//     } catch (error) {
+//         console.error("Error submitting form:", error);
+//         errorMessage.textContent = "An error occurred while submitting the form.";
+//     }
+
 });
 
 // Reset form on page load
