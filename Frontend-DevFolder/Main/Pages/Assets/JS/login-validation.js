@@ -4,11 +4,13 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value;
     let errorMessage = document.getElementById("loginErrorMessage"); 
-    let confirmationMessage = document.getElementById("confirmationMessage"); 
-
+    let confirmationMessage = document.getElementById("confirmationMessage");
+    let overlay = document.getElementById("confirmationOverlay"); 
+    
     errorMessage.textContent = "";
     errorMessage.style.display = "none";
-    confirmationMessage.style.display = "none"; // Hide confirmation initially
+    confirmationMessage.style.display = "none";
+    overlay.style.display = "none"; 
 
     // Retrieve the list of users from localStorage
     let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -36,10 +38,10 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("lastLoggedInEmail", email);
 
-    // Display the confirmation message instead of an alert
+    // Show confirmation message & overlay
     confirmationMessage.innerHTML = `
         <div class="confirmation-container">
-            <h3>Login Successful!</h3>
+            <h2>Login Successful!</h2>
             <p>Welcome back, <strong>${currentUser.firstname}</strong></p>
             <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
                 Go to Dashboard <i class="fa fa-arrow-right"></i>
@@ -47,8 +49,9 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         </div>
     `;
     confirmationMessage.style.display = "block";
-});
+    overlay.style.display = "block"; // Show dark background overlay
 
+});
 
 // Password Visibility Toggle
 document.getElementById("togglePassword").addEventListener("click", function() {
