@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Update last logged-in email in case the email was changed
         localStorage.setItem("lastLoggedInEmail", users[currentUserIndex].email);
   
-        alert("Profile updated successfully!");
+        
       }
     });
   });

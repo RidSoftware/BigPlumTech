@@ -4,9 +4,11 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value;
     let errorMessage = document.getElementById("loginErrorMessage"); 
-    
+    let confirmationMessage = document.getElementById("confirmationMessage"); 
+
     errorMessage.textContent = "";
     errorMessage.style.display = "none";
+    confirmationMessage.style.display = "none"; // Hide confirmation initially
 
     // Retrieve the list of users from localStorage
     let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -34,11 +36,19 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("lastLoggedInEmail", email);
 
-    alert("Login Successful! Welcome back, " + currentUser.firstname);
-
-    // Redirect to homepage
-    window.location.href = "Dashboard.html";
+    // Display the confirmation message instead of an alert
+    confirmationMessage.innerHTML = `
+        <div class="confirmation-container">
+            <h3>Login Successful!</h3>
+            <p>Welcome back, <strong>${currentUser.firstname}</strong></p>
+            <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
+                Go to Dashboard <i class="fa fa-arrow-right"></i>
+            </button>
+        </div>
+    `;
+    confirmationMessage.style.display = "block";
 });
+
 
 // Password Visibility Toggle
 document.getElementById("togglePassword").addEventListener("click", function() {
