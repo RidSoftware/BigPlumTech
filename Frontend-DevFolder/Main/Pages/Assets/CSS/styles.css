@@ -224,7 +224,6 @@ select, input {
 }
 
 .temperature-slider {
-    -webkit-appearance: none;
     width: 100%;
     height: 4px;
     background: #ddd;

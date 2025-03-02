@@ -5,7 +5,14 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Find the index of the currently logged-in user
     let currentUserIndex = users.findIndex(user => user.email === lastLoggedInEmail);
-  
+
+    // Displaying the confirmation message
+    let overlay = document.getElementById("confirmationOverlay");
+    let confirmationMessage = document.getElementById("confirmationMessage");
+
+    confirmationMessage.style.display = "none";
+    overlay.style.display = "none"; 
+
     // Get references to form inputs
     const firstnameInput = document.getElementById("firstname");
     const lastnameInput = document.getElementById("lastname");
@@ -37,14 +44,26 @@ document.addEventListener("DOMContentLoaded", function () {
           users[currentUserIndex].password = passwordInput.value;
         }
         users[currentUserIndex].profilePic = profilePicInput.value.trim();
-  
+        
         // Save the updated users array back to localStorage
         localStorage.setItem("users", JSON.stringify(users));
         // Update last logged-in email in case the email was changed
         localStorage.setItem("lastLoggedInEmail", users[currentUserIndex].email);
-  
-        
       }
+
+        // Show confirmation message & overlay
+        confirmationMessage.innerHTML = `
+            <div class="confirmation-container">
+                <h2>Changes Applied!</h2>
+                <p>Your profile has been successfully updated.</p>
+                <button class="continue-btn" onclick="window.location.href='Dashboard.html'">
+                    Continue <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        `;
+        
+        confirmationMessage.style.display = "block";
+        overlay.style.display = "block"; 
     });
   });
   
