@@ -23,6 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const profileIcon = document.getElementById("profile-icon");
         const closeSidebar = document.getElementById("close-sidebar");
         const sidebarMenu = document.getElementById("sidebar-menu");
+        const logoutModal = document.getElementById("logoutModal");
+        const logoutConfirmation = document.getElementById("logout-confirmation");
+        const confirmLogout = document.getElementById("confirmLogout");
+        const cancelLogout = document.getElementById("cancelLogout");
+        const overlayLogout = document.getElementById("overlay-logout");
 
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
@@ -32,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let currentUser = users.find(user => user.email === lastLoggedInEmail);
         
             sidebarMenu.innerHTML = ""; // Clear previous content
+
         
             if (!currentUser) {
                 sidebarMenu.innerHTML = `
@@ -87,17 +93,42 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button id="logout-btn"><i class="fa fa-sign-out"></i> Log Out</button>
                 `;
         
-                // Add logout event listener
+                // Add event listener to Logout Button
                 document.getElementById("logout-btn").addEventListener("click", function () {
+                    // Show logout confirmation modal
+                    logoutModal.style.display = "block";
+                    overlayLogout.style.display = "block";
+                });
+
+                // If user confirms logout
+                confirmLogout.addEventListener("click", function () {
                     currentUser.isLoggedIn = false;
                     localStorage.setItem("users", JSON.stringify(users));
                     localStorage.removeItem("lastLoggedInEmail");
-                    alert("Logged out!");
-                    window.location.href = "index.html";
+
+                    // Hide logout confirmation modal and show thank you message
+                    logoutModal.style.display = "none";
+                    logoutConfirmation.innerHTML = `
+                        <div class="confirmation-container">
+                            <h2>Thank you for using our service!</h2>
+                            <p>See you soon, ${currentUser.firstname}</p>
+                            <button class="continue-btn" onclick="window.location.href='index.html'">
+                                Continue <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    `;
+                    logoutConfirmation.style.display = "block";
+                });
+
+                // If user cancels logout
+                cancelLogout.addEventListener("click", function () {
+                    logoutModal.style.display = "none";
+                    overlayLogout.style.display = "none"; // Hide overlay
                 });
             }
         }
-        
+
+        overlay.style.display = "block"; // Show overlay after
 
         profileIcon.addEventListener("click", function () {
             updateSidebar();

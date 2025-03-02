@@ -137,5 +137,118 @@ header {
     margin-top: 5px;
 }
 
+/* Sidebar Overlay */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Darkened background */
+    z-index: 1000;
+}
+
+/* Logout Overlay */
+#overlay-logout {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Darkened background */
+    z-index: 1100; /* Ensure it's above the sidebar */
+}
+
+/* Logout Confirmation Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1200;
+}
+
+/* Confirmation Buttons */
+.logout-btn, .cancel-btn {
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.logout-btn {
+    background: #ff4d4d;
+    color: white;
+}
+
+.logout-btn:hover {
+    background: #cc0000;
+}
+
+.cancel-btn {
+    background: #ccc;
+    color: black;
+}
+
+.cancel-btn:hover {
+    background: #999;
+}
+
+/* Thank You Message */
+#logout-confirmation {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #e0ffe0;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1200;
+}
+
+#logout-confirmation h2 {
+    color: black;
+    margin-bottom: 10px;
+}
+
+#logout-confirmation p {
+    font-size: 16px;
+    color: #333;
+}
+
+.continue-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.continue-btn:hover {
+    background: #218838;
+}
+
+  
+
 
 
