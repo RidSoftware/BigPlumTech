@@ -9,6 +9,9 @@
 body {
     background: linear-gradient(135deg, #e0f7fa, #e1bee7);
     color: #333;
+}
+
+body h2 {
     text-align: center;
 }
 
@@ -39,6 +42,11 @@ body {
     margin-left: auto;
     margin-right: auto;
     animation: fadeIn 1.5s ease-in-out;
+}
+.get-started {
+    display: block;
+    justify-content: center;
+    text-align: center;
 }
 
 .btn {
