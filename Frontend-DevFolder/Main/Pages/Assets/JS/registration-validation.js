@@ -45,45 +45,45 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     }
 
 
-//     // Generate Admin Code only for Home Managers
-//     let adminCode = "";
-//     if (userType === "homeManager") {
-//         adminCode = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit code
-//     }
+    // Generate Admin Code only for Home Managers
+    let adminCode = "";
+    if (userType === "homeManager") {
+        adminCode = Math.floor(10000 + Math.random() * 90000).toString(); // Generate a 5-digit code
+    }
 
-//     // Retrieve existing users from localStorage (Make sure it doesn't get overwritten)
-//     let users = JSON.parse(localStorage.getItem("users")) || [];
+    // Retrieve existing users from localStorage (Make sure it doesn't get overwritten)
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-//     // Check if the user already exists
-//     let existingUser = users.find(user => user.email === email);
-//     if (existingUser) {
-//         errorMessage.textContent = "This email is already registered!";
-//         errorMessage.style.display = "block";
-//         return;
-//     }
+    // Check if the user already exists
+    let existingUser = users.find(user => user.email === email);
+    if (existingUser) {
+        errorMessage.textContent = "This email is already registered!";
+        errorMessage.style.display = "block";
+        return;
+    }
 
-//     // Create new user object
-//     let newUser = {
-//         firstname: firstname,
-//         lastname: lastname,
-//         email: email,
-//         userType: userType,
-//         password: password,
-//         adminCode: adminCode,
-//         isLoggedIn: false
-//     };
+    // Create new user object
+    let newUser = {
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        userType: userType,
+        password: password,
+        adminCode: adminCode,
+        isLoggedIn: false
+    };
 
-//     // Append new user to existing users array
-//     users.push(newUser);
-//     localStorage.setItem("users", JSON.stringify(users)); // Now it won't overwrite existing data
+    // Append new user to existing users array
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users)); // Now it won't overwrite existing data
 
-//     // Store the last registered email to identify the correct user in the confirmation page
-//     localStorage.setItem("lastRegisteredEmail", email);
+    // Store the last registered email to identify the correct user in the confirmation page
+    localStorage.setItem("lastRegisteredEmail", email);
 
-//     console.log("User Registered:", newUser);
+    console.log("User Registered:", newUser);
     
-//     // Redirect to confirmation page
-//     window.location.href = "/Pages/HTML/ConfirmationMessage.html";
+    // Redirect to confirmation page
+    window.location.href = "/Pages/HTML/ConfirmationMessage.html";
 // =======
 
 // 	//creates the data object from the form to send to the backend via POST

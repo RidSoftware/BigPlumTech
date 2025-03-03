@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     plusCard.classList.add('add-card');
     plusCard.textContent = '+';
     plusCard.addEventListener('click', () => {
-      window.location.href = 'addProduct.html';
+      window.location.href = 'Device-handling.html';
     });
     container.appendChild(plusCard);
   }
