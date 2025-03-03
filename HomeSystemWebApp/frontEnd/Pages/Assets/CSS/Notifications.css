@@ -1,0 +1,96 @@
+/* Notifications.css */
+
+/* Basic body styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    padding-top: 20px;
+  }
+
+
+  .content-wrapper {
+      flex: 1; /* Expands to fill space */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+
+  .notifications-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 120px auto 40px auto; /* Ensures it's not touching navbar */
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+  /* Section heading */
+  .notifications-container h2 {
+    text-align: center;
+    color: #007BFF;
+    margin-bottom: 20px;
+  }
+  
+  /* Notification list styles */
+  #notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #notification-list li {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+  }
+  
+  #notification-list li:last-child {
+    border-bottom: none;
+  }
+  
+  /* Notification icon and text */
+  .notification-icon {
+    font-size: 24px;
+    color: #007BFF;
+    margin-right: 15px;
+  }
+  
+  .notification-text {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  /* Clear notifications button */
+  .clear-btn {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+  }
+  
+  .clear-btn:hover {
+    background: #c82333;
+  }
+
+#footer {
+    margin-top: auto; /* Pushes footer to the bottom */
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    background: #007BFF;
+    color: #fff;
+}
+
+  
