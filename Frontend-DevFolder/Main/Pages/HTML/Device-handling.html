@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Smart Product</title>
+    <link rel="stylesheet" href="/Pages/Assets/CSS/Device-handling.css">
+    <script defer src="/Pages/Assets/JS/navbar-footer-loader.js"></script>
+    <script defer src="/Pages/Assets/JS/device-handling.js"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Main Container -->
+    <div class="add-product-container fade-in">
+        <h2>Add a New Smart Product</h2>
+        <p>Customize and add your smart home devices for better automation and control.</p>
+
+        <!-- Product Form -->
+        <form id="addProductForm">
+            <div class="form-group">
+                <label for="productCategory">Category:</label>
+                <select id="productCategory" required>
+                    <option value="Living Room">Living Room</option>
+                    <option value="Kitchen">Kitchen</option>
+                    <option value="Bedroom">Bedroom</option>
+                    <option value="All">All</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productType">Device Type:</label>
+                <select id="productType" required>
+                    <option value="Light">Light</option>
+                    <option value="Curtain">Curtain</option>
+                    <option value="Main Door">Main Door</option>
+                    <option value="Robot">Robot</option>
+                    <option value="Air Conditioning">Air Conditioning</option>
+                </select>
+            </div>
+            <a href="Dashboard.html"><button type="submit" class="primary-button">Add Product</button></a>
+        </form>
+
+        <!-- Return Button -->
+        <button id="returnButton" class="secondary-button">Return</button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+</body>
+</html>

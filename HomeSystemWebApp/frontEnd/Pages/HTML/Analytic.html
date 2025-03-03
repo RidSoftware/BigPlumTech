@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Manager Dashboard</title>
+  <link rel="stylesheet" href="../Assets/CSS/Analytic.css">
+  <!-- Include Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../Assets/JS/navbar-footer-loader.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <!-- Dashboard Container to Center Everything -->
+  <div class="dashboard-container">
+
+    <!-- Header Section -->
+    <div class="header-left">
+      <div class="header-text">
+        <h2>Welcome</h2>
+        <p>To the device energy Analytics.</p>
+      </div>
+    </div>
+
+    <!-- Energy Usage Card Section -->
+    <section class="energy-card-section">
+      <div class="energy-card">
+        <div class="energy-card-header">
+          <h2>Current Energy Usage</h2>
+          <span id="currentTime">9:41 AM</span>
+        </div>
+        <div class="energy-card-usage">
+          <h3><span id="currentKW">2.1</span> kW</h3>
+          <p>Your home's power draw at this moment.</p>
+        </div>
+        <hr />
+        <div class="energy-card-stats">
+          <div class="stat">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-info">
+              <span id="dailyUsage">48 kWh</span>
+              <p>24-Hr Usage</p>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon">£</div>
+            <div class="stat-info">
+              <span id="estimatedCost">£5.20</span>
+              <p>Estimated Cost</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Energy Consumption Chart Section -->
+    <section class="chart-section">
+      <div class="energy-stats-container">
+        <button id="toggleButton" class="toggle-btn">Switch to Monthly</button>
+        <h2 id="chartTitle">Weekly Energy Consumption Statistics</h2>
+        <canvas id="energyChart"></canvas>
+        <p id="chartFooter">
+          This week’s energy use is 5% higher than last week – turn on power saving mode!
+        </p>
+      </div>
+    </section>
+
+    <!-- Device Management Section -->
+    <section class="device-management">
+      <h2>Manage Devices</h2>
+      <div class="filter-section">
+        <label for="roomFilter">Filter by Room:</label>
+        <select id="roomFilter">
+          <option value="all">All</option>
+          <option value="Living Room">Living Room</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Bedroom">Bedroom</option>
+        </select>
+      </div>
+      <div class="device-list">
+        <!-- Device items will be rendered here -->
+      </div>
+    </section>
+
+  </div> <!-- End of Dashboard Container -->
+
+  <div id="footer"></div>
+
+  <script src="../Assets/JS/analytic.js"></script>
+</body>
+
+</html>
