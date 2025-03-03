@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings | Big Plum Tech</title>
+  <link rel="stylesheet" href="/Pages/Assets/CSS/Settings.css">
+  <script defer src="/Pages/Assets/JS/navbar-footer-loader.js"></script>
+  <script defer src="/Pages/Assets/JS/Settings.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+  
+  <main class="settings-container">
+    <h2>Account Settings</h2>
+    <form id="settingsForm">
+      <div class="form-group">
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" required>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">New Password:</label>
+        <input type="password" id="password" placeholder="Leave blank to keep current password">
+      </div>
+      <div class="form-group">
+        <label for="profilePic">Profile Picture URL:</label>
+        <input type="text" id="profilePic">
+      </div>
+      <button type="submit" class="btn">Save Changes</button>
+    </form>
+  </main>
+  
+  <div id="footer"></div>
+</body>
+</html>
