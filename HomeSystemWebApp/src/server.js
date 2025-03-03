@@ -61,20 +61,31 @@ app.get('/api/data', (req, res) => {
 });
 
 app.post("/api/register", (req, res) => {
-    const {fullname, email, password, userType} = req.body;
+    const {firstname, surname, email, password, userType} = req.body;
 
 
-    if (!fullname || !email || !password || !userType) {
+    if (!firstname || !surname || !email || !password || !userType) {
         return res.status(400).json({message: `All fields not recieved from post...   ${fullname} ${email} ${password} ${userType}`});
     }
 
 
-    console.log("Recived formData: ", req.body);
+
+
+    db.query(`INSERT INTO userdetails FROM (NULL, ?, ?, ?, ?, ?)`, (err, results) => {
+		if (err) {
+			console.error(err);
+			res.status(500).send('Error fetching users');
+		} else {
+			res.json(results);
+		}
+	});
+
+   // console.log("Recived formData: ", req.body);
 
 
 
 
-    res.json({message: "Registration recieved (not validated sql insertion)"});
+   // res.json({message: "Registration recieved (not validated sql insertion)"});
 });
 
 
