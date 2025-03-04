@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Handle the Return button to go back to the dashboard
     document.getElementById('returnButton').addEventListener('click', () => {
-      window.location.href = 'index.html';
+      window.location.href = 'Dashboard.html';
     });
   });
   
@@ -25,26 +25,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let products = JSON.parse(localStorage.getItem('products')) || [];
     products.push(newProduct);
     localStorage.setItem('products', JSON.stringify(products));
-  
-    // Redirect back to the dashboard
-    window.location.href = 'index.html';
+
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     // Add Product Button - Redirect after form submission
+
+    const messageConfirmation = document.getElementById("confirmationMessage");
+    const overlay = document.getElementById("confirmationOverlay"); 
+
+    messageConfirmation.style.display = "none";
+    overlay.style.display = "none";
+
     document.getElementById("addProductForm").addEventListener("submit", function (event) {
         event.preventDefault(); // Prevents the default form submission
 
-        // Simulate saving product (Optional)
-        alert("Product added successfully!");
+        messageConfirmation.innerHTML = `
+            <div class="confirmation-container">
+              <h2>Product Added!</h2>
+              <p>Product has been updated in dashboard! Please go to dashboard.</strong></p>
+              <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
+                  Go to Dashboard <i class="fa fa-arrow-right"></i>
+              </button>
+          </div>
+        `;
 
+        messageConfirmation.style.display = "block";
+        overlay.style.display = "block"; // Show dark background overlay  
         // Redirect to dashboard
-        window.location.href = "/Pages/HTML/Dashboard.html"; // Change to your actual dashboard path
-    });
-
-    // Return Button - Redirect to dashboard immediately
-    document.getElementById("returnButton").addEventListener("click", function () {
-        window.location.href = "/Pages/HTML/Dashboard.html"; // Change to your actual dashboard path
     });
 });
 
