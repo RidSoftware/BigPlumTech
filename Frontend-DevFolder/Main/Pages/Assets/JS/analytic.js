@@ -4,14 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateTime, 1000);
   
     const ctx = document.getElementById('energyChart').getContext('2d');
-  
+    
     // Weekly data setup
     const weeklyLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const weeklyData = [50, 35, 25, 40, 55, 45, 30];
   
     // Monthly data setup
-    const monthlyLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-    const monthlyData = [30, 60, 65, 80, 70, 50, 40];
+    const monthlyLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthlyData = [30, 60, 65, 80, 70, 50, 40, 45, 55, 60, 70, 80];
   
     let currentMode = 'weekly';
   
@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
           borderColor: 'rgba(100,100,100,0.7)',
           borderWidth: 2,
           fill: true,
-          tension: 0.4,
-          pointRadius: 4,
+          tension: 0.3,
+          pointRadius: 5,
           pointBackgroundColor: '#fff',
           pointBorderColor: 'rgba(100,100,100,0.7)',
         }]
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scales: {
           y: {
             beginAtZero: true,
-            max: 60,
+            max: 100,
             ticks: { color: '#555' },
             grid: { color: 'rgba(220,220,220,0.3)', drawBorder: false }
           },
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "This week’s energy use is 5% higher than last week – turn on power saving mode!";
         energyChart.data.labels = weeklyLabels;
         energyChart.data.datasets[0].data = weeklyData;
-        energyChart.options.scales.y.max = 60;
+        energyChart.options.scales.y.max = 100;
       }
       energyChart.update();
     });
@@ -155,7 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
           return device;
         });
         renderDevices();
-      } else if (target.classList.contains('edit-btn')) {
+      } else if (target.classList.contains('edit-btn')) { 
+        // Need to make a proper container for the home owner to update the three info easily and make it in the middle
         const device = devices.find(d => d.id === id);
         if (device) {
           const newName = prompt("Enter new device name:", device.name) || device.name;
@@ -178,4 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     renderDevices();
+  });
+
+  window.addEventListener('resize', () => {
+    energyChart.resize();
   });

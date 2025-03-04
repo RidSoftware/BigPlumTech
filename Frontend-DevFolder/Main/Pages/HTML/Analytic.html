@@ -56,9 +56,11 @@
     <!-- Energy Consumption Chart Section -->
     <section class="chart-section">
       <div class="energy-stats-container">
-        <button id="toggleButton" class="toggle-btn">Switch to Monthly</button>
-        <h2 id="chartTitle">Weekly Energy Consumption Statistics</h2>
-        <canvas id="energyChart"></canvas>
+        <h1 id="chartTitle">Weekly Energy Consumption Statistics</h1>
+        <div id="chart-wrapper">
+          <canvas id="energyChart"></canvas>
+        </div>
+        <button id="toggleButton" class="toggle-btn">Switch to Monthly</button>        
         <p id="chartFooter">
           This week’s energy use is 5% higher than last week – turn on power saving mode!
         </p>

@@ -148,7 +148,7 @@
   
   /* Energy Consumption Chart Section */
   .energy-stats-container {
-    max-width: 650px;
+    max-width: 1000000px;
     background: #ffffff;
     border-radius: 16px;
     padding: 20px;
@@ -161,10 +161,12 @@
     color: #fff;
     border: none;
     border-radius: 8px;
-    padding: 8px 16px;
+    padding: 10px 16px;
     cursor: pointer;
     font-size: 0.9rem;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-left: 100px;
+    margin-bottom: 5px;
   }
   
   .toggle-btn:hover {
@@ -172,15 +174,20 @@
   }
   
   #chartTitle {
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: #333;
     margin-bottom: 10px;
     text-align: center;
   }
   
   #energyChart {
-    width: 600px !important;
-    height: 300px !important;
+    width: 1000px !important;
+    height: 500px !important;
+  }
+
+  #chart-wrapper {
+    display: flex;
+    justify-content: center;
   }
   
   #chartFooter {
@@ -199,7 +206,7 @@
   
   /* Device Management Section */
   .device-management {
-    max-width: 650px;
+    max-width: 100000px;
     background: #ffffff;
     border-radius: 16px;
     padding: 20px;
