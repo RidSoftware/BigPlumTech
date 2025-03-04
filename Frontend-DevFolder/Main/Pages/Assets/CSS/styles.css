@@ -199,8 +199,8 @@ select, input {
 /* Chart Container */
 .chart-container {
     width: 100%;
-    max-width: 600px;
-    height: 300px;
+    max-width: 1000px;
+    height: 450px;
     background-color: #f8f9fa;
     border-radius: 8px;
     padding: 20px;
