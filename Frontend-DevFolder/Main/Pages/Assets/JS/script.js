@@ -1,3 +1,107 @@
+document.addEventListener("DOMContentLoaded", function () {
+    initializeChart();
+    updateEnergyPanel();
+    makePanelDraggable();
+});
+
+// Initialize the energy usage graph
+function initializeChart() {
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    let myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: generateHourlyLabels(),
+            datasets: [{
+                label: 'Energy Consumption (kWh)',
+                data: generateRandomData(24), 
+                borderColor: '#007BFF',
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                borderWidth: 2,
+                fill: true,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'Time (Hours)' } },
+                y: { title: { display: true, text: 'Energy (kWh)' }, beginAtZero: true }
+            },
+            plugins: {
+                zoom: {
+                    pan: { enabled: true, mode: 'x' }, // Enable dragging left/right
+                    zoom: { wheel: { enabled: true }, mode: 'x' } // Zoom via scroll
+                }
+            }
+        }
+    });
+}
+
+// Generate hourly time labels for the chart
+function generateHourlyLabels() {
+    let labels = [];
+    for (let i = 0; i < 24; i++) {
+        labels.push(`${i}:00`);
+    }
+    return labels;
+}
+
+// Generate random energy consumption data
+function generateRandomData(hours) {
+    return Array.from({ length: hours }, () => Math.floor(Math.random() * 100));
+}
+
+// Update Energy Panel Based on Energy Level
+function updateEnergyPanel() {
+    const panel = document.getElementById('energy-panel');
+    const message = document.getElementById('energy-message');
+    const energyFill = document.getElementById('energy-fill');
+    const energyValue = document.getElementById('energy-value');
+    const reportButton = document.getElementById('report-button');
+
+    let energyLevel = Math.floor(Math.random() * 100); // Simulated energy level
+
+    energyValue.innerText = `Energy Level: ${energyLevel}%`;
+    energyFill.style.width = `${energyLevel}%`;
+
+    if (energyLevel > 70) {
+        panel.style.background = "#28a745"; 
+        message.innerText = "Energy level is optimal! Good job! 😊";
+        reportButton.classList.add("hidden");
+    } else if (energyLevel > 40) {
+        panel.style.background = "#ffc107"; 
+        message.innerText = "Your energy level is starting to decrease! ⚠️ Stay aware!";
+        reportButton.classList.add("hidden");
+    } else {
+        panel.style.background = "#dc3545"; 
+        message.innerText = "Oh no! Energy level is critical! 🚨 Check report now!";
+        reportButton.classList.remove("hidden");
+    }
+}
+
+// Make Energy Panel Draggable
+function makePanelDraggable() {
+    const panel = document.getElementById("energy-panel");
+    let offsetX = 0, offsetY = 0, isDragging = false;
+
+    panel.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        offsetX = e.clientX - panel.offsetLeft;
+        offsetY = e.clientY - panel.offsetTop;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        panel.style.left = `${e.clientX - offsetX}px`;
+        panel.style.top = `${e.clientY - offsetY}px`;
+    });
+
+    document.addEventListener("mouseup", () => isDragging = false);
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Load products from localStorage or initialize with default products
     let products = JSON.parse(localStorage.getItem('products'));
