@@ -2,14 +2,13 @@
 
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
 
 html, body {
-  padding-top: 80px; /* To prevent navbar overlap */
-  height: 100%;
+  padding-top: 40px; 
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: #f4f4f4;
@@ -17,8 +16,8 @@ html, body {
 
 /* Main Settings Container */
 .settings-container {
-  max-width: 500px;
-  margin: 50px auto;
+  max-width: 600px;
+  margin: 20px auto;
   padding: 30px;
   background: #fff;
   border-radius: 15px;
@@ -27,7 +26,7 @@ html, body {
 
 .settings-container h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #007BFF;
 }
 
@@ -129,7 +128,6 @@ html, body {
 
 #footer {
   margin-top: auto;
-  padding: 35px;
   text-align: center;
   width: 100%;
   font-size: 14px;

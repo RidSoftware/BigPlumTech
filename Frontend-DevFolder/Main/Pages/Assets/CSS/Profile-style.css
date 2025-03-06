@@ -27,6 +27,25 @@ body h2 {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
+.profile-pic-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+
+
 .profile-card {
     display: flex;
     flex-direction: column;
