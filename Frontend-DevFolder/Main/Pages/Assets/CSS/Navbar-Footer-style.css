@@ -115,7 +115,6 @@ header {
     transform: scale(1.1);
 }
 
-
 #footer {
     margin-top: auto;
     padding: 35px;
@@ -247,6 +246,20 @@ header {
 .continue-btn:hover {
     background: #218838;
 }
+
+.profile-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+}
+
+/* Hide FontAwesome icon if profile image exists */
+.hidden {
+    display: none !important;
+}
+
 
   
 

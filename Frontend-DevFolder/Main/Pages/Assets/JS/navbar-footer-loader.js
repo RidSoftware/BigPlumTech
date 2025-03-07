@@ -29,12 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const cancelLogout = document.getElementById("cancelLogout");
         const overlayLogout = document.getElementById("overlay-logout");
 
+
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
         function updateSidebar() {
             let users = JSON.parse(localStorage.getItem("users")) || [];
             let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
             let currentUser = users.find(user => user.email === lastLoggedInEmail);
+            let profileSrc = localStorage.getItem("profilePic") || ""; // Get profile picture from localStorage
         
             sidebarMenu.innerHTML = ""; // Clear previous content
 
@@ -58,10 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-user">
-                        <h3>Welcome, ${currentUser.firstname}</h3>
-                        <img src="default-avatar.png" alt="User Avatar">
+                        <h3>Welcome, ${currentUser.firstname}</h3>                            
+
+                        <!-- Profile Icon (Triggers Sidebar) -->
+                        <div class="sidebar-profile-icon">
+                        ${profileSrc.trim() !== "" 
+                            ? `<img id="profile-img" src="${profileSrc}" alt="Profile Picture" class="profile-img" />` 
+                            : `<i id="profile-icon" class="fa fa-user-circle" style="font-size: 90px;"></i>`}
+                        </div> 
+
                         <div class="user-role">
-                            <i class="fa fa-user-circle" style="font-size: 90px"></i> 
                             <p>Role: ${currentUser.userType === "homeManager" ? "Admin" : "User"}</p>
                         </div>
                         ${currentUser.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>${currentUser.adminCode}</strong></p>` : ""}
