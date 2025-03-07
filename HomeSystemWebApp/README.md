@@ -1,14 +1,17 @@
 # Production folder
 ---
-Do whatever the hell you want in the DevFolders, \
-but please be more reserved with pushing stuff in here, this will be or production version. \
+This directory is the bulk of our system. Please familiarize yourselves with it. 
+
+The `BigPlumTech/Database-DevFolder/` will hold important information about our DB model and its behaviour. If you haven't set up a DB on your machine then please have a look at the readme over there.
+
+And similarly if you wanna refamiliar with git have a look at the readme in `BigPlumTech/`. 
 
 # CURRENT STATE
 ---
-So, what we have here is a rough draft of our system.
+##### So... here is a rough outline of our system.
 
--FrontEnd-
-./frontEnd/ 
+#### FrontEnd
+`./frontEnd/` 
 	H/	contains html files that ive got working full stack (Registration.html mainly [though the server doesnt actually insert data yet])
 	A/	assets
 		J/	contains scripts for front end functions
@@ -18,7 +21,7 @@ So, what we have here is a rough draft of our system.
 	Assets/	same here, i havent looked at most of this
 
 -BackEnd-
-./src/
+`./src/`
 	server.js	i configured to run on localhost:8080/ (localhost:8080/Registration.html)
 			
 		localhost:8080/users should display the user table from the db on the server machine
