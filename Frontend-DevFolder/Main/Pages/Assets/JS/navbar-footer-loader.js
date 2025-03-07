@@ -29,14 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const cancelLogout = document.getElementById("cancelLogout");
         const overlayLogout = document.getElementById("overlay-logout");
 
-
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
         function updateSidebar() {
             let users = JSON.parse(localStorage.getItem("users")) || [];
             let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
             let currentUser = users.find(user => user.email === lastLoggedInEmail);
-            let profileSrc = localStorage.getItem("profilePic") || ""; // Get profile picture from localStorage
+            let profileSrc = localStorage.getItem("profilePic") || "";
         
             sidebarMenu.innerHTML = ""; // Clear previous content
 
@@ -60,15 +59,12 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-user">
-                        <h3>Welcome, ${currentUser.firstname}</h3>                            
+                        <h3>Welcome, ${currentUser.firstname}</h3>
 
-                        <!-- Profile Icon (Triggers Sidebar) -->
-                        <div class="sidebar-profile-icon">
                         ${profileSrc.trim() !== "" 
                             ? `<img id="profile-img" src="${profileSrc}" alt="Profile Picture" class="profile-img" />` 
                             : `<i id="profile-icon" class="fa fa-user-circle" style="font-size: 90px;"></i>`}
-                        </div> 
-
+                         
                         <div class="user-role">
                             <p>Role: ${currentUser.userType === "homeManager" ? "Admin" : "User"}</p>
                         </div>
@@ -80,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <li><i class="fa fa-th-large"></i><a href="Dashboard.html"> Dashboard</a></li>
                     <li><i class="fa fa-bar-chart"></i><a href="Overview.html"> Overview</a></li>
                     <li><i class="fa fa-line-chart"></i><a href="Analytic.html"> Analytic</a></li>
+                    <li><i class="fa fa-cogs"></i><a href="Device-handling.html"> Device Handling</a></li>
         
                     <h4 class="sidebar-section-title">General</h4>
                     <hr>
