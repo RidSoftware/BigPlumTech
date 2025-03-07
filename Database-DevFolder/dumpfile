@@ -8,19 +8,22 @@ User Details Table
 CREATE TABLE `userdetails` (
 	`UserID` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`Password` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	`Username` VARCHAR(20) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`FirstName` VARCHAR(30) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
+	`Surname` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	`Email` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
 	`HomeID` INT(3) UNSIGNED NOT NULL,
 	`Admin` ENUM('Y','N') NOT NULL DEFAULT 'N' COLLATE 'utf8mb4_unicode_ci',
 	PRIMARY KEY (`UserID`) USING BTREE,
-	UNIQUE INDEX `UNIQUE FIELD` (`Email`, `Username`) USING BTREE,
+	UNIQUE INDEX `UNIQUE FIELD` (`Email`) USING BTREE,
 	INDEX `FK_userdetails_homedetails` (`HomeID`) USING BTREE,
 	CONSTRAINT `FK_userdetails_homedetails` FOREIGN KEY (`HomeID`) REFERENCES `homedetails` (`HomeID`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COMMENT='Table containing user details'
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
+AUTO_INCREMENT=21
 ;
+
 
 --------------------
 Universal Devices Table
