@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | Big Plum Tech</title>
+    <link rel="stylesheet" href="../Assets/CSS/Login-Registration.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer src="../Assets/JS/registration-validation.js"></script>
+    <script defer src="../Assets/JS/navbar-footer-loader.js"></script>
+</head>
+
+<body>
+
+    <div class="page-container">
+
+        <!-- Left Section: Registration Form -->
+        <div class="container-registration">
+            <h2>Register for Big Plum Tech!</h2>
+            <br>
+
+            <form id="registrationForm">
+                <input placeholder="First name" type="text" id="firstname" name="firstname" required>
+
+                <input placeholder="Last name" type="text" id="lastname" name="lastname" required>
+
+                <input placeholder="Email" type="email" id="email" name="email" required>
+
+                <div class="password-container">
+                    <input placeholder="Password" type="password" id="password" name="password" required>
+                    <i class="fa fa-eye-slash" id="togglePassword"></i>
+                </div>
+                
+                <input placeholder="Confirm Password" type="password" id="confirmPassword" name="confirmPassword" required>
+
+                <select id="userType" name="userType" required>
+                    <option value="">User Type</option>
+                    <option value="homeUser">Home User</option>
+                    <option value="homeManager">Home Manager</option>
+                </select>
+
+                <p class="terms" style="text-align: center;">I agree to the Terms & Conditions</p>
+                <label class="terms-style">
+                    <input type="checkbox" id="terms" required>
+                </label>
+
+                <p id="errorMessage" class="error-message"></p>
+
+                <button type="submit" class="submit-button">Register</button>
+            </form>
+            <br>
+            <p>Already have an account? <a href="Login.html">Login here</a></p>
+        </div>
+
+        <!-- Right Section: Promo Text -->
+        <div class="promo-text">
+            <h2>Transform Your Smart Home Experience</h2>
+            <p>Seamless control, effortless management, and smarter living—right at your fingertips.</p>
+            <ul>
+                <li>Monitor and manage your home from anywhere.</li>
+                <li>Stay secure with real-time alerts & device control.</li>
+                <li>Simplify life with automation & smart analytics.</li>
+            </ul>
+            <p>Join Big Plum Tech today and take charge of your home like never before.</p>
+        </div>
+    </div>
+
+    <div class="return-href">
+        <a id="return-id" href="index.html">Return</a>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+</body>
+</html>

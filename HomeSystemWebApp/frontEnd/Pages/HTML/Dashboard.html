@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Home</title>
+  <link rel="stylesheet" href="../Assets/CSS/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script> <!-- Zoom plugin -->
+  <script src="../Assets/JS/navbar-footer-loader.js"></script>
+  <script src="../Assets/JS/script.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+    
+    <!-- Main Header -->
+    <div class="header-left">
+      <div class="header-text">
+        <h1 id="profile-name"></h1>
+        <p>To your home page. Enjoy the features we bring to you!</p><br>
+      </div>
+    </div>
+
+    <!-- Energy Usage Graph Section -->
+    <section>
+      <h2>Current Daily Energy Usage Overview</h2>
+      <p> This is the energy usage overview by day. Use mouse scroll to expand and compress the graph.</p>
+      <p> If you want to see your weekly and monthly overview go to <a href="Overview.html" style="text-decoration: none;"> Overview</a> page!</p>
+      <br>
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Energy Level Reminder Panel -->
+    <div id="energy-panel" class="draggable-panel">
+      <p id="energy-message"></p>
+      <div class="energy-bar">
+        <div id="energy-fill"></div>
+      </div>
+      <p id="energy-value"></p>
+      <button id="report-button" class="hidden" onclick="window.location.href='Reports.html'">Go to Report →</button>
+    </div>
+    
+
+    <!-- Smart Products Section -->
+    <section>
+      <br><h2>Smart Products</h2>
+      <nav id="categoryNav"></nav>
+      <div id="productsContainer"></div>
+    </section>
+
+  </div> <!-- End of Content Wrapper -->
+
+  <div id="footer"></div>
+</body>
+</html>
