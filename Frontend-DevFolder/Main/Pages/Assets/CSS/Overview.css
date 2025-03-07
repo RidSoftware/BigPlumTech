@@ -8,12 +8,16 @@ body {
     margin: 0;
     padding: 0;
   }
+
+  #header-content {
+    margin: 60px auto 40px auto; /* Top margin avoids navbar overlap */
+  }
   
   /* Main Container */
   .overview-container {
     width: 90%;
     max-width: 1200px;
-    margin: 120px auto 40px auto; /* Top margin avoids navbar overlap */
+    margin: 60px auto 40px auto; /* Top margin avoids navbar overlap */
     padding: 20px;
   }
   

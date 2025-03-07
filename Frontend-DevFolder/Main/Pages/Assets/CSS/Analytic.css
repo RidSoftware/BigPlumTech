@@ -12,6 +12,10 @@
     flex-direction: column;
   }
 
+  body {
+    background: #f4f4f4;
+  }
+
   /* Wrapper to Center Content */
   .dashboard-container {
     width: 90%;

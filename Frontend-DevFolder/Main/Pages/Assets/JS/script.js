@@ -83,23 +83,73 @@ function updateEnergyPanel() {
 
 // Make Energy Panel Draggable
 function makePanelDraggable() {
-    const panel = document.getElementById("energy-panel");
-    let offsetX = 0, offsetY = 0, isDragging = false;
+  const panel = document.getElementById("energy-panel");
+  let offsetX = 0, offsetY = 0, isDragging = false;
 
-    panel.addEventListener("mousedown", (e) => {
-        isDragging = true;
-        offsetX = e.clientX - panel.offsetLeft;
-        offsetY = e.clientY - panel.offsetTop;
-    });
+  panel.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - panel.offsetLeft;
+      offsetY = e.clientY - panel.offsetTop;
+  });
 
-    document.addEventListener("mousemove", (e) => {
-        if (!isDragging) return;
-        panel.style.left = `${e.clientX - offsetX}px`;
-        panel.style.top = `${e.clientY - offsetY}px`;
-    });
+  document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      panel.style.left = `${e.clientX - offsetX}px`;
+      panel.style.top = `${e.clientY - offsetY}px`;
+  });
 
-    document.addEventListener("mouseup", () => isDragging = false);
+  document.addEventListener("mouseup", () => isDragging = false);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+  let currentUser = users.find(user => user.email === lastLoggedInEmail);
+  
+  const energyPanel = document.getElementById("energy-panel");
+
+  if (!currentUser) {
+      console.warn("No user found, hiding energy panel.");
+      energyPanel.style.display = "none";
+      return;
+  }
+
+  // Show draggable panel only if the user is a regular "user"
+  if (currentUser.userType === "homeUser") {
+      energyPanel.style.display = "block"; // Make it visible
+      enableDrag(energyPanel); // Ensure it's draggable
+  } else {
+      energyPanel.style.display = "none"; // Hide for homeManager
+  }
+
+  // Function to enable dragging
+  function enableDrag(element) {
+      let offsetX = 0, offsetY = 0, mouseX = 0, mouseY = 0;
+      element.onmousedown = function (event) {
+          event.preventDefault();
+          mouseX = event.clientX;
+          mouseY = event.clientY;
+          document.onmouseup = stopDragging;
+          document.onmousemove = dragElement;
+      };
+
+      function dragElement(event) {
+          event.preventDefault();
+          offsetX = mouseX - event.clientX;
+          offsetY = mouseY - event.clientY;
+          mouseX = event.clientX;
+          mouseY = event.clientY;
+          element.style.top = (element.offsetTop - offsetY) + "px";
+          element.style.left = (element.offsetLeft - offsetX) + "px";
+      }
+
+      function stopDragging() {
+          document.onmouseup = null;
+          document.onmousemove = null;
+      }
+  }
+});
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
