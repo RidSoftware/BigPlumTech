@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f4f4f4;
+    padding-top: 65px;
+}
+
+body h2, .description {
+    text-align: center;
+}
+
+/* Navbar */
+header {
+    background: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #007BFF;
+}
+
+/* Report Container */
+.report-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-container h2 {
+    color: #dc3545;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Report Cards */
+.report-card {
+    background: #fff;
+    border-left: 6px solid #dc3545;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.report-card h3 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.report-card p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+/* Acknowledge Button */
+.acknowledge-btn {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.acknowledge-btn:hover {
+    background: #0056b3;
+}
+
+/* Acknowledged Message */
+.acknowledged {
+    color: green;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+/* Reset and Wrapper */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Reports Section */
+.report-container {
+    width: 90%;
+    max-width: 800px;
+
+    margin: 60px auto;
+}
+
+.report-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: left;
+    border-left: 5px solid #dc3545;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Footer */
+#footer {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    background: #007BFF;
+    color: white;
+    position: relative;
+    bottom: 0;
+}
+
+/* Faded-out effect when acknowledged */
+.report-card.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.report-card h3 {
+    color: #dc3545;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.report-card p {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.acknowledge-btn {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.acknowledge-btn:hover {
+    background: #0056b3;
+}
+
+/* No Report Message */
+.no-report {
+    background: #28a745;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.no-report i {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
