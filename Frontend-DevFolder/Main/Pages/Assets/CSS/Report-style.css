@@ -9,8 +9,11 @@
 
 body {
     background: #f4f4f4;
+    padding-top: 65px;
+}
+
+body h2, .description {
     text-align: center;
-    padding-top: 80px;
 }
 
 /* Navbar */
