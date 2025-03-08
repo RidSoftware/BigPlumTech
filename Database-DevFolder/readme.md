@@ -13,4 +13,4 @@ __5.__ Once you have confirmed MariaDB installation, create a new database and c
 &nbsp; &nbsp; &nbsp;  now go to `Database-DevFolder/easierDumpfile` and ctrl+c, then go to terminal interface of db and ctrl+shift+v. </br>
 
 __6.__ Necessary population of db, </br>
-&nbsp; &nbsp; &nbsp; `INSERT INTO homedetails (HomeID, NoOfResidents, HomeManager, AdminCode) VALUES (0, 99, 'defHomeMan', 1234);`	</br>
+&nbsp; &nbsp; &nbsp; `INSERT INTO homedetails (HomeID, NoOfResidents, HomeManager, AdminCode) VALUES (99, 99, 'defHomeMan', 1234);`	</br>
