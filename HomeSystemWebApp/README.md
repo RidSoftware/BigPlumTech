@@ -31,8 +31,10 @@ And similarly if you wanna refamiliar with git have a look at the readme in `Big
 This is set to run on port 8080 (eg. localhost:8080/Pages/HTML/index.html in browser).
 
 #### DataBase
-	atm db connection is handled by monolithic server.js file, will change later
-	install mariadb, configure it and run server.js		
+	DB connection is handled by config/DBConnection.js
+
+	Please lookup readme in BigPlumTech/Database-DevFolder/
+	 		
 ---
  Calum
 
