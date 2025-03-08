@@ -1,4 +1,4 @@
-document.getElementById("loginForm").addEventListener("submit", function(event) {
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     let email = document.getElementById("email").value.trim();
@@ -27,25 +27,14 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
             return;
         }
 
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        // Show confirmation message
-        document.getElementById("loginForm").reset();
         // Redirect after delay
-        setTimeout(() => window.location.href = "Overview.html", 2000);
+        window.location.href = "Overview.html";
 
     } catch (error) {
         console.error("Login error:", error);
         errorMessage.textContent = "An error occurred. Please try again later.";
         errorMessage.style.display = "block";
     }
-
-    // Set login status in localStorage
-    currentUser.isLoggedIn = true;
-
-    // Update localStorage with new login status
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("lastLoggedInEmail", email);
 
     // Show confirmation message & overlay
     confirmationMessage.innerHTML = `
