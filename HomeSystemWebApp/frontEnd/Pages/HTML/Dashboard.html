@@ -31,11 +31,15 @@
       <br>
       <div class="chart-container">
         <canvas id="myChart"></canvas>
+
       </div>
+      <button id="resetZoom">Reset Zoom</button>
     </section>
 
     <!-- Energy Level Reminder Panel -->
     <div id="energy-panel" class="draggable-panel">
+      <h2>⚡ Energy Reminder Panel</h2>
+      <p>Keep an eye on your energy usage! Move this panel anywhere, but it stays visible for easy tracking.</p>
       <p id="energy-message"></p>
       <div class="energy-bar">
         <div id="energy-fill"></div>
@@ -43,14 +47,44 @@
       <p id="energy-value"></p>
       <button id="report-button" class="hidden" onclick="window.location.href='Reports.html'">Go to Report →</button>
     </div>
-    
+
+    <!-- Placeholder Panel for Snapping -->
+    <div id="placeholder-panel">
+      <h2>📌 Pin Reminder Panel Here</h2>
+      <p>Drag the panel here to keep it in one position.</p>
+    </div>
 
     <!-- Smart Products Section -->
     <section>
       <br><h2>Smart Products</h2>
       <nav id="categoryNav"></nav>
       <div id="productsContainer"></div>
+      
     </section>
+
+    <!-- Two new features: automation container and energy recommendation -->
+    <div class="automation-container">
+      <h2>⚙️ Smart Automation Scenarios</h2>
+      <p>Create custom automation routines to control your smart devices efficiently.</p>
+  
+      <div id="automation-list">
+          <!-- User-created automation routines will be listed here -->
+      </div>
+  
+      <button id="add-automation">➕ Add New Automation</button>
+  </div>
+
+
+  <div class="energy-recommendations">
+    <h2>⚡ Best Time to Use Appliances</h2>
+    <p>AI-powered recommendations based on real-time energy pricing.</p>
+
+    <div class="timeline">
+        <div id="best-time" class="time-slot">Loading...</div>
+    </div>
+</div>
+
+  
 
   </div> <!-- End of Content Wrapper -->
 
