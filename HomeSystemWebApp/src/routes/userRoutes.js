@@ -14,12 +14,7 @@ router.post("/api/register", (req, res) => {
         });
     }
 
-    const admin = 'N';
-    if (userType == "homeManager") {
-        admin = 'Y';
-    }
-
-
+    const admin = userType === "homeManager" ? 'Y' : 'N';
 
     const q = 'INSERT INTO userdetails (firstname, surname, email, password, admin, homeid) VALUES (?, ?, ?, ?, ?, ?)'
 
@@ -69,9 +64,14 @@ router.post('/api/login', async (req, res) => {
             if (results.length === 0) {
                 return res.status(401).json({ 
                     success: false, 
-                    message: 'result  didnt match' 
+                    message: 'no email registered, invalid email' 
                 });
             }
+
+			if (password !== user.password) {
+                return res.status(401).json({ success: false, message: "Invalid password." });
+            }
+		
 
 
             // success
@@ -81,7 +81,7 @@ router.post('/api/login', async (req, res) => {
                 user: { id: user.id, email: user.email, userType: user.userType } //gives utype aswell so that we know how to treat the user (what perms)
             });
         });
-    } catch (error) {
+    } catch (error) {A
         console.error('err from login:', error);
         res.status(500).json({ 
             success: false, 
