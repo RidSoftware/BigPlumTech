@@ -61,6 +61,8 @@ router.post('/api/login', async (req, res) => {
                 });
             }
 
+
+			const user = results[0];
             if (results.length === 0) {
                 return res.status(401).json({ 
                     success: false, 
@@ -68,7 +70,7 @@ router.post('/api/login', async (req, res) => {
                 });
             }
 
-			if (password !== user.password) {
+	  		if (password !== user.password) {
                 return res.status(401).json({ success: false, message: "Invalid password." });
             }
 		
@@ -78,10 +80,10 @@ router.post('/api/login', async (req, res) => {
             res.status(200).json({ 
                 success: true, 
                 message: 'login succes', 
-                user: { id: user.id, email: user.email, userType: user.userType } //gives utype aswell so that we know how to treat the user (what perms)
+                user: { id: user.id, email: user.email, userType: user.admin === 'Y' ? 'homeManager' : 'regular' } //gives utype aswell so that we know how to treat the user (what perms)
             });
         });
-    } catch (error) {A
+    } catch (error) {
         console.error('err from login:', error);
         res.status(500).json({ 
             success: false, 
