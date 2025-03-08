@@ -1,8 +1,49 @@
-# BigPlumTech
+# BigPlumTech ⚡
 Main repository for heriot-watt yr3 software engineering project
-(will add installation/configuration instructions for you guys when i get the time)
+This is a [RESTful Webserver](https://www.codecademy.com/article/what-is-rest), built with Node.js and Express, using MariaDB as it's Database. It provides APIs for web users to track their smart devices usage and energy statistics.
 
-## Notes on working with git
+# Tech Stack
+- *Backend:* NodeJS, ExpressJS
+- *Database:* MariaDB
+- *Authentication/Security:* ...  
+
+# Installation Requirements
+You must have the following installed:
+- [NodeJS](https://nodejs.org/en/download)
+- [MariaDB](https://mariadb.com/downloads/) **or heidiSQL or MySQL Workbench etc...** as long as you got sql working it should be fine
+
+# Setting up your version to work
+1️⃣ Clone the Repository
+`git clone git@github.com:RidSoftware/BigPlumTech.git` you need an ssh key on your machine with github knowing its public key
+`cd BigPlumTech`
+
+2️⃣ Install Dependencies
+`cd HomeSystemWebApp/src`
+`npm install` **shouldn't be necessary, but no harm**
+
+3️⃣ Reconfigure DB connection
+go to readme in `Database-DevFolder` if you havent already
+go to `HomeSystemWebApp/src/config/DBConnection.js`
+edit `const db = mysql.createConnection({
+    host: "localhost",
+    user: "SmallPlum",
+    password: "PlumPassword",
+    database: "plumEnergyDatabase",
+    port: 3306
+});`
+to the user, password and database name relevant to your installation and user details for your db. 
+
+4️⃣ Run the server
+`node HomeSystemWebApp/src/server.js`
+
+## QUICK git
+1. `git clone git@github.com:RidSoftware/BigPlumTech.git`
+2. `git checkout -b newBranch`
+3. `git add .`
+4. `git commit -m "added stuff"`
+5. `git push origin newBranch`
+
+## LONG git
 work with git however you want, this is just a couple tips if you want. \
 I use Linux CLI for git, so this may not be entirely relevent for you all, but should work in any shell.
 Also is a general guide for best practices.
