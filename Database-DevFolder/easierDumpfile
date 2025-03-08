@@ -69,4 +69,20 @@ CREATE TABLE `energygeneration_weekly` (
     `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `DeviceID` INT(5) UNSIGNED NOT NULL,
     `EnergyGen` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`RecordNum`)
+    PRIMARY KEY (`RecordNum`) USING BTREE,
+    INDEX `FK_energyusage_weekly_alldevices` (`DeviceID`) USING BTREE,
+    CONSTRAINT `FK_energyusage_weekly_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB;
+
+CREATE TABLE `energyusage_monthly` (
+    `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `DeviceID` INT(5) UNSIGNED NOT NULL,
+    `EnergyUsage` FLOAT UNSIGNED NOT NULL DEFAULT '0',
+    PRIMARY KEY (`RecordNum`) USING BTREE,
+    INDEX `FK_energyusage_monthly_alldevices` (`DeviceID`) USING BTREE,
+    CONSTRAINT `FK_energyusage_monthly_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB;
