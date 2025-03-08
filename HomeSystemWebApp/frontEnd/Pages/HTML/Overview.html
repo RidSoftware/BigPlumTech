@@ -10,6 +10,7 @@
   <script defer src="../Assets/JS/navbar-footer-loader.js"></script>
   <!-- Include Chart.js for charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="../Assets/JS/Overview.js"></script>
 </head>
 <body>
   <div id="navbar"></div>
@@ -24,24 +25,7 @@
     <!-- Device Status Overview -->
     <section id="device-status">
       <h2>Device Status Overview</h2>
-      <div class="device-grid">
-        <!-- Sample device cards -->
-        <div class="device-card">
-          <h3>Living Room Light</h3>
-          <p>Status: On</p>
-          <p>Room: Living Room</p>
-        </div>
-        <div class="device-card">
-          <h3>Kitchen Appliance</h3>
-          <p>Status: Off</p>
-          <p>Room: Kitchen</p>
-        </div>
-        <div class="device-card">
-          <h3>Bedroom AC</h3>
-          <p>Status: On</p>
-          <p>Room: Bedroom</p>
-        </div>
-      </div>
+      <div class="device-grid" id="deviceStatusContainer"></div>
     </section>
 
     <!-- Home Energy Summary -->
@@ -63,12 +47,19 @@
     <!-- Alerts & Notifications -->
     <section id="alerts-notifications">
       <h2>Alerts & Notifications</h2>
-      <ul class="alerts-list">
-        <li>No alerts at this moment.</li>
-        <!-- Additional alerts can be added here -->
-      </ul>
+      <div class="notification-container">
+        <div class="alerts-section">
+          <h3>⚠️ Alerts <span id="alertsCount">(0)</span></h3>
+          <ul class="alerts-list" id="alertsList"></ul>
+          
+        </div>
+        <div class="notifications-section">
+          <h3>🔔 Notifications <span id="notificationCount">(0)</span></h3>
+          <ul class="notifications-list" id="notificationsList"></ul>
+        </div>
+      </div>
     </section>
-
+    
     <!-- Home Details Snapshot -->
     <section id="home-details">
       <h2>Home Details Snapshot</h2>
@@ -95,7 +86,9 @@
       <div class="nav-links">
         <button onclick="window.location.href='Dashboard.html'">Dashboard</button>
         <button onclick="window.location.href='Analytic.html'">Analytics</button>
-        <button onclick="window.location.href='Device-handling.html'">Device Handling</button>
+        <div id="device-handling-btn">
+          <button onclick="window.location.href='Device-handling.html'">Device Handling</button>
+        </div>
         <button onclick="window.location.href='Profile.html'">Profile</button>
         <button onclick="window.location.href='Settings.html'">Settings</button>
       </div>
@@ -103,51 +96,5 @@
   </main>
 
   <div id="footer"></div>
-
-  <!-- Inline JavaScript to initialize sample charts -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Energy Usage Chart (Line Chart)
-      const ctxUsage = document.getElementById('energyUsageChart').getContext('2d');
-      new Chart(ctxUsage, {
-        type: 'line',
-        data: {
-          labels: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-          datasets: [{
-            label: 'Energy Usage (kWh)',
-            data: [20, 25, 22, 30, 28, 26, 24],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 2,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: { y: { beginAtZero: true } }
-        }
-      });
-
-      // Energy Generation Chart (Bar Chart)
-      const ctxGen = document.getElementById('energyGenerationChart').getContext('2d');
-      new Chart(ctxGen, {
-        type: 'bar',
-        data: {
-          labels: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-          datasets: [{
-            label: 'Energy Generation (kWh)',
-            data: [5, 7, 6, 8, 7, 9, 6],
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            borderColor: 'rgba(255, 206, 86, 1)',
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: { y: { beginAtZero: true } }
-        }
-      });
-    });
-  </script>
 </body>
 </html>
