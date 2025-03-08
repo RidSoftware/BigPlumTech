@@ -1,4 +1,4 @@
-document.getElementById("loginForm").addEventListener("submit", function(event) {
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     let email = document.getElementById("email").value.trim();
@@ -12,31 +12,29 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     confirmationMessage.style.display = "none";
     overlay.style.display = "none"; 
 
-    // Retrieve the list of users from localStorage
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+        let response = await fetch("http://localhost:8080/api/login", { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
 
-    // Check if the email exists in the stored users
-    let currentUser = users.find(user => user.email === email);
+        let data = await response.json();
 
-    if (!currentUser) {
-        errorMessage.textContent = "User not found. Please register first.";
+        if (!data.success) {
+            errorMessage.textContent = data.message;
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        // Redirect after delay
+        window.location.href = "Overview.html";
+
+    } catch (error) {
+        console.error("Login error:", error);
+        errorMessage.textContent = "An error occurred. Please try again later.";
         errorMessage.style.display = "block";
-        return;
     }
-
-    // Check if the password matches
-    if (currentUser.password !== password) {
-        errorMessage.textContent = "Wrong password! Please try again.";
-        errorMessage.style.display = "block";
-        return;
-    }
-
-    // Set login status in localStorage
-    currentUser.isLoggedIn = true;
-
-    // Update localStorage with new login status
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("lastLoggedInEmail", email);
 
     // Show confirmation message & overlay
     confirmationMessage.innerHTML = `
