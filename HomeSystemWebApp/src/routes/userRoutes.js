@@ -70,12 +70,12 @@ router.post('/api/login', async (req, res) => {
             }
 
 
-            const usertypeTranslation = results.user[0].Admin === 'Y' ? 'homeManager': 'homeUser';
+            const usertypeTranslation = results[0].Admin === 'Y' ? 'homeManager': 'homeUser';
 
             const trimmedResult = {
-                firstname: results.user[0].FirstName,
-                Surname: results.user[0].Surname,
-                Email: results.user[0].Email,
+                firstname: results[0].FirstName,
+                Surname: results[0].Surname,
+                Email: results[0].Email,
                 userType: usertypeTranslation
             }
 
