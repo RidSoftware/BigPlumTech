@@ -27,20 +27,11 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             return;
         }
 
-        // Redirect after delay
-        window.location.href = "Overview.html";
-
-    } catch (error) {
-        console.error("Login error:", error);
-        errorMessage.textContent = "An error occurred. Please try again later.";
-        errorMessage.style.display = "block";
-    }
-
     // Show confirmation message & overlay
     confirmationMessage.innerHTML = `
         <div class="confirmation-container">
             <h2>Login Successful!</h2>
-            <p>Welcome back, <strong>${currentUser.firstname}</strong></p>
+            <p>Welcome back, <strong>Guest</strong></p>
             <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
                 Go to Dashboard <i class="fa fa-arrow-right"></i>
             </button>
@@ -48,6 +39,13 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     `;
     confirmationMessage.style.display = "block";
     overlay.style.display = "block"; // Show dark background overlay
+
+    } catch (error) {
+        console.error("Login error:", error);
+        errorMessage.textContent = "An error occurred. Please try again later.";
+        errorMessage.style.display = "block";
+    }
+
 
 });
 
