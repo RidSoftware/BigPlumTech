@@ -79,11 +79,11 @@ router.post('/api/login', async (req, res) => {
                 userType: usertypeTranslation
             }
 
-            console.print
+      //      console.print
 
-			if (password != results[0].password) {
-                return res.status(401).json({ success: false, message: "incorrect pword"});
-            }
+//			if (password != results[0].password) {
+  //              return res.status(401).json({ success: false, message: "incorrect pword"});
+    //        }
 		
 
 
