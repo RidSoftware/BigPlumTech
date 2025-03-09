@@ -52,7 +52,7 @@ router.post('/api/login', async (req, res) => {
 
     try {
         const q = 'SELECT * FROM userdetails WHERE email = ?';
-        db.query(q/*sends querey*/, [email], async (err, results) => {
+        db.query(q/*sends query*/, [email], async (err, results) => {
             if (err) {
                 console.error('db error selecting user', err);
                 return res.status(500).json({ 
@@ -69,8 +69,10 @@ router.post('/api/login', async (req, res) => {
                 });
             }
 
+           // const userSafeResults = results.map(({userType,}));
+
 			if (password === results.password) {
-                return res.status(401).json({ success: true, message: "email and pword match" });
+                return res.status(401).json({ success: true, message: results});
             }
 		
 
