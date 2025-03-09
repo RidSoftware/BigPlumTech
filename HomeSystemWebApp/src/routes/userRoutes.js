@@ -81,8 +81,8 @@ router.post('/api/login', async (req, res) => {
 
             console.print
 
-			if (password === results.password) {
-                return res.status(401).json({ success: true, message: trimmedResult});
+			if (password != results[0].password) {
+                return res.status(401).json({ success: false, message: "incorrect pword"});
             }
 		
 
@@ -91,7 +91,7 @@ router.post('/api/login', async (req, res) => {
             res.status(201).json({ 
                 success: true, 
                 message: 'login succes', 
-                user: results
+                user: trimmedResult
             });
         });
     } catch (error) {
