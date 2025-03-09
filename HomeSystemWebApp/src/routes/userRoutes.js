@@ -69,10 +69,20 @@ router.post('/api/login', async (req, res) => {
                 });
             }
 
-           // const userSafeResults = results.map(({userType,}));
+
+            const usertypeTranslation = user[0].Admin === 'Y' ? 'homeManager': 'homeUser';
+
+            const trimmedResult = {
+                firstname: user[0].FirstName,
+                Surname: user[0].Surname,
+                Email: user[0].Email,
+                userType: usertypeTranslation
+            }
+
+            console.print
 
 			if (password === results.password) {
-                return res.status(401).json({ success: true, message: results});
+                return res.status(401).json({ success: true, message: trimmedResult});
             }
 		
 
