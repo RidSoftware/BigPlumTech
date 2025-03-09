@@ -81,7 +81,7 @@ router.post('/api/login', async (req, res) => {
             res.status(201).json({ 
                 success: true, 
                 message: 'login succes', 
-         //       user: { id: user.id, email: user.email, userType: user.admin === 'Y' ? 'homeManager' : 'regular' } //gives utype aswell so that we know how to treat the user (what perms)
+                user: results
             });
         });
     } catch (error) {
