@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         function updateSidebar() {
             let users = JSON.parse(localStorage.getItem("users")) || [];
             let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-            let currentUser = users.find(user => user.email === lastLoggedInEmail);
+            let currentUser = user.getItem("Email");
             let profileSrc = localStorage.getItem("profilePic") || "";
         
             sidebarMenu.innerHTML = ""; // Clear previous content
@@ -59,16 +59,16 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-user">
-                        <h3>Welcome, ${currentUser.firstname}</h3>
+                        <h3>Welcome, ${user.firstname}</h3>
 
                         ${profileSrc.trim() !== "" 
                             ? `<img id="profile-img" src="${profileSrc}" alt="Profile Picture" class="profile-img" />` 
                             : `<i id="profile-icon" class="fa fa-user-circle" style="font-size: 90px;"></i>`}
                          
                         <div class="user-role">
-                            <p>Role: ${currentUser.userType === "homeManager" ? "Admin" : "User"}</p>
+                            <p>Role: ${user.userType === "homeManager" ? "Admin" : "User"}</p>
                         </div>
-                        ${currentUser.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>${currentUser.adminCode}</strong></p>` : ""}
+                        ${user.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>${currentUser.adminCode}</strong></p>` : ""}
                     </div>
         
                     <h4 class="sidebar-section-title">Main Menu</h4>
