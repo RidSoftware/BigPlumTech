@@ -209,20 +209,20 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-  let currentUser = users.find(user => user.email === lastLoggedInEmail);
+  let user = JSON.parse(localStorage.getItem("user")) || [];
+  //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+  //let currentUser = users.find(user => user.email === lastLoggedInEmail);
   
   const energyPanel = document.getElementById("energy-panel");
 
-  if (!currentUser) {
+  if (!user) {
       console.warn("No user found, hiding energy panel.");
       energyPanel.style.display = "none";
       return;
   }
 
   // Show draggable panel only if the user is a regular "user"
-  if (currentUser.userType === "homeUser") {
+  if (user.userType === "homeUser") {
       energyPanel.style.display = "block"; // Make it visible
       enableDrag(energyPanel); // Ensure it's draggable
   } else {
@@ -429,15 +429,15 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(card);
 
         function getCurrentUserDevices() {
-          let users = JSON.parse(localStorage.getItem("users")) || [];
-          let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-          let currentUser = users.find(user => user.email === lastLoggedInEmail);
+          let user = JSON.parse(localStorage.getItem("user")) || [];
+          //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+          //let currentUser = users.find(user => user.email === lastLoggedInEmail);
       
-          if (!currentUser) return [];
+          if (!user) return [];
       
           // Retrieve devices linked to this user's email
           let allDevices = JSON.parse(localStorage.getItem("smartDevices")) || {};
-          return allDevices[currentUser.email] || [];
+          return allDevices[user.Email] || [];
       }
       
       function saveUserDevices(devices) {
@@ -482,11 +482,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Add a final "plus card" to create new products (depending on the userType)
     const plusCard = document.createElement('div');
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-    let currentUser = users.find(user => user.email === lastLoggedInEmail);
+    let user = JSON.parse(localStorage.getItem("user")) || [];
+    //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+    //let currentUser = users.find(user => user.email === lastLoggedInEmail);
 
-    if (currentUser && currentUser.userType === "homeowner") {  
+    if (user.userType === "homeowner") {  
         plusCard.classList.add('add-card');
         plusCard.textContent = '+';
         plusCard.addEventListener('click', () => {
