@@ -4,14 +4,14 @@ const db = require('../config/DBConnection');
 const e = require('express');
 
 
-////////////////LOGON
-router.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
+////////////////pull 24hr of data to user
+router.post('/api/pull24hr', async (req, res) => {
+    const email = req.body;
 
-    if (!email || !password) {
+    if (!email) {
         return res.status(400).json({ 
             success: false, 
-            message: 'didnt fill form properly' 
+            message: 'no email recieved by route' 
         });
     }
 
@@ -30,7 +30,7 @@ router.post('/api/login', async (req, res) => {
             if (results.length === 0) {
                 return res.status(401).json({ 
                     success: false, 
-                    message: 'no email registered, invalid email' 
+                    message: 'no data found in db from query' 
                 });
             }
 
