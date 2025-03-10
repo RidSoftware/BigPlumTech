@@ -32,13 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
         function updateSidebar() {
-            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let users = JSON.parse(localStorage.getItem("user")) || [];
             let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-            let currentUser = users.find(user => user.email === lastLoggedInEmail);
+            let currentUser = users.find(user => user.Email);
             let profileSrc = localStorage.getItem("profilePic") || "";
         
             sidebarMenu.innerHTML = ""; // Clear previous content
-
         
             if (!currentUser) {
                 sidebarMenu.innerHTML = `
@@ -48,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <button class="sidebar-button" onclick="window.location.href='Registration.html'">Register Now</button>
                 `;
-            } else if (!currentUser.isLoggedIn) {
+            } else if (!user.isLoggedIn) {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-message">
                         <strong>Log In Required</strong>
@@ -59,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-user">
-                        <h3>Welcome, ${currentUser.firstname}</h3>
+                        <h3>Welcome, ${user.firstname}</h3>
 
                         ${profileSrc.trim() !== "" 
                             ? `<img id="profile-img" src="${profileSrc}" alt="Profile Picture" class="profile-img" />` 
@@ -107,7 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmLogout.addEventListener("click", function () {
                     currentUser.isLoggedIn = false;
                     localStorage.setItem("users", JSON.stringify(users));
-                    localStorage.removeItem("lastLoggedInEmail");
 
                     // Hide logout confirmation modal and show thank you message
                     logoutModal.style.display = "none";

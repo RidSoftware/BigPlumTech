@@ -76,12 +76,13 @@ router.post('/api/login', async (req, res) => {
                 firstname: results[0].FirstName,
                 Surname: results[0].Surname,
                 Email: results[0].Email,
-                userType: usertypeTranslation
+                userType: usertypeTranslation,
+                isLoggedIn: true
             }
 
 
-			if (password !== results[0].password) {
-                return res.status(401).json({ success: false, message: "incorrect pword"});
+			if (password !== results[0].Password) {
+                return res.status(401).json({ success: false, message: "incorrect pword", debug: trimmedResult});
             }
 		
 
