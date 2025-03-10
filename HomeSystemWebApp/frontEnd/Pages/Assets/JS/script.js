@@ -506,18 +506,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener("DOMContentLoaded", function () {
     // Retrieve user details from localStorage
-    const storedUser = JSON.parse(localStorage.getItem("users"));
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if (storedUser) {
-        // Assuming `lastRegisteredEmail` or `currentLoggedInEmail` is stored to identify the logged-in user
-        const currentEmail = localStorage.getItem("lastLoggedInEmail") || localStorage.getItem("currentLoggedInEmail");
+    if (user) {
+
+
         
-        // Find the user object matching the current email
-        const currentUser = storedUser.find(user => user.email === currentEmail);
-        
-        if (currentUser) {
+        if (user) {
             // Set the name in the profile section
-            document.getElementById("profile-name").textContent = `Welcome back, ${currentUser.firstname}!`;
+            document.getElementById("profile-name").textContent = `Welcome back, ${user.firstname}!`;
         } else {
             document.getElementById("profile-name").textContent = "Welcome, Guest!";
         }

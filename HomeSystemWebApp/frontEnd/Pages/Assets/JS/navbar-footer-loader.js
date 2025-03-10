@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
             sidebarMenu.innerHTML = ""; // Clear previous content
         
-            if (!user.email) {
+            if (!user.Email) {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-message">
                         <strong>Please Register First!</strong>
@@ -163,14 +163,12 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
     
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-        let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-        let currentUser = users.find(user => user.email === lastLoggedInEmail);
+        let user = JSON.parse(localStorage.getItem("user")) || [];
+           
+        console.log("Current User:", user);
     
-        console.log("Current User:", currentUser);
-    
-        if (currentUser && currentUser.isLoggedIn) {
-            console.log("👤 User logged in:", currentUser.firstname);
+        if (user.isLoggedIn) {
+            console.log("👤 User logged in:", user.firstname);
     
             // Hide Register & Login Buttons
             if (registerBtn) registerBtn.style.display = "none";
@@ -181,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <li><a href="Dashboard.html"><i class="fa fa-th-large"></i> Dashboard</a></li>
                 <li><a href="Overview.html"><i class="fa fa-bar-chart"></i> Overview</a></li>
                 <li><a href="Analytic.html"><i class="fa fa-line-chart"></i> Analytic</a></li>
-                ${currentUser.userType === "homeManager" ? 
+                ${user.userType === "homeManager" ? 
                     `<li><a href="Device-handling.html"><i class="fa fa-cogs"></i> Device Handling</a></li>` 
                     : ''
                 }
