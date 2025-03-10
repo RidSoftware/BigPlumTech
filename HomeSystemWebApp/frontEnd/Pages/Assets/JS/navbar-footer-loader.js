@@ -32,13 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
         function updateSidebar() {
-            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let users = JSON.parse(localStorage.getItem("user")) || [];
             let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+<<<<<<< HEAD
             let currentUser = user.getItem("Email");
+=======
+            let currentUser = users.find(user => user.Email);
+>>>>>>> a9ac0134d1b772a07c7a8d488163771620512546
             let profileSrc = localStorage.getItem("profilePic") || "";
         
             sidebarMenu.innerHTML = ""; // Clear previous content
-
         
             if (!currentUser) {
                 sidebarMenu.innerHTML = `
@@ -48,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <button class="sidebar-button" onclick="window.location.href='Registration.html'">Register Now</button>
                 `;
-            } else if (!currentUser.isLoggedIn) {
+            } else if (!user.isLoggedIn) {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-message">
                         <strong>Log In Required</strong>
@@ -107,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmLogout.addEventListener("click", function () {
                     currentUser.isLoggedIn = false;
                     localStorage.setItem("users", JSON.stringify(users));
-                    localStorage.removeItem("lastLoggedInEmail");
 
                     // Hide logout confirmation modal and show thank you message
                     logoutModal.style.display = "none";

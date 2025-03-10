@@ -27,6 +27,8 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             return;
         }
 
+	localStorage.setItem("user", JSON.stringify(data.user));
+
     // Show confirmation message & overlay
     confirmationMessage.innerHTML = `
         <div class="confirmation-container">
