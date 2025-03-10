@@ -28,12 +28,13 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         }
 
 	localStorage.setItem("user", JSON.stringify(data.user));
+    let user = JSON.parse(localStorage.getItem("user"));
 
     // Show confirmation message & overlay
     confirmationMessage.innerHTML = `
         <div class="confirmation-container">
             <h2>Login Successful!</h2>
-            <p>Welcome back, <strong>Guest</strong></p>
+            <p>Welcome back, <strong>${user.firstname}</strong></p>
             <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
                 Go to Dashboard <i class="fa fa-arrow-right"></i>
             </button>
