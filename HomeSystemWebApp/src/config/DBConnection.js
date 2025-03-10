@@ -2,8 +2,8 @@ const mysql = require('mysql2');
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "SmallPlum",
-    password: "PlumPassword",
+    user: "root",
+    password: "plum123",
     database: "plumEnergyDatabase",
     port: 3306
 });
