@@ -67,6 +67,17 @@ select {
     transition: 0.3s;
 }
 
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+
 select:focus {
     border-color: #007BFF;
     outline: none;
@@ -177,6 +188,8 @@ select:focus {
   .continue-btn:hover {
     background: #218838;
   }
+
+  
 
 /* Fade-in Animation */
 @keyframes fadeIn {
