@@ -32,18 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!sidebar || !profileIcon || !sidebarMenu) return;
 
         function updateSidebar() {
-            let users = JSON.parse(localStorage.getItem("user")) || [];
-            let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-<<<<<<< HEAD
-            let currentUser = user.getItem("Email");
-=======
-            let currentUser = users.find(user => user.Email);
->>>>>>> a9ac0134d1b772a07c7a8d488163771620512546
+            let user = JSON.parse(localStorage.getItem("user")) || [];
+            //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+            
+            //let currentUser = user.getItem("Email");
+
             let profileSrc = localStorage.getItem("profilePic") || "";
         
             sidebarMenu.innerHTML = ""; // Clear previous content
         
-            if (!currentUser) {
+            if (!user.email) {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-message">
                         <strong>Please Register First!</strong>
@@ -71,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="user-role">
                             <p>Role: ${user.userType === "homeManager" ? "Admin" : "User"}</p>
                         </div>
-                        ${user.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>${currentUser.adminCode}</strong></p>` : ""}
+                        ${user.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>WE DONT HAVE ADMIN COED</strong></p>` : ""}
                     </div>
         
                     <h4 class="sidebar-section-title">Main Menu</h4>
@@ -85,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <li><i class="fa fa-flag"></i><a href="Reports.html"> Reports</a></li>
                     <li><i class="fa fa-bell"></i><a href="Notifications.html"> Notifications</a></li>
         
-                    ${currentUser.userType === "homeManager" ? `
+                    ${user.userType === "homeManager" ? `
                         <h4 class="sidebar-section-title">Admin Controls</h4>
                         <hr>
                         <li><i class="fa fa-file-text"></i><a href="Generate-Report.html"> Generate Report</a></li>
@@ -108,15 +106,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // If user confirms logout
                 confirmLogout.addEventListener("click", function () {
-                    currentUser.isLoggedIn = false;
-                    localStorage.setItem("users", JSON.stringify(users));
+                    user.isLoggedIn = false;
+                    localStorage.removeItem("user");
 
                     // Hide logout confirmation modal and show thank you message
                     logoutModal.style.display = "none";
                     logoutConfirmation.innerHTML = `
                         <div class="confirmation-container">
                             <h2>Thank you for using our service!</h2>
-                            <p>See you soon, ${currentUser.firstname}</p>
+                            <p>See you soon, ${user.firstname}</p>
                             <button class="continue-btn" onclick="window.location.href='index.html'">
                                 Continue <i class="fa fa-arrow-right"></i>
                             </button>
