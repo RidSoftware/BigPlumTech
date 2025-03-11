@@ -22,7 +22,7 @@
 
 
     } catch(error){
-        console.error(`get24hrs failed: `, error);
+        console.error("get24hrs failed: ", error);
 
     }
 //}

@@ -35,38 +35,30 @@ router.post('/api/pull24hr', async (req, res) => {
             }
 
 
-            const usertypeTranslation = results[0].Admin === 'Y' ? 'homeManager': 'homeUser';
-
-            const trimmedResult = {
-                firstname: results[0].FirstName,
-                Surname: results[0].Surname,
-                Email: results[0].Email,
-                userType: usertypeTranslation,
-                isLoggedIn: true
-            }
 
 
-			if (password !== results[0].Password) {
-                return res.status(401).json({ success: false, message: "incorrect pword", debug: trimmedResult});
-            }
+            // const energydataprocessed[23] = {
+            //     hour: 
+            // }
+
 		
 
 
             // success
             res.status(201).json({ 
                 success: true, 
-                message: 'login succes', 
-                user: trimmedResult
+                message: 'datapull success', 
+                user: energydataprocessed
             });
         });
     } catch (error) {
-        console.error('err from login:', error);
+        console.error('err from fetch24:', error);
         res.status(500).json({ 
             success: false, 
         });
     }
 });
-/////////////////LOgin
+/////////////////pull 24hrs
 
 
 
@@ -83,4 +75,4 @@ router.get('/energy', (req, res) => {
 });
 //////////////////test energy data pull
 
-module.exports = energyRouter;
+module.exports = router;

@@ -19,6 +19,7 @@ const db = require('./config/DBConnection');
 const userRoutes = require('./routes/userRoutes');
 // Routes
 app.use(userRoutes);
+app.user(energyDataRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is up and running');
