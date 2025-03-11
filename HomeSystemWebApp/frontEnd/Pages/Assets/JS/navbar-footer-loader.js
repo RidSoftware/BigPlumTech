@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="user-role">
                             <p>Role: ${user.userType === "homeManager" ? "Admin" : "User"}</p>
                         </div>
-                        ${user.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>WE DONT HAVE ADMIN COED</strong></p>` : ""}
+                        ${user.userType === "homeManager" ? `<p class="admin-code">Admin Code: <strong>WE DONT HAVE ADMIN CODE</strong></p>` : ""}
                     </div>
         
                     <h4 class="sidebar-section-title">Main Menu</h4>
