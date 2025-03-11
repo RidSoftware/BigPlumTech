@@ -1,0 +1,106 @@
+INSERT INTO homedetails
+VALUES (1,4,"murray","AD1");
+--starts auto increment at 1 i think? then can leave blank as it increments from there?
+INSERT INTO homedetails
+VALUES (,5,"paterson","AD2");
+
+INSERT INTO homedetails
+VALUES (,3,"miah","AD3");
+
+
+
+INSERT INTO userdetails
+VALUES(01,"password", "calum", "murray", "cm0000@hw.ac.uk", 1, 'Y');
+
+INSERT INTO userdetails
+VALUES(02,"passw0rd", "murray", "calum", "cm0010@hw.ac.uk", 1, 'N');
+
+INSERT INTO userdetails
+VALUES(03,"pa$$word", "grant", "paterson", "pg0000@hw.ac.uk", 2, 'Y');
+
+INSERT INTO userdetails
+VALUES(04,"Password1", "Arman", "miah", "am0000@hw.ac.uk", 3, 'Y');
+
+
+
+
+INSERT INTO alldevices
+VALUES(1, "Bed Lamp", 'EnergyUsage', 'Off', "Bedroom", 1);
+
+INSERT INTO alldevices
+VALUES(, "Main Light", 'EnergyUsage', 'Off', "Bedroom", 1);
+
+INSERT INTO alldevices
+VALUES(, "Battery", 'EnergyGeneration', 'On', "Living Room", 1);
+
+INSERT INTO alldevices
+VALUES(, "Solar Panel", 'EnergyGeneration', 'On', "Roof", 1);
+
+INSERT INTO alldevices
+VALUES(, "Side Lamp", 'EnergyUsage', 'Off', "Bedroom", 2);
+
+INSERT INTO alldevices
+VALUES(, "Night Light", 'EnergyUsage', 'Off', "Living Room", 3);
+
+
+
+INSERT INTO `energygeneration_daily`
+VALUES(1, 3, 300);
+
+INSERT INTO `energygeneration_daily`
+VALUES(, 4, 700);
+
+
+INSERT INTO `energygeneration_weekly`
+VALUES(1, 3, 1500);
+
+INSERT INTO `energygeneration_daily`
+VALUES(, 4, 2200);
+
+
+INSERT INTO `energygeneration_monthly`
+VALUES(1, 3, 6000);
+
+INSERT INTO `energygeneration_monthly`
+VALUES(, 4, 9000);
+
+
+
+INSERT INTO `energyusage_daily`
+VALUES (1, 1, 20);
+
+INSERT INTO `energyusage_daily`
+VALUES (, 2, 20);
+
+INSERT INTO `energyusage_daily`
+VALUES (, 5, 15);
+
+INSERT INTO `energyusage_daily`
+VALUES (, 6, 10);
+
+
+INSERT INTO `energyusage_weekly`
+VALUES (1, 1, 140);
+
+INSERT INTO `energyusage_weekly`
+VALUES (, 2, 140);
+
+INSERT INTO `energyusage_weekly`
+VALUES (, 5, 105);
+
+INSERT INTO `energyusage_weekly`
+VALUES (, 6, 70);
+
+
+INSERT INTO `energyusage_monthly`
+VALUES (1, 1, 460);
+
+INSERT INTO `energyusage_monthly`
+VALUES (, 2, 460);
+
+INSERT INTO `energyusage_monthly`
+VALUES (, 5, 420);
+
+INSERT INTO `energyusage_monthly`
+VALUES (, 6, 280);
+
