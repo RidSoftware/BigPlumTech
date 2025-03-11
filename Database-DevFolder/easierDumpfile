@@ -53,41 +53,6 @@ COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB;
 
 -- --------------------
--- Energy Generation Tables
-CREATE TABLE `energygeneration_daily` (
-    `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `DeviceID` INT(5) UNSIGNED NOT NULL,
-    `EnergyGen` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`RecordNum`) USING BTREE,
-    INDEX `FK_energygeneration_daily_alldevices` (`DeviceID`) USING BTREE,
-    CONSTRAINT `FK_energygeneration_daily_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
-
-CREATE TABLE `energygeneration_weekly` (
-    `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `DeviceID` INT(5) UNSIGNED NOT NULL,
-    `EnergyGen` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`RecordNum`) USING BTREE,
-    INDEX `FK_energygeneration_weekly_alldevices` (`DeviceID`) USING BTREE,
-    CONSTRAINT `FK_energygeneration_weekly_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
-
-CREATE TABLE `energygeneration_monthly` (
-    `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `DeviceID` INT(5) UNSIGNED NOT NULL,
-    `EnergyGen` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`RecordNum`) USING BTREE,
-    INDEX `FK_energygeneration_monthly_alldevices` (`DeviceID`) USING BTREE,
-    CONSTRAINT `FK_energygeneration_monthly_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
-
--- --------------------
 -- Automation Information Table
 CREATE TABLE `automationinfo` (
 	`AutoRecord` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -104,36 +69,61 @@ ENGINE=InnoDB
 ;
 
 -- --------------------
--- Energy Usage Tables
-CREATE TABLE `energyusage_daily` (
-    `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `DeviceID` INT(5) UNSIGNED NOT NULL,
-    `EnergyUsage` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`RecordNum`) USING BTREE,
-    INDEX `FK_energyusage_daily_alldevices` (`DeviceID`) USING BTREE,
-    CONSTRAINT `FK_energyusage_daily_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+-- Energy Tables (Modified)
+CREATE TABLE `energyhourly` (
+	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DeviceID` INT(5) UNSIGNED NOT NULL,
+	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`Hour` INT(2) NOT NULL DEFAULT '0',
+	`Date` DATE NOT NULL,
+	PRIMARY KEY (`RecordNum`) USING BTREE,
+	INDEX `FK_energy (hourly)_alldevices` (`DeviceID`) USING BTREE,
+	CONSTRAINT `FK_energy (hourly)_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
+ENGINE=InnoDB
+;
 
-CREATE TABLE `energyusage_weekly` (
-    `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `DeviceID` INT(5) UNSIGNED NOT NULL,
-    `EnergyUsage` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`RecordNum`) USING BTREE,
-    INDEX `FK_energyusage_weekly_alldevices` (`DeviceID`) USING BTREE,
-    CONSTRAINT `FK_energyusage_weekly_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+-- --------------------
+CREATE TABLE `energydaily` (
+	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DeviceID` INT(5) UNSIGNED NOT NULL,
+	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`Date` DATE NOT NULL,
+	PRIMARY KEY (`RecordNum`) USING BTREE,
+	INDEX `FK_energy (daily)_alldevices` (`DeviceID`) USING BTREE,
+	CONSTRAINT `FK_energy (daily)_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
+ENGINE=InnoDB
+;
 
-CREATE TABLE `energyusage_monthly` (
-    `RecordNum` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `DeviceID` INT(5) UNSIGNED NOT NULL,
-    `EnergyUsage` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`RecordNum`) USING BTREE,
-    INDEX `FK_energyusage_monthly_alldevices` (`DeviceID`) USING BTREE,
-    CONSTRAINT `FK_energyusage_monthly_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+-- --------------------
+CREATE TABLE `energyweekly` (
+	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DeviceID` INT(5) UNSIGNED NOT NULL,
+	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`Date` DATE NOT NULL,
+	PRIMARY KEY (`RecordNum`) USING BTREE,
+	INDEX `FK_energy (weekly)_alldevices` (`DeviceID`) USING BTREE,
+	CONSTRAINT `FK_energy (weekly)_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
+ENGINE=InnoDB
+;
+
+-- --------------------
+CREATE TABLE `energymonthly` (
+	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DeviceID` INT(5) UNSIGNED NOT NULL,
+	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`Date` DATE NOT NULL,
+	PRIMARY KEY (`RecordNum`) USING BTREE,
+	INDEX `FK_energy (monthly)_alldevices` (`DeviceID`) USING BTREE,
+	CONSTRAINT `FK_energy (monthly)_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
+
+
