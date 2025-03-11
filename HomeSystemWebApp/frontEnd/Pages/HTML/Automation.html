@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Automation Control</title>
+  <link rel="stylesheet" href="../Assets/CSS/Automation.css">
+  <script src="../Assets/JS/automation.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Automation Control Panel</h1>
+    <p>Manage smart home automation settings.</p>
+
+    <form id="automation-form">
+      <label for="device">Device Type:</label>
+      <select id="device">
+        <option value="Light">Light</option>
+        <option value="Fan">Fan</option>
+        <option value="AC">AC</option>
+      </select>
+
+      <label for="start-time">Start Time (24h):</label>
+      <input type="time" id="start-time" required>
+
+      <label for="end-time">End Time (24h):</label>
+      <input type="time" id="end-time" required>
+
+      <label for="status">Status:</label>
+      <select id="status">
+        <option value="ON">ON</option>
+        <option value="OFF">OFF</option>
+      </select>
+      
+      <button type="submit">Save Automation</button>
+    </form>
+    
+    <h2>Existing Automations</h2>
+    <div id="automation-list"></div>
+  </div>
+  
+</body>
+</html>
