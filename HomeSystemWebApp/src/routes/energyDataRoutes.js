@@ -17,7 +17,10 @@ router.post('/api/pull24hr', async (req, res) => {
 
     try {
 
-
+        const d = new Date();
+        const currentDate = d.toISOString().split('T')[0];
+        const currentHour = d.getHours();
+        
 
         const q = 'SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";';
         db.query(q/*sends query*/, [email], async (err, results) => {
