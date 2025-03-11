@@ -21,10 +21,10 @@ WHERE Deviceid = DESIREDDEVICEIDNUMBER;
 --This toggles the device on or off so we can do both in 1 query, first column is our conidition, second is what it returns if condition is true, third column is our else statment
 
 -- This should pull summed energyValue for a specific hour and specific date for all devices tied to a user via email
-SELECT SUM(e.energyValue) AS totalEnergy
-FROM hourlyEnergyValues e
-JOIN deviceDetails d ON e.deviceID = d.deviceID
-JOIN userDetails u ON u.homeID = d.homeID
-WHERE u.email = ? AND e.Hour = ? AND e.Date = ?;
+SELECT SUM(EnergyVal) AS totalEnergy
+FROM energyhourly
+JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
+JOIN homedetails ON homedetails.HomeID = alldevices.HomeID
+WHERE homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";
 
 SELECT SUM(e.energyValue) AS totalEnergy FROM hourlyEnergyValues e JOIN deviceDetails d ON e.deviceID = d.deviceID JOIN userDetails u ON u.homeID = d.homeID WHERE u.email = ? AND e.Hour = ? AND e.Date = ?;
