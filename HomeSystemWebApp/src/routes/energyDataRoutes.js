@@ -16,6 +16,9 @@ router.post('/api/pull24hr', async (req, res) => {
     }
 
     try {
+
+
+
         const q = 'SELECT SUM(e.energyValue) AS totalEnergy FROM hourlyEnergyValues e JOIN deviceDetails d ON e.deviceID = d.deviceID JOIN userDetails u ON u.homeID = d.homeID WHERE u.email = ? AND e.Hour = ? AND e.Date = ?;';
         db.query(q/*sends query*/, [email], async (err, results) => {
             if (err) {
@@ -40,8 +43,8 @@ router.post('/api/pull24hr', async (req, res) => {
             // const energydataprocessed[23] = {
             //     hour: 
             // }
-
-		
+            var energydataprocessed = {};
+            results.forEach();
 
 
             // success
