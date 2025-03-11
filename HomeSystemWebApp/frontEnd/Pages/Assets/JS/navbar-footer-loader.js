@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <hr>
                         <li><i class="fa fa-file-text"></i><a href="Generate-Report.html"> Generate Report</a></li>
                         <li><i class="fa fa-cogs"></i><a href="Device-handling.html"> Device Handling</a></li>
+                        <li><i class="fa fa-microchip"></i><a href="Automation.html"> Device Automation </a></li>                    
                     ` : ''}
         
                     <h4 class="sidebar-section-title">Account</h4>
@@ -180,7 +181,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <li><a href="Overview.html"><i class="fa fa-bar-chart"></i> Overview</a></li>
                 <li><a href="Analytic.html"><i class="fa fa-line-chart"></i> Analytic</a></li>
                 ${user.userType === "homeManager" ? 
-                    `<li><a href="Device-handling.html"><i class="fa fa-cogs"></i> Device Handling</a></li>` 
+                    `<li><a href="Device-handling.html"><i class="fa fa-cogs"></i> Device Handling</a></li>
+                    <li><i class="fa fa-microchip"></i><a href="Automation.html"> Device Automation </a></li>         ` 
                     : ''
                 }
             `;

@@ -15,11 +15,12 @@ router.post("/api/register", (req, res) => {
     }
 
     const admin = userType === "homeManager" ? 'Y' : 'N';
-    
+
     const q = 'INSERT INTO userdetails (firstname, surname, email, password, admin, homeid) VALUES (?, ?, ?, ?, ?, ?)'
 
 	const homeid = 99;	//setting home id 99 as default for new users
 
+    
     db.query( q, [firstname, lastname, email, password, admin, homeid], (err, results) => {
                     if (err) {
                         console.error('DB error on inserting new user', err);

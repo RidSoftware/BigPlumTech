@@ -2,15 +2,16 @@ body {
     font-family: Arial, sans-serif;
     background: #f4f4f4;
     margin: 0;
-    padding: 20px;
+    min-height: 100vh; /* Ensures full-page height */
     text-align: center;
   }
   
   .container {
     background: white;
+    margin: 100px auto;
     padding: 20px;
     max-width: 500px;
-    margin: auto;
+    margin-bottom: 80px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
@@ -71,3 +72,14 @@ body {
     background: darkred;
   }
   
+  #footer {
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    background: #007BFF;
+    color: white;
+    position: relative;
+    bottom: 0;
+    margin-top: auto; 
+  }

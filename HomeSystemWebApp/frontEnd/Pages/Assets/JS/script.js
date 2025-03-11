@@ -214,10 +214,12 @@ document.addEventListener("DOMContentLoaded", function () {
   //let currentUser = users.find(user => user.email === lastLoggedInEmail);
   
   const energyPanel = document.getElementById("energy-panel");
+  const energyPanelPin = document.getElementById("placeholder-panel");
 
   if (!user) {
       console.warn("No user found, hiding energy panel.");
       energyPanel.style.display = "none";
+      energyPanelPin.style.display = "none";
       return;
   }
 
@@ -227,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
       enableDrag(energyPanel); // Ensure it's draggable
   } else {
       energyPanel.style.display = "none"; // Hide for homeManager
+      energyPanelPin.style.display = "none";
   }
 });
 
@@ -508,17 +511,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Retrieve user details from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
 
+    //If user logs in 
     if (user) {
-
-
         
-        if (user) {
+        if (user.userType === "homeUser") {
             // Set the name in the profile section
-            document.getElementById("profile-name").textContent = `Welcome back, ${user.firstname}!`;
+            document.getElementById("profile-name").textContent = `Welcome back, Home User ${user.firstname}!`;
+            document.getElementById("dashboardintro-text").textContent = "To your home page. Enjoy the features we bring to you!";
         } else {
-            document.getElementById("profile-name").textContent = "Welcome, Guest!";
+            document.getElementById("profile-name").textContent = `Welcome back, Home Manager ${user.firstname}!`;
+            document.getElementById("dashboardintro-text").textContent = "To your home page. Please ensure proper integrity on handling user devices.";
         }
-    } else {
+    } else { // If user not logs in, but might be redundant
         document.getElementById("profile-name").textContent = "Welcome, Guest!";
     }
 });
