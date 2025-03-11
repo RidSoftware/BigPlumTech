@@ -27,4 +27,11 @@ JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
 JOIN homedetails ON homedetails.HomeID = alldevices.HomeID
 WHERE homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";
 
+-- Same thing but for one device
+SELECT SUM(EnergyVal) AS totalEnergy
+FROM energyhourly
+JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
+JOIN homedetails ON homedetails.HomeID = alldevices.HomeID
+WHERE alldevices.DeviceID = 8 AND homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";
+
 SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";
