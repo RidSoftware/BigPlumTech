@@ -19,7 +19,6 @@ CREATE TABLE `userdetails` (
 COMMENT='Table containing user details'
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=1
 ;
 
 -- --------------------
@@ -87,6 +86,22 @@ CREATE TABLE `energygeneration_monthly` (
 )
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB;
+
+-- --------------------
+-- Automation Information Table
+CREATE TABLE `automationinfo` (
+	`AutoRecord` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DeviceID` INT(5) UNSIGNED NOT NULL,
+	`TimeStart` TIME NOT NULL,
+	`TimeEnd` TIME NOT NULL,
+	`DayToBegin` VARCHAR(15) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	PRIMARY KEY (`AutoRecord`) USING BTREE,
+	INDEX `FK_automationinfo_alldevices` (`DeviceID`) USING BTREE,
+	CONSTRAINT `FK_automationinfo_alldevices` FOREIGN KEY (`DeviceID`) REFERENCES `alldevices` (`DeviceID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+;
 
 -- --------------------
 -- Energy Usage Tables
