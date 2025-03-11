@@ -35,3 +35,16 @@ JOIN homedetails ON homedetails.HomeID = alldevices.HomeID
 WHERE alldevices.DeviceID = 8 AND homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";
 
 SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";
+
+-- this version should be work by a list of 24
+SELECT SUM(EnergyVal) AS totalEnergy
+FROM energyhourly
+JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
+JOIN homedetails ON homedetails.HomeID = alldevices.HomeID
+WHERE alldevices.DeviceID = 8 
+  AND homedetails.HomeID = 3
+  AND TIMESTAMP(energyhourly.Date, energyhourly.Hour) 
+      BETWEEN TIMESTAMP('2025-03-10', '04') 
+      AND TIMESTAMP('2025-03-11', '03');
+
+SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE alldevices.DeviceID = 8 AND homedetails.HomeID = 3 AND TIMESTAMP(energyhourly.Date, energyhourly.Hour) BETWEEN TIMESTAMP('2025-03-10', '04')  AND TIMESTAMP('2025-03-11', '03');
