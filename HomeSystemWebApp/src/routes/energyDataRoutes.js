@@ -19,7 +19,7 @@ router.post('/api/pull24hr', async (req, res) => {
 
 
 
-        const q = 'SELECT SUM(e.energyValue) AS totalEnergy FROM hourlyEnergyValues e JOIN deviceDetails d ON e.deviceID = d.deviceID JOIN userDetails u ON u.homeID = d.homeID WHERE u.email = ? AND e.Hour = ? AND e.Date = ?;';
+        const q = 'SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";';
         db.query(q/*sends query*/, [email], async (err, results) => {
             if (err) {
                 console.error('db error selecting user', err);
