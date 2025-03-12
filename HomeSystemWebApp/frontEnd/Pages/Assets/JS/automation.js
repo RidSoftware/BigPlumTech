@@ -1,21 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     let automationForm = document.getElementById("automation-form");
-    let automationList = document.getElementById("automation-list");
-
-    function loadAutomations() {
-        automationList.innerHTML = "";
-        let automations = JSON.parse(localStorage.getItem("automations")) || [];
-        
-        automations.forEach((auto, index) => {
-            let automationItem = document.createElement("div");
-            automationItem.className = "automation-item";
-            automationItem.innerHTML = `
-                <p>${auto.device} - ${auto.status} (${auto.start} to ${auto.end})</p>
-                <button class="delete-automation" onclick="deleteAutomation(${index})">Delete</button>
-            `;
-            automationList.appendChild(automationItem);
-        });
-    }
 
     function saveAutomation(event) {
         event.preventDefault();
@@ -27,19 +11,28 @@ document.addEventListener("DOMContentLoaded", function () {
         let automations = JSON.parse(localStorage.getItem("automations")) || [];
         automations.push({ device, start, end, status });
         localStorage.setItem("automations", JSON.stringify(automations));
-        
-        loadAutomations();
+
+        // Show Confirmation Message & Overlay
+        showConfirmationMessage();
+
         automationForm.reset();
     }
 
-    function deleteAutomation(index) {
-        let automations = JSON.parse(localStorage.getItem("automations")) || [];
-        automations.splice(index, 1);
-        localStorage.setItem("automations", JSON.stringify(automations));
-        loadAutomations();
+    function showConfirmationMessage() {
+        let overlay = document.getElementById("overlay");
+        let confirmationMessage = document.getElementById("confirmation-message");
+
+        overlay.style.display = "block";
+        confirmationMessage.style.display = "block";
+
+        confirmationMessage.innerHTML = `
+            <h2>Automation Setup Completed!</h2>
+            <p>Your automation for <strong>${document.getElementById("device").value}</strong> has been saved.</p>
+            <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
+                Go to Dashboard <i class="fa fa-arrow-right"></i>
+            </button>
+        `;
     }
 
     automationForm.addEventListener("submit", saveAutomation);
-    loadAutomations();
-
 });

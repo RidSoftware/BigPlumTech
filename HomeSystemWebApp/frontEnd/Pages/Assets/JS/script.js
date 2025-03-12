@@ -557,12 +557,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   addAutomationBtn.addEventListener("click", function () {
-      const routine = prompt("Enter your automation routine (e.g., Turn off lights at 10 PM)");
-      if (routine) {
-          automations.push(routine);
-          localStorage.setItem("automations", JSON.stringify(automations));
-          renderAutomations();
-      }
+    
   });
 
   renderAutomations(); // Initial load

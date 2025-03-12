@@ -3,12 +3,11 @@ body {
     background: #f4f4f4;
     margin: 0;
     min-height: 100vh; /* Ensures full-page height */
-    text-align: center;
   }
   
   .container {
     background: white;
-    margin: 100px auto;
+    margin: 125px auto;
     padding: 20px;
     max-width: 500px;
     margin-bottom: 80px;
@@ -48,29 +47,62 @@ body {
     background: #0056b3;
   }
   
-  .automation-item {
-    background: #ffffff;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 5px solid #007BFF;
-  }
-  
-  .delete-automation {
-    background: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 3px;
-  }
-  
-  .delete-automation:hover {
-    background: darkred;
-  }
+  /* Overlay Background */
+.overlay-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Confirmation Panel */
+.confirmation-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Confirmation Message */
+.confirmation-container h2 {
+  color: #007BFF;
+  margin-bottom: 10px;
+}
+
+.confirmation-container p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Go to Dashboard Button */
+.dashboard-btn {
+  background: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.dashboard-btn:hover {
+  background: #0056b3;
+}
+
   
   #footer {
     padding: 20px;

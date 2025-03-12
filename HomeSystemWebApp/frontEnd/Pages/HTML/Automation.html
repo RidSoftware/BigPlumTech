@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automation Control</title>
   <link rel="stylesheet" href="../Assets/CSS/Automation.css">
-  <script src="../Assets/JS/automation.js"></script>
-  <script src="../Assets/JS/navbar-footer-loader.js"></script>
+  <script src="../Assets/JS/automation.js" defer></script>
+  <script src="../Assets/JS/navbar-footer-loader.js" defer></script>
 </head>
 <body>
   <div id="navbar"></div>
 
   <div class="container">
     <h1>Automation Control Panel</h1>
-    <p>Manage smart home automation settings.</p>
+    <p>This is the automation control panel, where you (admin) can set automation for smart devices for users.</p>
+    <br>
+    <p>Keep in mind that this automation applies every day and will display on the Home User's dashboard.</p>
+    <br>
 
     <form id="automation-form">
       <label for="device">Device Type:</label>
@@ -36,11 +40,14 @@
       
       <button type="submit">Save Automation</button>
     </form>
-    
-    <h2>Existing Automations</h2>
-    <div id="automation-list"></div>
   </div>
-  
+
+  <!-- Confirmation Message Panel -->
+  <div id="overlay" class="overlay-background" style="display: none;"></div>
+  <div id="confirmation-message" class="confirmation-container" style="display: none;">
+    <!-- Content is dynamically added via JS -->
+  </div>
+
   <div id="footer"></div>
 </body>
 </html>
