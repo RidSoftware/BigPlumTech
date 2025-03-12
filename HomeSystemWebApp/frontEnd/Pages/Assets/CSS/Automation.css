@@ -47,18 +47,19 @@ body {
     background: #0056b3;
   }
   
-  /* Overlay Background */
-.overlay-background {
+/* Fix Overlay Background */
+.confirmation-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  background: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  z-index: 999; /* Ensure it's above everything */
+  display: none; /* Hidden by default */
 }
 
-/* Confirmation Panel */
+/* Fix Confirmation Panel */
 .confirmation-container {
   position: fixed;
   top: 50%;
@@ -70,7 +71,7 @@ body {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
   z-index: 1000;
-  display: flex;
+  display: none; /* Hidden by default */
   flex-direction: column;
   align-items: center;
 }
@@ -102,6 +103,7 @@ body {
 .dashboard-btn:hover {
   background: #0056b3;
 }
+
 
   
   #footer {

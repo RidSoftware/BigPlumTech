@@ -183,4 +183,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('resize', () => {
     energyChart.resize();
+
+    function getBestEnergyTime() {
+      // Simulated energy pricing data (replace this with real-time API later)
+      const energyRates = [
+          { time: "00:00", price: 0.30 },
+          { time: "06:00", price: 0.25 },
+          { time: "12:00", price: 0.40 },
+          { time: "18:00", price: 0.60 },
+          { time: "22:00", price: 0.20 }
+      ];
+    
+      // Sort by cheapest price
+      energyRates.sort((a, b) => a.price - b.price);
+    
+      const bestTime = energyRates[0]; // Get the lowest price time
+      document.getElementById("best-time").innerText = `Best Time: ${bestTime.time} (Price: $${bestTime.price}/kWh)`;
+    }
+    
+    // Load recommendation on page load
+    document.addEventListener("DOMContentLoaded", getBestEnergyTime);
   });

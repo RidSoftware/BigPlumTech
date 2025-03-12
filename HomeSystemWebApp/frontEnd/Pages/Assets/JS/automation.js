@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     let automationForm = document.getElementById("automation-form");
+    let overlay = document.getElementById("confirmationOverlay");
+    let confirmationMessage = document.getElementById("confirmation-message");
 
     function saveAutomation(event) {
         event.preventDefault();
@@ -12,24 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
         automations.push({ device, start, end, status });
         localStorage.setItem("automations", JSON.stringify(automations));
 
-        // Show Confirmation Message & Overlay
-        showConfirmationMessage();
-
-        automationForm.reset();
-    }
-
-    function showConfirmationMessage() {
-        let overlay = document.getElementById("overlay");
-        let confirmationMessage = document.getElementById("confirmation-message");
-
+        // Show Overlay and Confirmation Message
         overlay.style.display = "block";
-        confirmationMessage.style.display = "block";
+        confirmationMessage.style.display = "flex";
 
+        // Add Confirmation Message Content
         confirmationMessage.innerHTML = `
             <h2>Automation Setup Completed!</h2>
-            <p>Your automation for <strong>${document.getElementById("device").value}</strong> has been saved.</p>
+            <p>Your automation for <strong>${device}</strong> has been saved.</p>
             <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
-                Go to Dashboard <i class="fa fa-arrow-right"></i>
+                Go to Dashboard →
             </button>
         `;
     }

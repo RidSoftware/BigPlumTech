@@ -301,7 +301,7 @@ select, input {
     cursor: grab;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
     font-size: 14px; 
-    z-index: 9999 !important;
+    z-index: 1000 !important;
     transition: background 0.3s, width 0.2s;
 }
 
@@ -416,31 +416,81 @@ select, input {
     background: darkred;
 }
 
-/* Energy recommendation */
-.energy-recommendations {
-    background: #eef5ff;
-    padding: 15px;
+.automation-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: #fff;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.automation-table th, .automation-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
     text-align: center;
 }
 
-.timeline {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-.time-slot {
+.automation-table th {
     background: #007BFF;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
     font-weight: bold;
 }
 
+.automation-table td {
+    font-size: 15px;
+    color: #333;
+}
+
+.automation-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.delete-automation {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-automation:hover {
+    background: darkred;
+}
+
+.no-automation {
+    font-style: italic;
+    color: #888;
+    margin-top: 10px;
+}
+
+/* Add Automation Button */
+.add-automation-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    background: #007BFF;
+    color: white;
+    border-radius: 5px;
+}
+
+.add-automation-btn:hover {
+    background: #0056b3;
+}
+
+/* Hide Action Column for Users */
+.hide-action-column {
+    display: none !important;
+}
+
+/* Hide Add Device Automation Button for Users */
+.hide-add-button {
+    display: none !important;
+}
 
 /* Footer */
 #footer {
@@ -454,3 +504,21 @@ select, input {
     position: relative;
     bottom: 0;
 }
+
+/* Fade-out animation for deleting automation */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+/* Add animation class */
+.fade-out {
+    animation: fadeOut 0.5s forwards; /* 0.5 seconds fade-out */
+}
+

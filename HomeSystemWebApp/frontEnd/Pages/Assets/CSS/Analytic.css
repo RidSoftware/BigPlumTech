@@ -292,6 +292,32 @@
     color: #fff;
   }
 
+  /* Energy recommendation */
+.energy-recommendations {
+  background: #eef5ff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  text-align: center;
+}
+
+.timeline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.time-slot {
+  background: #007BFF;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+
   /* Footer Stays at Bottom */
   #footer {
     padding: 20px;

@@ -528,57 +528,87 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const automationList = document.getElementById("automation-list");
-  const addAutomationBtn = document.getElementById("add-automation");
+    let automationList = document.getElementById("automation-list");
+    let automationText = document.getElementById("automation-text");
+    let automationTable = document.getElementById("automation-table");
+    let addDeviceAutomationBtn = document.getElementById("add-device-automation");
+    let actionColumnHeader = document.querySelector("#automation-table thead tr th:last-child");
 
-  let automations = JSON.parse(localStorage.getItem("automations")) || [];
+    let user = JSON.parse(localStorage.getItem("user")) || null;
+    let homeId = user ? user.homeId : null;
+    let userRole = user ? user.userType : "user"; // Default to normal user if no role
 
-  function renderAutomations() {
-      automationList.innerHTML = ""; // Clear previous list
-      automations.forEach((automation, index) => {
-          const automationItem = document.createElement("div");
-          automationItem.classList.add("automation-item");
-          automationItem.innerHTML = `
-              <span>${automation}</span>
-              <button class="delete-automation" data-index="${index}">🗑 Delete</button>
-          `;
-          automationList.appendChild(automationItem);
-      });
+    function loadAutomations() {
+        let automations = JSON.parse(localStorage.getItem("automations")) || [];
+        let filteredAutomations = automations.filter(auto => auto.homeId === homeId);
 
-      // Add event listeners to delete buttons
-      document.querySelectorAll(".delete-automation").forEach(button => {
-          button.addEventListener("click", function () {
-              const index = this.getAttribute("data-index");
-              automations.splice(index, 1);
-              localStorage.setItem("automations", JSON.stringify(automations));
-              renderAutomations(); // Refresh UI
-          });
-      });
-  }
+        automationList.innerHTML = "";
 
-  addAutomationBtn.addEventListener("click", function () {
-    
-  });
+        if (filteredAutomations.length === 0) {
+            automationTable.style.display = "none";
+            addDeviceAutomationBtn.style.display = "none";
+            
+            if (userRole === "homeManager") {
+                automationText.innerHTML = `
+                    <p class="no-automation">
+                        No automation setup. <a href="Automation.html">Go to Device Automation</a>
+                    </p>`;
+            } else {
+                automationText.innerHTML = `
+                    <p class="no-automation">
+                        No automation has been set up by the Home Manager! Contact them to configure automations.
+                    </p>`;
+                addDeviceAutomationBtn.style.display = "none";
+            }
+            return;
+        }
 
-  renderAutomations(); // Initial load
+        automationText.innerHTML = "";
+        automationTable.style.display = "table";
+        addDeviceAutomationBtn.style.display = "block"; 
+        
+        if (userRole === "homeUser") {
+            addDeviceAutomationBtn.style.display = "none"; // Hide add button for users
+            actionColumnHeader.classList.add("hide-action-column"); // Hide action column header
+        } else {
+            addDeviceAutomationBtn.style.display = "block"; // Show for admins
+        }
+
+        filteredAutomations.forEach((automation, index) => {
+            let row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${automation.device}</td>
+                <td>${automation.status}</td>
+                <td>${automation.start}</td>
+                <td>${automation.end}</td>
+                <td><em> Admin</em></td>
+                ${
+                    userRole === "homeManager"
+                        ? `<td><button class="delete-automation" data-index="${index}">Delete</button></td>`
+                        : ""
+                }
+            `;
+
+            automationList.appendChild(row);
+        });
+
+        document.querySelectorAll(".delete-automation").forEach(button => {
+            button.addEventListener("click", function () {
+                let index = this.getAttribute("data-index");
+                deleteAutomation(index);
+            });
+        });
+    }
+
+    function deleteAutomation(index) {
+        let automations = JSON.parse(localStorage.getItem("automations")) || [];
+        automations.splice(index, 1);
+        localStorage.setItem("automations", JSON.stringify(automations));
+        loadAutomations();
+    }
+
+    loadAutomations();
 });
 
-function getBestEnergyTime() {
-  // Simulated energy pricing data (replace this with real-time API later)
-  const energyRates = [
-      { time: "00:00", price: 0.30 },
-      { time: "06:00", price: 0.25 },
-      { time: "12:00", price: 0.40 },
-      { time: "18:00", price: 0.60 },
-      { time: "22:00", price: 0.20 }
-  ];
 
-  // Sort by cheapest price
-  energyRates.sort((a, b) => a.price - b.price);
-
-  const bestTime = energyRates[0]; // Get the lowest price time
-  document.getElementById("best-time").innerText = `Best Time: ${bestTime.time} (Price: $${bestTime.price}/kWh)`;
-}
-
-// Load recommendation on page load
-document.addEventListener("DOMContentLoaded", getBestEnergyTime);
