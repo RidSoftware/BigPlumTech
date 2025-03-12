@@ -19,20 +19,20 @@ document.addEventListener('DOMContentLoaded', function() {
 //Get Current User's Devices
 function getCurrentUserDevices() {
   let users = JSON.parse(localStorage.getItem("user")) || [];
-  let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-  let currentUser = users.find(user => user.email === lastLoggedInEmail);
+  //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
+  //let currentUser = users.find(user => user.email === lastLoggedInEmail);
 
-  if (!currentUser) return [];
+  if (!users) return [];
 
   let allDevices = JSON.parse(localStorage.getItem("smartDevices")) || {};
-  return allDevices[currentUser.email] || [];
+  return allDevices[users.Email] || [];
 }
 
 //Save User Devices
 function saveUserDevices(devices) {
-  let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail");
+  //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail");
   let allDevices = JSON.parse(localStorage.getItem("smartDevices")) || {};
-  allDevices[lastLoggedInEmail] = devices;
+  allDevices[users.Email] = devices;
   localStorage.setItem("smartDevices", JSON.stringify(allDevices));
 }
 
@@ -175,15 +175,13 @@ setInterval(loadAlertsAndNotifications, 10000);
 
 // Hide "Device Handling" for Non-Admins 
 function hideDeviceHandlingButton() {
-  let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail");
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  let currentUser = users.find(user => user.email === lastLoggedInEmail);
+    let user = JSON.parse(localStorage.getItem("user"));
 
   let devideHandlingButton = document.getElementById("device-handling-btn");
 
-  if (currentUser.userType !== "homeManager") {
-    devideHandlingButton.style.display = "none";
-  } else {
+  if (user.userType === "homeManager") {
     devideHandlingButton.style.display = "block";
+  } else {
+    devideHandlingButton.style.display = "none";
   }
 }
