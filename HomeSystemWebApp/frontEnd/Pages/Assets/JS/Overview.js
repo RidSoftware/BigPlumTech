@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //Get Current User's Devices
 function getCurrentUserDevices() {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let users = JSON.parse(localStorage.getItem("user")) || [];
   let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
   let currentUser = users.find(user => user.email === lastLoggedInEmail);
 

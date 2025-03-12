@@ -292,21 +292,33 @@
     color: #fff;
   }
 
-  /* Energy recommendation */
-.energy-recommendations {
+ /* Center Both Energy Cards */
+.energy-insights {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Ensure Both Cards Align Properly */
+.energy-card {
+  flex: 1;
+  min-width: 350px; 
+  max-width: 420px; 
+}
+
+/* Make Recommendation Card Match Energy Card */
+.recommendation-card {
   background: #eef5ff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
   text-align: center;
 }
 
+/* Best Time Styling */
 .timeline {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 20px;
 }
 
 .time-slot {

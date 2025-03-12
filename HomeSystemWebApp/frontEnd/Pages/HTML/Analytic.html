@@ -25,36 +25,52 @@
       </div>
     </div>
 
-    <!-- Energy Usage Card Section -->
-    <section class="energy-card-section">
-      <div class="energy-card">
-        <div class="energy-card-header">
+<!-- Energy Insights Section -->
+<div class="energy-insights">
+  <!-- Current Energy Usage Card -->
+  <div class="energy-card">
+      <div class="energy-card-header">
           <h2>Current Energy Usage</h2>
-          <span id="currentTime">9:41 AM</span>
-        </div>
-        <div class="energy-card-usage">
-          <h3><span id="currentKW">2.1</span> kW</h3>
-          <p>Your home's power draw at this moment.</p>
-        </div>
-        <hr />
-        <div class="energy-card-stats">
-          <div class="stat">
-            <div class="stat-icon">⚡</div>
-            <div class="stat-info">
-              <span id="dailyUsage">48 kWh</span>
-              <p>24-Hr Usage</p>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-icon">£</div>
-            <div class="stat-info">
-              <span id="estimatedCost">£5.20</span>
-              <p>Estimated Cost</p>
-            </div>
-          </div>
-        </div>
+          <span id="currentTime"></span>
       </div>
-    </section>
+      <div class="energy-card-usage">
+          <h3 id="currentPower">2.1 kW</h3>
+          <p>Your home's power draw at this moment.</p>
+      </div>
+      <hr>
+      <div class="energy-card-stats">
+          <div class="stat">
+              <span class="stat-icon">⚡</span>
+              <div class="stat-info">
+                  <span id="dailyUsage">48 kWh</span>
+                  <p>24-Hr Usage</p>
+              </div>
+          </div>
+          <div class="stat">
+              <span class="stat-icon">💰</span>
+              <div class="stat-info">
+                  <span id="estimatedCost">£5.20</span>
+                  <p>Estimated Cost</p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Best Time to Use Appliances -->
+  <div class="energy-card recommendation-card">
+      <div class="energy-card-header">
+          <h2>⚡ Best Time to Use Appliances</h2>
+      </div>
+      <p>AI-powered recommendations based on real-time energy pricing.</p>
+      <div class="timeline">
+          <div id="best-time" class="time-slot">Loading...</div>
+        </div>
+    </div>
+  </div>
+
+  <br><br>
+  <h1>Analytic Graph</h1>
+  <p>This graph represents the weekly and monthly usage of the home. This graphs will compare the current week or month and last month or week's energy consumption. Use the switch button to switch graph statistic!</p>  
 
     <!-- Energy Consumption Chart Section -->
     <section class="chart-section">
@@ -63,12 +79,16 @@
         <div id="chart-wrapper">
           <canvas id="energyChart"></canvas>
         </div>
-        <button id="toggleButton" class="toggle-btn">Switch to Monthly</button>        
+        <button id="toggleButton" class="toggle-btn">Switch to Monthly</button>     
+        <p>   
         <p id="chartFooter">
           This week’s energy use is 5% higher than last week – turn on power saving mode!
         </p>
       </div>
     </section>
+
+    <h1>Smart product controller</h1>
+    <p id="product-controller-text"> <!--Dynamically add this depending on userType--> </p>
 
     <!-- Device Management Section -->
     <section class="device-management">
@@ -86,15 +106,6 @@
         <!-- Device items will be rendered here -->
       </div>
     </section>
-
-    <div class="energy-recommendations">
-      <h2>⚡ Best Time to Use Appliances</h2>
-      <p>AI-powered recommendations based on real-time energy pricing.</p>
-      
-      <div class="timeline">
-          <div id="best-time" class="time-slot">Loading...</div>
-      </div>
-      </div>
 
   </div> 
 
