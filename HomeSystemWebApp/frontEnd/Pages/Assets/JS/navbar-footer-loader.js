@@ -204,34 +204,29 @@ document.addEventListener("DOMContentLoaded", function () {
         initializeSidebar();
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const logo = document.querySelector(".logo");
-        const user = JSON.parse(localStorage.getItem("user")) || {};
-    
+document.addEventListener("DOMContentLoaded", function () {
+    // Select the logo anchor tag
+    const logo = document.getElementById("logo-id"); 
+    const user = JSON.parse(localStorage.getItem("user")) || {}; 
+
+    console.log("User Data:", user); // Debugging check
+
+    // Ensure the logo element exists
+    if (logo) {
         if (user.isLoggedIn) {
-            logo.href = "dashboard.html";
+            console.log("User is logged in, setting href to Dashboard.html");
+            logo.href = "Dashboard.html";
         } else {
+            console.log("User is not logged in, setting href to index.html");
             logo.href = "index.html";
         }
-    });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        function centerNavbar() {
-            const navbar = document.querySelector(".navbar");
-            if (navbar) {
-                let windowWidth = window.innerWidth;
-                let navbarWidth = navbar.offsetWidth;
-                let leftOffset = (windowWidth - navbarWidth) / 2;
-                navbar.style.left = leftOffset + "px";
-            }
-        }
-    
-        // Center navbar on load
-        centerNavbar();
-    
-        // Adjust center on window resize
-        window.addEventListener("resize", centerNavbar);
-    });
+        console.log("Updated Logo Href:", logo.href); // Debugging check
+    } else {
+        console.error("Logo element not found!");
+    }
+});
+
     
     
 });
