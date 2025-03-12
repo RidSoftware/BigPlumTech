@@ -203,4 +203,35 @@ document.addEventListener("DOMContentLoaded", function () {
     
         initializeSidebar();
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const logo = document.querySelector(".logo");
+        const user = JSON.parse(localStorage.getItem("user")) || {};
+    
+        if (user.isLoggedIn) {
+            logo.href = "dashboard.html";
+        } else {
+            logo.href = "index.html";
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function centerNavbar() {
+            const navbar = document.querySelector(".navbar");
+            if (navbar) {
+                let windowWidth = window.innerWidth;
+                let navbarWidth = navbar.offsetWidth;
+                let leftOffset = (windowWidth - navbarWidth) / 2;
+                navbar.style.left = leftOffset + "px";
+            }
+        }
+    
+        // Center navbar on load
+        centerNavbar();
+    
+        // Adjust center on window resize
+        window.addEventListener("resize", centerNavbar);
+    });
+    
+    
 });
