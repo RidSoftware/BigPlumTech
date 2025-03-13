@@ -1,6 +1,23 @@
 -- SQL Dump File for MariaDB Database and Table Creation
 -- NOT FINAL OR COMPLETE. SUBJECT TO CHANGE.
 
+
+
+
+-- --------------------
+-- Home Details Table
+CREATE TABLE `homedetails` (
+    `HomeID` INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `NoOfResidents` INT(3) UNSIGNED NOT NULL,
+    `HomeManager` VARCHAR(30) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+    `AdminCode` VARCHAR(5) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+    PRIMARY KEY (`HomeID`) USING BTREE,
+    UNIQUE INDEX `UNIQUE_CODE` (`AdminCode`) USING BTREE
+)
+COMMENT='Table containing house details'
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB;
+
 -- --------------------
 -- User Details Table
 CREATE TABLE `userdetails` (
@@ -35,20 +52,6 @@ CREATE TABLE `alldevices` (
     CONSTRAINT `FK_alldevices_homedetails` FOREIGN KEY (`HomeID`) REFERENCES `homedetails` (`HomeID`) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 COMMENT='Table containing information on devices of all categories.'
-COLLATE='utf8mb4_unicode_ci'
-ENGINE=InnoDB;
-
--- --------------------
--- Home Details Table
-CREATE TABLE `homedetails` (
-    `HomeID` INT(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `NoOfResidents` INT(3) UNSIGNED NOT NULL,
-    `HomeManager` VARCHAR(30) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
-    `AdminCode` VARCHAR(5) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
-    PRIMARY KEY (`HomeID`) USING BTREE,
-    UNIQUE INDEX `UNIQUE_CODE` (`AdminCode`) USING BTREE
-)
-COMMENT='Table containing house details'
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB;
 

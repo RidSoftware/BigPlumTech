@@ -27,8 +27,26 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             return;
         }
 
-	localStorage.setItem("user", JSON.stringify(data.user));
-    let user = JSON.parse(localStorage.getItem("user"));
+        localStorage.setItem("user", JSON.stringify(data.user));
+        let user = JSON.parse(localStorage.getItem("user"));
+//////////////////////
+        let energyResponse = await fetch("http://localhost:8080/api/pull24hr", { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+
+        let energydata = await energyResponse.json();
+
+        if (!energyData.success) {
+            errorMessage.textContent = energyData.message;
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        localStorage.setItem("energyData", JSON.stringify(energyData.twentyfourhr));
+        let energyData = JSON.parse(localStorage.getItem("energyData"));
+
 
     // Show confirmation message & overlay
     confirmationMessage.innerHTML = `
