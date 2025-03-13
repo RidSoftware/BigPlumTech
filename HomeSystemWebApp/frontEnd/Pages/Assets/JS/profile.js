@@ -1,24 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Retrieve the last logged-in user's email
-    const lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail");
-
     // Retrieve all users from localStorage
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Find the currently logged-in user
-    let currentUser = users.find(user => user.email === lastLoggedInEmail);
+    let users = JSON.parse(localStorage.getItem("user")) || [];
 
     const profilePic = document.getElementById("profile-pic");
     const profileIcon = document.getElementById("profile-icon");
 
-    if (currentUser) {
+    if (users) {
         // Set profile details
-        document.getElementById("profile-name").textContent = currentUser.firstname + " " + currentUser.lastname;
-        document.getElementById("profile-email").textContent = currentUser.email;
+        document.getElementById("profile-name").textContent = users.firstname + " " + users.Surname;
+        document.getElementById("profile-email").textContent = users.Email;
 
         // Ensure profilePic exists and is not empty/null
-        if (currentUser.profilePic && currentUser.profilePic.trim() !== "") {
-            profilePic.src = currentUser.profilePic;
+        if (users.profilePic && user.profilePic.trim() !== "") {
+            profilePic.src = users.profilePic;
             profilePic.classList.remove("hidden");
         } else {
             profilePic.classList.add("hidden");

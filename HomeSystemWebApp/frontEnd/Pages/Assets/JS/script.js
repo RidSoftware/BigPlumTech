@@ -214,10 +214,12 @@ document.addEventListener("DOMContentLoaded", function () {
   //let currentUser = users.find(user => user.email === lastLoggedInEmail);
   
   const energyPanel = document.getElementById("energy-panel");
+  const energyPanelPin = document.getElementById("placeholder-panel");
 
   if (!user) {
       console.warn("No user found, hiding energy panel.");
       energyPanel.style.display = "none";
+      energyPanelPin.style.display = "none";
       return;
   }
 
@@ -227,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
       enableDrag(energyPanel); // Ensure it's draggable
   } else {
       energyPanel.style.display = "none"; // Hide for homeManager
+      energyPanelPin.style.display = "none";
   }
 });
 
@@ -300,74 +303,74 @@ document.addEventListener('DOMContentLoaded', () => {
   // }
   
   // Fetch on page load
-  fetchSmartProducts();
+  //fetchSmartProducts();
   
-    const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const dataThisWeek = [20, 30, 35, 50, 51, 40, 35];
-    const dataLastWeek = [15, 25, 28, 35, 45, 35, 30];
+//     const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+//     const dataThisWeek = [20, 30, 35, 50, 51, 40, 35];
+//     const dataLastWeek = [15, 25, 28, 35, 45, 35, 30];
   
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'This Week',
-            data: dataThisWeek,
-            borderColor: 'rgba(59,130,246,1)',
-            backgroundColor: 'rgba(59,130,246,0.1)',
-            fill: true,
-            tension: 0.3,
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBorderWidth: 2,
-            pointBackgroundColor: '#ffffff',
-            pointBorderColor: 'rgba(59,130,246,1)'
-          },
-          {
-            label: 'Last Week',
-            data: dataLastWeek,
-            borderColor: 'rgba(192,192,192,0.7)',
-            backgroundColor: 'rgba(192,192,192,0.1)',
-            fill: true,
-            tension: 0.3,
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBorderWidth: 2,
-            pointBackgroundColor: '#ffffff',
-            pointBorderColor: 'rgba(192,192,192,0.7)'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: { grid: { display: false }, ticks: { color: '#555' } },
-          y: {
-            beginAtZero: true,
-            max: 60,
-            grid: { color: 'rgba(220,220,220,0.3)', drawBorder: false },
-            ticks: { color: '#555' }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            titleColor: '#fff',
-            bodyColor: '#fff',
-            displayColors: false,
-            callbacks: {
-              label: function(context) {
-                return context.parsed.y;
-              }
-            }
-          }
-        }
-      }
-    });
-  });
+//     new Chart(ctx, {
+//       type: 'line',
+//       data: {
+//         labels: labels,
+//         datasets: [
+//           {
+//             label: 'This Week',
+//             data: dataThisWeek,
+//             borderColor: 'rgba(59,130,246,1)',
+//             backgroundColor: 'rgba(59,130,246,0.1)',
+//             fill: true,
+//             tension: 0.3,
+//             borderWidth: 2,
+//             pointRadius: 4,
+//             pointBorderWidth: 2,
+//             pointBackgroundColor: '#ffffff',
+//             pointBorderColor: 'rgba(59,130,246,1)'
+//           },
+//           {
+//             label: 'Last Week',
+//             data: dataLastWeek,
+//             borderColor: 'rgba(192,192,192,0.7)',
+//             backgroundColor: 'rgba(192,192,192,0.1)',
+//             fill: true,
+//             tension: 0.3,
+//             borderWidth: 2,
+//             pointRadius: 4,
+//             pointBorderWidth: 2,
+//             pointBackgroundColor: '#ffffff',
+//             pointBorderColor: 'rgba(192,192,192,0.7)'
+//           }
+//         ]
+//       },
+//       options: {
+//         responsive: true,
+//         maintainAspectRatio: false,
+//         scales: {
+//           x: { grid: { display: false }, ticks: { color: '#555' } },
+//           y: {
+//             beginAtZero: true,
+//             max: 60,
+//             grid: { color: 'rgba(220,220,220,0.3)', drawBorder: false },
+//             ticks: { color: '#555' }
+//           }
+//         },
+//         plugins: {
+//           legend: { display: false },
+//           tooltip: {
+//             backgroundColor: 'rgba(0, 0, 0, 0.7)',
+//             titleColor: '#fff',
+//             bodyColor: '#fff',
+//             displayColors: false,
+//             callbacks: {
+//               label: function(context) {
+//                 return context.parsed.y;
+//               }
+//             }
+//           }
+//         }
+//       }
+//     });
+   });
   
   function displayProducts(productList) {
     const container = document.getElementById('productsContainer');
@@ -486,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
     //let currentUser = users.find(user => user.email === lastLoggedInEmail);
 
-    if (user.userType === "homeowner") {  
+    if (user.userType === "homeManager") {  
         plusCard.classList.add('add-card');
         plusCard.textContent = '+';
         plusCard.addEventListener('click', () => {
@@ -508,78 +511,131 @@ document.addEventListener('DOMContentLoaded', () => {
     // Retrieve user details from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
 
+    //If user logs in 
     if (user) {
-
-
         
-        if (user) {
+        if (user.userType === "homeUser") {
             // Set the name in the profile section
-            document.getElementById("profile-name").textContent = `Welcome back, ${user.firstname}!`;
+            document.getElementById("profile-name").textContent = `Welcome back, Home User ${user.firstname}!`;
+            document.getElementById("dashboardintro-text").textContent = "To your home page. Enjoy the features we bring to you!";
         } else {
-            document.getElementById("profile-name").textContent = "Welcome, Guest!";
+            document.getElementById("profile-name").textContent = `Welcome back, Home Manager ${user.firstname}!`;
+            document.getElementById("dashboardintro-text").textContent = "To your home page. Please ensure proper integrity on handling user devices.";
         }
-    } else {
+    } else { // If user not logs in, but might be redundant
         document.getElementById("profile-name").textContent = "Welcome, Guest!";
     }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const automationList = document.getElementById("automation-list");
-  const addAutomationBtn = document.getElementById("add-automation");
+    let automationList = document.getElementById("automation-list");
+    let automationText = document.getElementById("automation-text");
+    let automationTable = document.getElementById("automation-table");
+    let addDeviceAutomationBtn = document.getElementById("add-device-automation");
+    let actionColumnHeader = document.querySelector("#automation-table thead tr th:last-child");
 
-  let automations = JSON.parse(localStorage.getItem("automations")) || [];
+    let user = JSON.parse(localStorage.getItem("user")) || null;
+    let homeId = user ? user.homeId : null;
+    let userRole = user ? user.userType : "user"; // Default to normal user if no role
 
-  function renderAutomations() {
-      automationList.innerHTML = ""; // Clear previous list
-      automations.forEach((automation, index) => {
-          const automationItem = document.createElement("div");
-          automationItem.classList.add("automation-item");
-          automationItem.innerHTML = `
-              <span>${automation}</span>
-              <button class="delete-automation" data-index="${index}">🗑 Delete</button>
-          `;
-          automationList.appendChild(automationItem);
-      });
+    function loadAutomations() {
+        let automations = JSON.parse(localStorage.getItem("automations")) || [];
+        let filteredAutomations = automations.filter(auto => auto.homeId === homeId);
 
-      // Add event listeners to delete buttons
-      document.querySelectorAll(".delete-automation").forEach(button => {
-          button.addEventListener("click", function () {
-              const index = this.getAttribute("data-index");
-              automations.splice(index, 1);
-              localStorage.setItem("automations", JSON.stringify(automations));
-              renderAutomations(); // Refresh UI
-          });
-      });
-  }
+        automationList.innerHTML = "";
 
-  addAutomationBtn.addEventListener("click", function () {
-      const routine = prompt("Enter your automation routine (e.g., Turn off lights at 10 PM)");
-      if (routine) {
-          automations.push(routine);
-          localStorage.setItem("automations", JSON.stringify(automations));
-          renderAutomations();
-      }
-  });
+        if (filteredAutomations.length === 0) {
+            automationTable.style.display = "none";
+            addDeviceAutomationBtn.style.display = "none";
+            
+            if (userRole === "homeManager") {
+                automationText.innerHTML = `
+                    <p class="no-automation">
+                        No automation setup. <a href="Automation.html">Go to Device Automation</a>
+                    </p>`;
+            } else {
+                automationText.innerHTML = `
+                    <p class="no-automation">
+                        No automation has been set up by the Home Manager! Contact them to configure automations.
+                    </p>`;
+                addDeviceAutomationBtn.style.display = "none";
+            }
+            return;
+        }
 
-  renderAutomations(); // Initial load
+        automationText.innerHTML = "";
+        automationTable.style.display = "table";
+        addDeviceAutomationBtn.style.display = "block"; 
+        
+        if (userRole === "homeUser") {
+            addDeviceAutomationBtn.style.display = "none"; // Hide add button for users
+            actionColumnHeader.classList.add("hide-action-column"); // Hide action column header
+        } else {
+            addDeviceAutomationBtn.style.display = "block"; // Show for admins
+        }
+
+        filteredAutomations.forEach((automation, index) => {
+            let row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${automation.device}</td>
+                <td>${automation.status}</td>
+                <td>${automation.start}</td>
+                <td>${automation.end}</td>
+                <td><em> Admin</em></td>
+                ${
+                    userRole === "homeManager"
+                        ? `<td><button class="delete-automation" data-index="${index}">Delete</button></td>`
+                        : ""
+                }
+            `;
+
+            automationList.appendChild(row);
+        });
+
+        document.querySelectorAll(".delete-automation").forEach(button => {
+            button.addEventListener("click", function () {
+                let index = this.getAttribute("data-index");
+                deleteAutomation(index);
+            });
+        });
+    }
+
+    function deleteAutomation(index) {
+        let automations = JSON.parse(localStorage.getItem("automations")) || [];
+        automations.splice(index, 1);
+        localStorage.setItem("automations", JSON.stringify(automations));
+        loadAutomations();
+    }
+
+    loadAutomations();
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const pageUrl = encodeURIComponent(window.location.href);
+        const pageTitle = encodeURIComponent("Check out my smart home automation!");
+    
+        // Share to Twitter
+        document.getElementById("share-twitter").addEventListener("click", function (e) {
+            e.preventDefault();
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}`;
+            window.open(twitterUrl, "_blank");
+        });
+    
+        // Share to Facebook
+        document.getElementById("share-facebook").addEventListener("click", function (e) {
+            e.preventDefault();
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+            window.open(facebookUrl, "_blank");
+        });
+    
+        // Share to Instagram (Instagram does not allow direct URL sharing)
+        document.getElementById("share-instagram").addEventListener("click", function (e) {
+            e.preventDefault();
+            alert("Instagram does not support direct URL sharing. Share manually on your story!");
+        });
+    });
+    
 });
 
-function getBestEnergyTime() {
-  // Simulated energy pricing data (replace this with real-time API later)
-  const energyRates = [
-      { time: "00:00", price: 0.30 },
-      { time: "06:00", price: 0.25 },
-      { time: "12:00", price: 0.40 },
-      { time: "18:00", price: 0.60 },
-      { time: "22:00", price: 0.20 }
-  ];
 
-  // Sort by cheapest price
-  energyRates.sort((a, b) => a.price - b.price);
-
-  const bestTime = energyRates[0]; // Get the lowest price time
-  document.getElementById("best-time").innerText = `Best Time: ${bestTime.time} (Price: $${bestTime.price}/kWh)`;
-}
-
-// Load recommendation on page load
-document.addEventListener("DOMContentLoaded", getBestEnergyTime);

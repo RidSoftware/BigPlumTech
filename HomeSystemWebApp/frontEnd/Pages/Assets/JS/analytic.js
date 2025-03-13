@@ -103,84 +103,40 @@ document.addEventListener('DOMContentLoaded', () => {
       const timeString = `${displayHour}:${displayMin} ${amPm}`;
       document.getElementById('currentTime').textContent = timeString;
     }
-  
-    // ----- Device Management Code -----
-    let devices = [
-      { id: 1, name: 'Light', room: 'Living Room', status: true,},
-      { id: 2, name: 'Robot', room: 'Bedroom', status: false},
-    ];
-  
-    const deviceListEl = document.querySelector('.device-list');
-    const roomFilterEl = document.getElementById('roomFilter');
-  
-    function renderDevices() {
-      deviceListEl.innerHTML = '';
-      const filterValue = roomFilterEl.value;
-      let filteredDevices = devices;
-      if (filterValue !== 'all') {
-        filteredDevices = devices.filter(device => device.room.toLowerCase() === filterValue.toLowerCase());
-      }
-      filteredDevices.forEach(device => {
-        const deviceItem = document.createElement('div');
-        deviceItem.className = 'device-item';
-        deviceItem.innerHTML = `
-          <div class="device-info">
-            <h3>${device.name}</h3>
-            <p><strong>Room:</strong> ${device.room}</p>
-            <p><strong>Info:</strong> ${device.info}</p>
-            <p><strong>Status:</strong> ${device.status ? 'Online' : 'Offline'}</p>
-          </div>
-          <div class="device-actions">
-            <button class="toggle-btn" data-id="${device.id}">${device.status ? 'Turn Off' : 'Turn On'}</button>
-            <button class="edit-btn" data-id="${device.id}">Edit</button>
-            <button class="delete-btn" data-id="${device.id}">Delete</button>
-          </div>
-        `;
-        deviceListEl.appendChild(deviceItem);
-      });
-    }
-  
-    roomFilterEl.addEventListener('change', renderDevices);
-  
-    deviceListEl.addEventListener('click', (e) => {
-      const target = e.target;
-      const deviceId = target.getAttribute('data-id');
-      if (!deviceId) return;
-      const id = parseInt(deviceId);
-      if (target.classList.contains('toggle-btn')) {
-        devices = devices.map(device => {
-          if (device.id === id) {
-            return { ...device, status: !device.status };
-          }
-          return device;
-        });
-        renderDevices();
-      } else if (target.classList.contains('edit-btn')) { 
-        // Need to make a proper container for the home owner to update the three info easily and make it in the middle
-        const device = devices.find(d => d.id === id);
-        if (device) {
-          const newName = prompt("Enter new device name:", device.name) || device.name;
-          const newRoom = prompt("Enter new room:", device.room) || device.room;
-          const newInfo = prompt("Enter new device info:", device.info) || device.info;
-          devices = devices.map(d => {
-            if (d.id === id) {
-              return { ...d, name: newName, room: newRoom, info: newInfo };
-            }
-            return d;
-          });
-          renderDevices();
-        }
-      } else if (target.classList.contains('delete-btn')) {
-        if (confirm("Are you sure you want to delete this device?")) {
-          devices = devices.filter(device => device.id !== id);
-          renderDevices();
-        }
-      }
-    });
-  
-    renderDevices();
   });
 
   window.addEventListener('resize', () => {
-    energyChart.resize();
+    function getBestEnergyTime() {
+    // Simulated energy pricing data (Replace this with real API if needed)
+    const energyRates = [
+        { time: "00:00", price: 0.30 },
+        { time: "06:00", price: 0.25 },
+        { time: "12:00", price: 0.40 },
+        { time: "18:00", price: 0.60 },
+        { time: "22:00", price: 0.20 }
+    ];
+
+    // Find the cheapest energy time
+    energyRates.sort((a, b) => a.price - b.price);
+    const bestTime = energyRates[0]; // Get lowest price time
+
+    // Ensure the element exists before updating
+    let bestTimeElement = document.getElementById("best-time");
+    if (bestTimeElement) {
+        bestTimeElement.innerHTML = `
+            Best Time: <strong>${bestTime.time}</strong>  
+            <br> (Price: £${bestTime.price.toFixed(2)}/kWh)
+        `;
+        bestTimeElement.style.background = "#007BFF"; // just to style it 
+        bestTimeElement.style.padding = "10px";
+        bestTimeElement.style.color = "white";
+        bestTimeElement.style.borderRadius = "5px";
+    } else {
+        console.error("Element #best-time not found!");
+    }
+    }
+    
+    // Load recommendation on page load
+    document.addEventListener("DOMContentLoaded", getBestEnergyTime);
   });
+
