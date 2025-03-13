@@ -22,6 +22,8 @@ router.post('/api/pull24hr', async (req, res) => {
         const currentHour = d.getHours();
         
         connection = await pool.getConnection();
+        console.log('pool DataBase connection acquired');
+
 
         const [homeIDResults] = await connection.execute(
             'SELECT HomeID FROM userDetails WHERE email = ?;',
