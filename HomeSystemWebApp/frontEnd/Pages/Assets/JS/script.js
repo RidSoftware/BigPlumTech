@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
     //let currentUser = users.find(user => user.email === lastLoggedInEmail);
 
-    if (user.userType === "homeowner") {  
+    if (user.userType === "homeManager") {  
         plusCard.classList.add('add-card');
         plusCard.textContent = '+';
         plusCard.addEventListener('click', () => {
