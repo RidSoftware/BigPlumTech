@@ -1,29 +1,51 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/DBConnection'); 
-const e = require('express');
-
+const mysql = require('mysql2/promise');
 
 ////////////////pull 24hr of data to user
 router.post('/api/pull24hr', async (req, res) => {
-    const email = req.body;
-
-    if (!email) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'no email recieved by route' 
-        });
-    }
-
     try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'No email received by route' 
+            });
+        }
 
         const d = new Date();
         const currentDate = d.toISOString().split('T')[0];
         const currentHour = d.getHours();
         
+        const [homeIDResults] = await connection.execute(
+            'SELECT HomeID FROM userDetails WHERE email = ?;',
+            [email]
+        );
 
-        const q = 'SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE homedetails.HomeID = 3 AND energyhourly.Hour = 3 AND energyhourly.Date = "2025-03-11";';
-        db.query(q/*sends query*/, [email], async (err, results) => {
+        if (homeIDResults.length === 0) {
+            await connection.end();
+            return res.status(401).json({ 
+                success: false, 
+                message: 'No data found in DB from query, homeid from email' 
+            });
+        }
+
+        const homeID = homeIDResults[0].homeID;
+
+        const q = 'SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE homedetails.HomeID = ? AND energyhourly.Hour = ? AND energyhourly.Date = ?;';
+        const q2 = `
+            SELECT energyhourly.Hour, SUM(energyhourly.EnergyVal) AS totalEnergy
+            FROM energyhourly
+            JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
+            JOIN homedetails ON homedetails.HomeID = alldevices.HomeID
+            WHERE homedetails.HomeID = ? AND energyhourly.Date = ?
+            GROUP BY energyhourly.Hour
+            ORDER BY energyhourly.Hour ASC;
+        `;
+        
+        db.query(q2/*sends query*/, [homeID, currentHour, currentDate], async (err, results) => {
             if (err) {
                 console.error('db error selecting user', err);
                 return res.status(500).json({ 
@@ -33,28 +55,25 @@ router.post('/api/pull24hr', async (req, res) => {
             }
 
 
+
             if (results.length === 0) {
                 return res.status(401).json({ 
                     success: false, 
-                    message: 'no data found in db from query' 
+                    message: 'no data found in db from query 24hrs energy' 
                 });
             }
 
+            var [energyDayProcessed] = {};
 
-
-
-            // const energydataprocessed[23] = {
-            //     hour: 
-            // }
-            var energydataprocessed = {};
-            results.forEach();
-
+            results.forEach((row) => {
+                energyDayProcessed[row.Hour] = row.totalEnergy;
+            });
 
             // success
-            res.status(201).json({ 
+            res.status(200).json({ 
                 success: true, 
                 message: 'datapull success', 
-                user: energydataprocessed
+                twentyfourhr: energyDayProcessed
             });
         });
     } catch (error) {
