@@ -36,7 +36,7 @@ router.post('/api/pull24hr', async (req, res) => {
             });
         }
 
-        const homeID = homeIDResults[0].homeID;
+        const homeID = homeIDResults[0].HomeID;
 
         const q = 'SELECT SUM(EnergyVal) AS totalEnergy FROM energyhourly JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID JOIN homedetails ON homedetails.HomeID = alldevices.HomeID WHERE homedetails.HomeID = ? AND energyhourly.Hour = ? AND energyhourly.Date = ?;';
         const q2 = `
@@ -49,11 +49,11 @@ router.post('/api/pull24hr', async (req, res) => {
             ORDER BY energyhourly.Hour ASC;
         `;
         
-        const [energyResults] = await connection.execute(query, [homeID, currentDate]);
+        const [energyResults] = await connection.execute(q2, [homeID, currentDate]);
 
         connection.release();
 
-        if (results.length === 0) {
+        if (energyResults.length === 0) {
             return res.status(401).json({ 
                 success: false, 
                 message: 'no data found in db from query 24hrs energy' 
@@ -85,16 +85,16 @@ router.post('/api/pull24hr', async (req, res) => {
 
 
 ////////////////test energy data pull
-router.get('/energy', (req, res) => {
-    db.query('SELECT * FROM energyHourly'/*will need updated to new table name*/, (err, results) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Error fetching energydata');
-        } else {
-            res.json(results);
-        }
-    });
-});
+// router.get('/energy', (req, res) => {
+//     db.query('SELECT * FROM energyHourly'/*will need updated to new table name*/, (err, results) => {
+//         if (err) {
+//             console.error(err);
+//             res.status(500).send('Error fetching energydata');
+//         } else {
+//             res.json(results);
+//         }
+//     });
+// });
 //////////////////test energy data pull
 
 module.exports = router;
