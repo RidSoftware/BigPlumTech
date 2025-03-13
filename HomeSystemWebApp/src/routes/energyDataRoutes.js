@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/DBConnection'); 
+const pool = require('../config/DBPool')
 const mysql = require('mysql2/promise');
 
 ////////////////pull 24hr of data to user
@@ -20,7 +21,7 @@ router.post('/api/pull24hr', async (req, res) => {
         const currentDate = d.toISOString().split('T')[0];
         const currentHour = d.getHours();
         
-        connection = await db.getConnection();
+        connection = await pool.getConnection();
 
         const [homeIDResults] = await connection.execute(
             'SELECT HomeID FROM userDetails WHERE email = ?;',
