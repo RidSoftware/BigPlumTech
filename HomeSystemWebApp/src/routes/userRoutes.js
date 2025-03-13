@@ -20,6 +20,7 @@ router.post("/api/register", (req, res) => {
 
 	const homeid = 99;	//setting home id 99 as default for new users
 
+    
     db.query( q, [firstname, lastname, email, password, admin, homeid], (err, results) => {
                     if (err) {
                         console.error('DB error on inserting new user', err);

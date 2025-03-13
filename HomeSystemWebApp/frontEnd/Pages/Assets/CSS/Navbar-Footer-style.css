@@ -17,11 +17,54 @@ header {
     top: 0;
     left: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 100;
     transition: transform 0.4s ease-in-out;
+}
+
+/* Logo Container */
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+    width: 60px; /* Default width with just the logo */
+    transition: width 0.5s ease-in-out; /* Smooth expand animation */
+}
+
+/* Logo Image */
+#logo-img {
+    width: 50px;
+    height: 50px;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Logo Text - Initially Hidden */
+#logo-text {
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #007BFF;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+/* Hover Effect */
+.logo:hover {
+    width: 200px; /* Expand to show text */
+}
+
+.logo:hover #logo-img {
+    transform: rotateY(360deg);
+}
+
+.logo:hover #logo-text {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* Navbar Moves Up */
@@ -252,12 +295,25 @@ header {
     height: 90px;
     border-radius: 50%;
     object-fit: cover;
-    display: inline-block;
+    display: flex;
 }
 
 /* Hide FontAwesome icon if profile image exists */
 .hidden {
     display: none !important;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+
+    .nav-container {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 

@@ -19,7 +19,7 @@
     <div class="header-left">
       <div class="header-text">
         <h1 id="profile-name"></h1>
-        <p>To your home page. Enjoy the features we bring to you!</p><br>
+        <p id="dashboardintro-text"><!-- will add dynamically --></p><br>
       </div>
     </div>
 
@@ -38,8 +38,8 @@
 
     <!-- Energy Level Reminder Panel -->
     <div id="energy-panel" class="draggable-panel">
-      <h2>⚡ Energy Reminder Panel</h2>
-      <p>Keep an eye on your energy usage! Move this panel anywhere, but it stays visible for easy tracking.</p>
+      <h2>⚡Daily Energy Reminder Panel</h2>
+      <p>Move this panel anywhere, but it stays visible for easy tracking.</p><br>
       <p id="energy-message"></p>
       <div class="energy-bar">
         <div id="energy-fill"></div>
@@ -63,28 +63,43 @@
     </section>
 
     <!-- Two new features: automation container and energy recommendation -->
-    <div class="automation-container">
-      <h2>⚙️ Smart Automation Scenarios</h2>
-      <p>Create custom automation routines to control your smart devices efficiently.</p>
-  
-      <div id="automation-list">
-          <!-- User-created automation routines will be listed here -->
-      </div>
-  
-      <button id="add-automation">➕ Add New Automation</button>
+ <!-- Smart Automation Section -->
+ <section>
+  <h2>Smart Automation Status</h2>
+  <p id="automation-text"></p>
+
+  <table id="automation-table" class="automation-table">
+    <thead>
+      <tr>
+        <th>Device</th>
+        <th>Status</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Setup By</th>
+        <th>Admin control (deletion)</th>
+      </tr>
+    </thead>
+    <tbody id="automation-list"></tbody>
+  </table>
+
+  <!-- Add Device Automation Button -->
+  <div id="add-device-automation" style="display: none;">
+    <a href="Automation.html" class="add-automation-btn">Add Device Automation</a>
   </div>
 
-
-  <div class="energy-recommendations">
-    <h2>⚡ Best Time to Use Appliances</h2>
-    <p>AI-powered recommendations based on real-time energy pricing.</p>
-
-    <div class="timeline">
-        <div id="best-time" class="time-slot">Loading...</div>
+  <!-- Share to Social Media Section -->
+  <section class="share-section">
+    <h2>Share Your Smart Home Experience</h2>
+    <p>Tell your friends about your smart home automation!</p>
+    
+    <div class="social-share">
+      <a id="share-twitter" href="#" class="share-btn twitter"><i class="fa fa-twitter"></i> Twitter</a>
+      <a id="share-facebook" href="#" class="share-btn facebook"><i class="fa fa-facebook"></i> Facebook</a>
+      <a id="share-instagram" href="#" class="share-btn instagram"><i class="fa fa-instagram"></i> Instagram</a>
     </div>
-</div>
+  </section>
 
-  
+</section>
 
   </div> <!-- End of Content Wrapper -->
 

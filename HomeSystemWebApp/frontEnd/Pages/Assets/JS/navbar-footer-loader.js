@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
                     <h4 class="sidebar-section-title">General</h4>
                     <hr>
-                    <li><i class="fa fa-flag"></i><a href="Reports.html"> Reports</a></li>
+                    <li><i class="fa fa-flag"></i><a href="Reports.html"> Critical Reports</a></li>
                     <li><i class="fa fa-bell"></i><a href="Notifications.html"> Notifications</a></li>
         
                     ${user.userType === "homeManager" ? `
@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <hr>
                         <li><i class="fa fa-file-text"></i><a href="Generate-Report.html"> Generate Report</a></li>
                         <li><i class="fa fa-cogs"></i><a href="Device-handling.html"> Device Handling</a></li>
+                        <li><i class="fa fa-microchip"></i><a href="Automation.html"> Device Automation </a></li>                    
                     ` : ''}
         
                     <h4 class="sidebar-section-title">Account</h4>
@@ -180,7 +181,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <li><a href="Overview.html"><i class="fa fa-bar-chart"></i> Overview</a></li>
                 <li><a href="Analytic.html"><i class="fa fa-line-chart"></i> Analytic</a></li>
                 ${user.userType === "homeManager" ? 
-                    `<li><a href="Device-handling.html"><i class="fa fa-cogs"></i> Device Handling</a></li>` 
+                    `<li><a href="Device-handling.html"><i class="fa fa-cogs"></i> Device Handling</a></li>
+                    <li><i class="fa fa-microchip"></i><a href="Automation.html"> Device Automation </a></li>         ` 
                     : ''
                 }
             `;
@@ -201,4 +203,30 @@ document.addEventListener("DOMContentLoaded", function () {
     
         initializeSidebar();
     });
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Select the logo anchor tag
+    const logo = document.getElementById("logo-id"); 
+    const user = JSON.parse(localStorage.getItem("user")) || {}; 
+
+    console.log("User Data:", user); // Debugging check
+
+    // Ensure the logo element exists
+    if (logo) {
+        if (user.isLoggedIn) {
+            console.log("User is logged in, setting href to Dashboard.html");
+            logo.href = "Dashboard.html";
+        } else {
+            console.log("User is not logged in, setting href to index.html");
+            logo.href = "index.html";
+        }
+
+        console.log("Updated Logo Href:", logo.href); // Debugging check
+    } else {
+        console.error("Logo element not found!");
+    }
+});
+
+    
+    
 });
