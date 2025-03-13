@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
                     <h4 class="sidebar-section-title">General</h4>
                     <hr>
-                    <li><i class="fa fa-flag"></i><a href="Reports.html"> Reports</a></li>
+                    <li><i class="fa fa-flag"></i><a href="Reports.html"> Critical Reports</a></li>
                     <li><i class="fa fa-bell"></i><a href="Notifications.html"> Notifications</a></li>
         
                     ${user.userType === "homeManager" ? `

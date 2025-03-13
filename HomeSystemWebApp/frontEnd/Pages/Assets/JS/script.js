@@ -609,6 +609,33 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     loadAutomations();
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const pageUrl = encodeURIComponent(window.location.href);
+        const pageTitle = encodeURIComponent("Check out my smart home automation!");
+    
+        // Share to Twitter
+        document.getElementById("share-twitter").addEventListener("click", function (e) {
+            e.preventDefault();
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}`;
+            window.open(twitterUrl, "_blank");
+        });
+    
+        // Share to Facebook
+        document.getElementById("share-facebook").addEventListener("click", function (e) {
+            e.preventDefault();
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+            window.open(facebookUrl, "_blank");
+        });
+    
+        // Share to Instagram (Instagram does not allow direct URL sharing)
+        document.getElementById("share-instagram").addEventListener("click", function (e) {
+            e.preventDefault();
+            alert("Instagram does not support direct URL sharing. Share manually on your story!");
+        });
+    });
+    
 });
 
 
