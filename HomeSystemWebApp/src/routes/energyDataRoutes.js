@@ -5,6 +5,7 @@ const mysql = require('mysql2/promise');
 
 ////////////////pull 24hr of data to user
 router.post('/api/pull24hr', async (req, res) => {
+    let connection;
     try {
         const { email } = req.body;
 
@@ -19,13 +20,15 @@ router.post('/api/pull24hr', async (req, res) => {
         const currentDate = d.toISOString().split('T')[0];
         const currentHour = d.getHours();
         
+        connection = await db.getConnection();
+
         const [homeIDResults] = await connection.execute(
             'SELECT HomeID FROM userDetails WHERE email = ?;',
             [email]
         );
 
         if (homeIDResults.length === 0) {
-            await connection.end();
+            connection.release();
             return res.status(401).json({ 
                 success: false, 
                 message: 'No data found in DB from query, homeid from email' 
@@ -45,43 +48,36 @@ router.post('/api/pull24hr', async (req, res) => {
             ORDER BY energyhourly.Hour ASC;
         `;
         
-        db.query(q2/*sends query*/, [homeID, currentHour, currentDate], async (err, results) => {
-            if (err) {
-                console.error('db error selecting user', err);
-                return res.status(500).json({ 
-                    success: false, 
-                    message: 'db err' 
-                });
-            }
+        const [energyResults] = await connection.execute(query, [homeID, currentDate]);
 
+        connection.release();
 
-
-            if (results.length === 0) {
-                return res.status(401).json({ 
-                    success: false, 
-                    message: 'no data found in db from query 24hrs energy' 
-                });
-            }
-
-            var [energyDayProcessed] = {};
-
-            results.forEach((row) => {
-                energyDayProcessed[row.Hour] = row.totalEnergy;
+        if (results.length === 0) {
+            return res.status(401).json({ 
+                success: false, 
+                message: 'no data found in db from query 24hrs energy' 
             });
+        }
+
+        const energyDayProcessed = {};
+        energyResults.forEach(row => {
+            energyDayProcessed[row.Hour] = row.totalEnergy;
+        });
 
             // success
-            res.status(200).json({ 
-                success: true, 
-                message: 'datapull success', 
-                twentyfourhr: energyDayProcessed
-            });
+        return res.status(200).json({ 
+            success: true, 
+            message: 'datapull success', 
+            twentyfourhr: energyDayProcessed
         });
+
+
     } catch (error) {
         console.error('err from fetch24:', error);
         res.status(500).json({ 
             success: false, 
         });
-    }
+    } finally { if (connection) connection.release();}
 });
 /////////////////pull 24hrs
 
