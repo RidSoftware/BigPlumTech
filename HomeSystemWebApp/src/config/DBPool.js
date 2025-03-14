@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
 
 const pool = mysql.createPool({
@@ -7,7 +7,7 @@ const pool = mysql.createPool({
     password: "PlumPassword",
     database: "test2",
     waitForConnections: true,
-    connectionLimit: 100,  // Limit the number of active connections
+    connectionLimit: 10,  // Limit the number of active connections
     queueLimit: 0
 });
 

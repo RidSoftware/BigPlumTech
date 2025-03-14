@@ -35,8 +35,11 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
         });
+        if (!energyResponse.ok) {
+            throw new Error('HTTP ERROR IDK WHAT');
+        }
 
-        let energydata = await energyResponse.json();
+        let energyData = await energyResponse.json();
 
         if (!energyData.success) {
             errorMessage.textContent = energyData.message;
@@ -45,7 +48,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         }
 
         localStorage.setItem("energyData", JSON.stringify(energyData.twentyfourhr));
-        let energyData = JSON.parse(localStorage.getItem("energyData"));
+        let parsedEnergyData = JSON.parse(localStorage.getItem("energyData"));
 
 
     // Show confirmation message & overlay
