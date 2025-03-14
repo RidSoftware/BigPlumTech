@@ -31,25 +31,45 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         let user = JSON.parse(localStorage.getItem("user"));
 //////////////////////
         let userID = user.userID;
-        let energyResponse = await fetch("http://localhost:8080/api/pull24hr", { 
+        let energyDayResponse = await fetch("http://localhost:8080/api/pull24hr", { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userID })
         });
-        if (!energyResponse.ok) {
-            throw new Error('HTTP ERROR IDK WHAT');
+        if (!energyDayResponse.ok) {
+            throw new Error('HTTP ERROR IDK WHATday');
         }
 
-        let energyData = await energyResponse.json();
+        let energyDataDay = await energyDayResponse.json();
 
-        if (!energyData.success) {
-            errorMessage.textContent = energyData.message;
+        if (!energyDataDay.success) {
+            errorMessage.textContent = energyDataDay.message;
             errorMessage.style.display = "block";
             return;
         }
 
-        localStorage.setItem("energyData", JSON.stringify(energyData.twentyfourhr));
-        let parsedEnergyData = JSON.parse(localStorage.getItem("energyData"));
+        localStorage.setItem("energyDataDay", JSON.stringify(energyDataDay.twentyfourhr));
+        let energyDataDayLocal = JSON.parse(localStorage.getItem("energyDataDay"));
+//////////////////
+        let energyWeekResponse = await fetch("http://localhost:8080/api/pull7days", { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userID })
+        });
+        if (!energyWeekResponse.ok) {
+            throw new Error('HTTP ERROR IDK WHATwk');
+        }
+
+        let energyDataWeek = await energyWeekResponse.json();
+
+        if (!energyDataWeek.success) {
+            errorMessage.textContent = energyDataWeek.message;
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        localStorage.setItem("energyDataWeek", JSON.stringify(energyDataWeek.sevenDays));
+        let energyDataWeekLocal = JSON.parse(localStorage.getItem("energyDataWeek"));
 
 
     // Show confirmation message & overlay
