@@ -1,3 +1,7 @@
+
+const db = require("../../../../src/config/DBConnection.js");
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Handle form submission to add product
     const form = document.getElementById('addProductForm');
@@ -52,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     products.push(newProduct);
     localStorage.setItem('products', JSON.stringify(products));
     }else{
+      
       deviceName.style.outline = "3px solid red";
       const err = document.getElementById("errMsg");
       err.style.fontSize = "14px"

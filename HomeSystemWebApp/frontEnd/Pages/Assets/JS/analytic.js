@@ -105,14 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     // ----- Device Management Code -----
-    let devices = [
+   //console.log(localStorage.getItem("products"));
+    
+    let devices = localStorage.getItem("products");
+    devices = JSON.parse(devices);
+  /* [
       { id: 1, name: 'Light', room: 'Living Room', status: true,},
       { id: 2, name: 'Robot', room: 'Bedroom', status: false},
-    ];
-  
+      { id: 3, name: 'hehe', room: 'Kitchen', status: false},
+      { id: 4, name: 'hehe2', room: 'Kitchen', status: false}
+    ]; */
     const deviceListEl = document.querySelector('.device-list');
     const roomFilterEl = document.getElementById('roomFilter');
-  
     function renderDevices() {
       deviceListEl.innerHTML = '';
       const filterValue = roomFilterEl.value;
