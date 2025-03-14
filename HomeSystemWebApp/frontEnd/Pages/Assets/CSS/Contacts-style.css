@@ -9,16 +9,18 @@
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #e0f7fa, #e1bee7);
-    text-align: center;
     min-height: 100vh; /* Ensures full-page height */
     display: flex;
     flex-direction: column;
 }
 
+#content-wrapper {
+    text-align: center;
+}
 
 /* Contact Section */
 .contact {
-    padding: 60px 60px; 
+    padding: 60px 60px;
     max-width: 900px;
     margin: 110px auto;
     background: rgba(255, 255, 255, 0.8);
