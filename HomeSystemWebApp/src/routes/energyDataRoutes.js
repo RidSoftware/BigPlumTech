@@ -56,7 +56,7 @@ router.post('/api/pull24hr', async (req, res) => {
             WHERE alldevices.HomeID = ? 
             AND (energyhourly.Date = ? OR energyhourly.Date = ?)
             GROUP BY energyhourly.Date, energyhourly.Hour
-            ORDER BY energyhourly.Date DESC, energyhourly.Hour DESC
+            ORDER BY energyhourly.Date DESC, energyhourly.Hour ASC
             LIMIT 24;
         `;
         
@@ -129,12 +129,13 @@ router.post('/api/pull7days', async (req, res) => {
 
         // Fetch last 7 days of energy usage
         const query = `
-            SELECT Date, SUM(EnergyVal) AS totalEnergy
+            SELECT energydaily.Date, SUM(energydaily.EnergyVal) AS totalEnergy
             FROM energydaily
-            WHERE HomeID = ?
-            AND Date BETWEEN ? AND ?
-            GROUP BY Date
-            ORDER BY Date DESC;
+            JOIN alldevices ON energydaily.DeviceID = alldevices.DeviceID
+            WHERE alldevices.HomeID = ?
+            AND energydaily.Date BETWEEN ? AND ?
+            GROUP BY energydaily.Date
+            ORDER BY energydaily.Date DESC;
         `;
 
         const [energyResults] = await connection.execute(query, [homeID, startDate, currentDate]);

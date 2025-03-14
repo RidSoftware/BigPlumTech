@@ -7,6 +7,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     let confirmationMessage = document.getElementById("confirmationMessage");
     let overlay = document.getElementById("confirmationOverlay"); 
     
+    //resets ui messages
     errorMessage.textContent = "";
     errorMessage.style.display = "none";
     confirmationMessage.style.display = "none";
@@ -27,64 +28,73 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             return;
         }
 
+        //stores data locally
         localStorage.setItem("user", JSON.stringify(data.user));
         let user = JSON.parse(localStorage.getItem("user"));
-//////////////////////
         let userID = user.userID;
-        let energyDayResponse = await fetch("http://localhost:8080/api/pull24hr", { 
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userID })
-        });
-        if (!energyDayResponse.ok) {
-            throw new Error('HTTP ERROR IDK WHATday');
+
+        // Show confirmation message & overlay
+        confirmationMessage.innerHTML = `
+            <div class="confirmation-container">
+                <h2>Login Successful!</h2>
+                <p>Welcome back, <strong>${user.firstname}</strong></p>
+                <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
+                    Go to Dashboard <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        `;
+        confirmationMessage.style.display = "block";
+        overlay.style.display = "block"; // Show dark background overlay
+/////////////////////
+        // Attempt to pull 24-hour energy data
+        try {
+            let energyDayResponse = await fetch("http://localhost:8080/api/pull24hr", { 
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userID })
+            });
+
+            if (energyDayResponse.ok) {
+                let energyDataDay = await energyDayResponse.json();
+                if (energyDataDay.success) {
+                    localStorage.setItem("energyDataDay", JSON.stringify(energyDataDay.twentyfourhr));
+                } else {
+                    console.walogrn("24-hour energy data pull failed:", energyDataDay.message);
+                    localStorage.setItem("energyDataDay", JSON.stringify({})); // store empty object if empty results
+                }
+            } else {
+                throw new Error("Failed to fetch 24-hour energy data.");
+            }
+        } catch (error) {// error for 24hr
+            console.log("Error fetching 24-hour energy data:", error);
+            localStorage.setItem("energyDataDay", JSON.stringify({})); //Store empty object if errror
         }
 
-        let energyDataDay = await energyDayResponse.json();
-
-        if (!energyDataDay.success) {
-            errorMessage.textContent = energyDataDay.message;
-            errorMessage.style.display = "block";
-            return;
-        }
-
-        localStorage.setItem("energyDataDay", JSON.stringify(energyDataDay.twentyfourhr));
-        let energyDataDayLocal = JSON.parse(localStorage.getItem("energyDataDay"));
 //////////////////
-        let energyWeekResponse = await fetch("http://localhost:8080/api/pull7days", { 
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userID })
-        });
-        if (!energyWeekResponse.ok) {
-            throw new Error('HTTP ERROR IDK WHATwk');
+        // Attempt to pull 7-day energy data
+        try {
+            let energyWeekResponse = await fetch("http://localhost:8080/api/pull7days", { 
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userID })
+            });
+
+            if (energyWeekResponse.ok) {
+                let energyDataWeek = await energyWeekResponse.json();
+                if (energyDataWeek.success) {
+                    localStorage.setItem("energyDataWeek", JSON.stringify(energyDataWeek.sevenDays));
+                } else {
+                    console.log("7-day energy data pull failed:", energyDataWeek.message);
+                    localStorage.setItem("energyDataWeek", JSON.stringify({})); // store empty object if empty results
+                }
+            } else {
+                throw new Error("Failed to fetch 7-day energy data.");
+            }
+        } catch (error) {/////error for 7days
+            console.log("Error fetching 7-day energy data:", error);
+            localStorage.setItem("energyDataWeek", JSON.stringify({})); //empty object if naothing
         }
-
-        let energyDataWeek = await energyWeekResponse.json();
-
-        if (!energyDataWeek.success) {
-            errorMessage.textContent = energyDataWeek.message;
-            errorMessage.style.display = "block";
-            return;
-        }
-
-        localStorage.setItem("energyDataWeek", JSON.stringify(energyDataWeek.sevenDays));
-        let energyDataWeekLocal = JSON.parse(localStorage.getItem("energyDataWeek"));
-
-
-    // Show confirmation message & overlay
-    confirmationMessage.innerHTML = `
-        <div class="confirmation-container">
-            <h2>Login Successful!</h2>
-            <p>Welcome back, <strong>${user.firstname}</strong></p>
-            <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
-                Go to Dashboard <i class="fa fa-arrow-right"></i>
-            </button>
-        </div>
-    `;
-    confirmationMessage.style.display = "block";
-    overlay.style.display = "block"; // Show dark background overlay
-
+///////////////errot for login
     } catch (error) {
         console.error("Login error:", error);
         errorMessage.textContent = "An error occurred. Please try again later.";
