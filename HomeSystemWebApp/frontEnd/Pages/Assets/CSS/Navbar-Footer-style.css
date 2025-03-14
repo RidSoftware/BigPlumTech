@@ -28,19 +28,36 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    text-decoration: none;
     position: relative;
-    /* Fixed width for logo container - prevents pushing other elements */
-    width: 200px; /* Set a fixed width that accommodates both collapsed and expanded states */
-    overflow: hidden; /* Ensures text doesn't overflow before animation */
+    width: 200px;
+    overflow: hidden;
+    text-decoration: none;
 }
 
-/* Logo Image */
-#logo-img {
+/* Logo Images */
+#logo-img-1, #logo-img-2 {
     width: 50px;
     height: 50px;
-    transition: transform 0.5s ease-in-out;
-    flex-shrink: 0; /* Prevents logo from shrinking */
+    transition: all 0.5s ease-in-out;
+    flex-shrink: 0;
+}
+
+#logo-img-2 {
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    transform: rotateY(-180deg);
+}
+
+/* Hover Effect */
+.logo:hover #logo-img-1 {
+    opacity: 0;
+    transform: rotateY(360deg);
+}
+
+.logo:hover #logo-img-2 {
+    opacity: 1;
+    transform: rotateY(360deg);
 }
 
 /* Logo Text */
@@ -56,10 +73,6 @@ header {
 }
 
 /* Hover Effect */
-.logo:hover #logo-img {
-    transform: rotateY(360deg);
-}
-
 .logo:hover #logo-text {
     opacity: 1;
     transform: translateX(0);
