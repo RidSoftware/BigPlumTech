@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
                     <h4 class="sidebar-section-title">General</h4>
                     <hr>
-                    <li class="${currentPage === 'Reports.html' ? 'active' : ''}"><i class="fa fa-flag"></i><a href="Reports.html" class="${currentPage === 'Reports.html' ? 'active' : ''}"> Critical Reports</a></li>
+                    <li class="${currentPage === 'CriticalReports.html' ? 'active' : ''}"><i class="fa fa-flag"></i><a href="CriticalReports.html" class="${currentPage === 'CriticalReports.html' ? 'active' : ''}"> Critical Reports</a></li>
                     <li class="${currentPage === 'Notifications.html' ? 'active' : ''}"><i class="fa fa-bell"></i><a href="Notifications.html" class="${currentPage === 'Notifications.html' ? 'active' : ''}"> Notifications</a></li>
         
                     ${user.userType === "homeManager" ? `

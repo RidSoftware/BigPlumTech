@@ -57,7 +57,7 @@ header {
 
 .logo:hover #logo-img-2 {
     opacity: 1;
-    transform: rotateY(360deg);
+    transform: rotateY(180deg);
 }
 
 /* Logo Text */
