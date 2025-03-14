@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
             //let currentUser = user.getItem("Email");
 
             let profileSrc = localStorage.getItem("profilePic") || "";
+            
+            // Get current page for highlight
+            const currentPage = window.location.pathname.split("/").pop() || "index.html";
         
             sidebarMenu.innerHTML = ""; // Clear previous content
         
@@ -74,27 +77,27 @@ document.addEventListener("DOMContentLoaded", function () {
         
                     <h4 class="sidebar-section-title">Main Menu</h4>
                     <hr>
-                    <li><i class="fa fa-th-large"></i><a href="Dashboard.html"> Dashboard</a></li>
-                    <li><i class="fa fa-bar-chart"></i><a href="Overview.html"> Overview</a></li>
-                    <li><i class="fa fa-line-chart"></i><a href="Analytic.html"> Analytic</a></li>
+                    <li class="${currentPage === 'Dashboard.html' ? 'active' : ''}"><i class="fa fa-th-large"></i><a href="Dashboard.html" class="${currentPage === 'Dashboard.html' ? 'active' : ''}"> Dashboard</a></li>
+                    <li class="${currentPage === 'Overview.html' ? 'active' : ''}"><i class="fa fa-bar-chart"></i><a href="Overview.html" class="${currentPage === 'Overview.html' ? 'active' : ''}"> Overview</a></li>
+                    <li class="${currentPage === 'Analytic.html' ? 'active' : ''}"><i class="fa fa-line-chart"></i><a href="Analytic.html" class="${currentPage === 'Analytic.html' ? 'active' : ''}"> Analytic</a></li>
         
                     <h4 class="sidebar-section-title">General</h4>
                     <hr>
-                    <li><i class="fa fa-flag"></i><a href="Reports.html"> Critical Reports</a></li>
-                    <li><i class="fa fa-bell"></i><a href="Notifications.html"> Notifications</a></li>
+                    <li class="${currentPage === 'Reports.html' ? 'active' : ''}"><i class="fa fa-flag"></i><a href="Reports.html" class="${currentPage === 'Reports.html' ? 'active' : ''}"> Critical Reports</a></li>
+                    <li class="${currentPage === 'Notifications.html' ? 'active' : ''}"><i class="fa fa-bell"></i><a href="Notifications.html" class="${currentPage === 'Notifications.html' ? 'active' : ''}"> Notifications</a></li>
         
                     ${user.userType === "homeManager" ? `
                         <h4 class="sidebar-section-title">Admin Controls</h4>
                         <hr>
-                        <li><i class="fa fa-file-text"></i><a href="Generate-Report.html"> Generate Report</a></li>
-                        <li><i class="fa fa-cogs"></i><a href="Device-handling.html"> Device Handling</a></li>
-                        <li><i class="fa fa-microchip"></i><a href="Automation.html"> Device Automation </a></li>                    
+                        <li class="${currentPage === 'Generate-Report.html' ? 'active' : ''}"><i class="fa fa-file-text"></i><a href="Generate-Report.html" class="${currentPage === 'Generate-Report.html' ? 'active' : ''}"> Generate Report</a></li>
+                        <li class="${currentPage === 'Device-handling.html' ? 'active' : ''}"><i class="fa fa-cogs"></i><a href="Device-handling.html" class="${currentPage === 'Device-handling.html' ? 'active' : ''}"> Device Handling</a></li>
+                        <li class="${currentPage === 'Automation.html' ? 'active' : ''}"><i class="fa fa-microchip"></i><a href="Automation.html" class="${currentPage === 'Automation.html' ? 'active' : ''}"> Device Automation </a></li>                    
                     ` : ''}
         
                     <h4 class="sidebar-section-title">Account</h4>
                     <hr>
-                    <li><i class="fa fa-user"></i><a href="Profile.html"> Profile</a></li>
-                    <li><i class="fa fa-cog"></i><a href="Settings.html"> Settings</a></li>
+                    <li class="${currentPage === 'Profile.html' ? 'active' : ''}"><i class="fa fa-user"></i><a href="Profile.html" class="${currentPage === 'Profile.html' ? 'active' : ''}"> Profile</a></li>
+                    <li class="${currentPage === 'Settings.html' ? 'active' : ''}"><i class="fa fa-cog"></i><a href="Settings.html" class="${currentPage === 'Settings.html' ? 'active' : ''}"> Settings</a></li>
                     <button id="logout-btn"><i class="fa fa-sign-out"></i> Log Out</button>
                 `;
         
@@ -165,8 +168,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     
         let user = JSON.parse(localStorage.getItem("user")) || [];
+        
+        // Get current page for highlight
+        const currentPage = window.location.pathname.split("/").pop() || "index.html";
            
         console.log("Current User:", user);
+        console.log("Current Page:", currentPage);
     
         if (user.isLoggedIn) {
             console.log("👤 User logged in:", user.firstname);
@@ -177,12 +184,12 @@ document.addEventListener("DOMContentLoaded", function () {
     
             // Update Navbar Links for Logged-in Users
             navLinks.innerHTML = `
-                <li><a href="Dashboard.html"><i class="fa fa-th-large"></i> Dashboard</a></li>
-                <li><a href="Overview.html"><i class="fa fa-bar-chart"></i> Overview</a></li>
-                <li><a href="Analytic.html"><i class="fa fa-line-chart"></i> Analytic</a></li>
+                <li><a href="Dashboard.html" class="${currentPage === 'Dashboard.html' ? 'active' : ''}"><i class="fa fa-th-large"></i> Dashboard</a></li>
+                <li><a href="Overview.html" class="${currentPage === 'Overview.html' ? 'active' : ''}"><i class="fa fa-bar-chart"></i> Overview</a></li>
+                <li><a href="Analytic.html" class="${currentPage === 'Analytic.html' ? 'active' : ''}"><i class="fa fa-line-chart"></i> Analytic</a></li>
                 ${user.userType === "homeManager" ? 
-                    `<li><a href="Device-handling.html"><i class="fa fa-cogs"></i> Device Handling</a></li>
-                    <li><i class="fa fa-microchip"></i><a href="Automation.html"> Device Automation </a></li>         ` 
+                    `<li><a href="Device-handling.html" class="${currentPage === 'Device-handling.html' ? 'active' : ''}"><i class="fa fa-cogs"></i> Device Handling</a></li>
+                    <li><a href="Automation.html" class="${currentPage === 'Automation.html' ? 'active' : ''}"><i class="fa fa-microchip"></i> Device Automation</a></li>` 
                     : ''
                 }
             `;
@@ -195,38 +202,36 @@ document.addEventListener("DOMContentLoaded", function () {
     
             // Default Navbar Links
             navLinks.innerHTML = `
-                <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="About.html"><i class="fa fa-info-circle"></i> About</a></li>
-                <li><a href="Contact.html"><i class="fa fa-phone"></i> Contact</a></li>
+                <li><a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="About.html" class="${currentPage === 'About.html' ? 'active' : ''}"><i class="fa fa-info-circle"></i> About</a></li>
+                <li><a href="Contact.html" class="${currentPage === 'Contact.html' ? 'active' : ''}"><i class="fa fa-phone"></i> Contact</a></li>
             `;
         }
     
         initializeSidebar();
     });
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Select the logo anchor tag
-    const logo = document.getElementById("logo-id"); 
-    const user = JSON.parse(localStorage.getItem("user")) || {}; 
+    // Function to handle logo redirection
+    document.addEventListener("navbarLoaded", function () {
+        // Select the logo anchor tag
+        const logo = document.getElementById("logo-id"); 
+        const user = JSON.parse(localStorage.getItem("user")) || {}; 
 
-    console.log("User Data:", user); // Debugging check
+        console.log("User Data:", user); // Debugging check
 
-    // Ensure the logo element exists
-    if (logo) {
-        if (user.isLoggedIn) {
-            console.log("User is logged in, setting href to Dashboard.html");
-            logo.href = "Dashboard.html";
+        // Ensure the logo element exists
+        if (logo) {
+            if (user.isLoggedIn) {
+                console.log("User is logged in, setting href to Dashboard.html");
+                logo.href = "Dashboard.html";
+            } else {
+                console.log("User is not logged in, setting href to index.html");
+                logo.href = "index.html";
+            }
+
+            console.log("Updated Logo Href:", logo.href); // Debugging check
         } else {
-            console.log("User is not logged in, setting href to index.html");
-            logo.href = "index.html";
+            console.error("Logo element not found!");
         }
-
-        console.log("Updated Logo Href:", logo.href); // Debugging check
-    } else {
-        console.error("Logo element not found!");
-    }
-});
-
-    
-    
+    });
 });
