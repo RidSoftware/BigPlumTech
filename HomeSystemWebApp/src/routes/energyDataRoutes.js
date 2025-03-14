@@ -127,6 +127,8 @@ router.post('/api/pull24hr', async (req, res) => {
         const previousDate = now.toISOString().split('T')[0]; // Yesterday's date
 
         connection = await pool.getConnection();
+        console.log('pool DataBase connection acquired');
+
 
         // Step 1: Get homeID from user email
         const [homeIDResults] = await connection.execute(
