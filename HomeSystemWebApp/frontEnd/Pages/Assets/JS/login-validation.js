@@ -30,10 +30,11 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         localStorage.setItem("user", JSON.stringify(data.user));
         let user = JSON.parse(localStorage.getItem("user"));
 //////////////////////
+        let userID = user.userID;
         let energyResponse = await fetch("http://localhost:8080/api/pull24hr", { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ userID })
         });
         if (!energyResponse.ok) {
             throw new Error('HTTP ERROR IDK WHAT');

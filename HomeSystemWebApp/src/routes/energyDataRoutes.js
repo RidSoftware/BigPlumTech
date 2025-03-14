@@ -20,10 +20,10 @@ const pool = require('../config/DBPool');
 router.post('/api/pull24hr', async (req, res) => {
     let connection;
     try {
-        const { email } = req.body;
+        const { userID } = req.body;
 
-        if (!email) {
-            return res.status(400).json({ success: false, message: 'No email received' });
+        if (!userID) {
+            return res.status(400).json({ success: false, message: 'No userID received' });
         }
 
         const now = new Date();
@@ -37,8 +37,8 @@ router.post('/api/pull24hr', async (req, res) => {
 
         
         const [homeIDResults] = await connection.execute(
-            'SELECT HomeID FROM userdetails WHERE email = ?;',
-            [email]
+            'SELECT HomeID FROM userdetails WHERE userID = ?;',
+            [userID]
         );
 
         if (homeIDResults.length === 0) {
@@ -95,5 +95,89 @@ router.post('/api/pull24hr', async (req, res) => {
         if (connection) connection.release();
     }
 });
+
+/////////
+router.post('/api/pull7days', async (req, res) => {
+    let connection;
+    try {
+        const { userID } = req.body;
+
+        if (!userID) {
+            return res.status(400).json({ success: false, message: 'no user received' });
+        }
+
+        const now = new Date();
+        const currentDate = now.toISOString().split('T')[0]; 
+        now.setDate(now.getDate() - 7); 
+        const startDate = now.toISOString().split('T')[0]; 
+
+        connection = await pool.getConnection();
+        console.log('Database connection acquired');
+
+        // Get the HomeID for the user
+        const [homeIDResults] = await connection.execute(
+            'SELECT HomeID FROM userdetails WHERE UserID = ?;',
+            [userID]
+        );
+
+        if (homeIDResults.length === 0) {
+            connection.release();
+            return res.status(401).json({ success: false, message: 'No homeID found' });
+        }
+
+        const homeID = homeIDResults[0].HomeID;
+
+        // Fetch last 7 days of energy usage
+        const query = `
+            SELECT Date, SUM(EnergyVal) AS totalEnergy
+            FROM energydaily
+            WHERE HomeID = ?
+            AND Date BETWEEN ? AND ?
+            GROUP BY Date
+            ORDER BY Date DESC;
+        `;
+
+        const [energyResults] = await connection.execute(query, [homeID, startDate, currentDate]);
+
+        connection.release();
+
+        console.log("SQL Results:", energyResults);
+
+        if (energyResults.length === 0) {
+            return res.status(401).json({ success: false, message: 'No energy data found' });
+        }
+
+        // Initialize a data structure to ensure all 7 days are represented
+        const energyWeekProcessed = {};
+        for (let i = 0; i < 7; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            const formattedDate = date.toISOString().split('T')[0];
+            energyWeekProcessed[formattedDate] = 0;
+        }
+
+        // Populate energy data
+        energyResults.forEach(row => {
+            energyWeekProcessed[row.Date] = row.totalEnergy !== null ? row.totalEnergy : 0;
+        });
+
+        console.log("Processed Energy Data:", energyWeekProcessed);
+
+        return res.status(200).json({ 
+            success: true, 
+            message: 'datapull success', 
+            sevenDays: energyWeekProcessed
+        });
+
+    } catch (error) {
+        console.error('? Error from /api/pull7days:', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
+
+
 
 module.exports = router;
