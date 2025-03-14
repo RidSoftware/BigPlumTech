@@ -9,7 +9,7 @@ CREATE TABLE `userdetails` (
 	`FirstName` VARCHAR(30) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
 	`Surname` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	`Email` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
-	`HomeID` INT(3) UNSIGNED NOT NULL,
+	`HomeID` INT(3) UNSIGNED NULL DEFAULT NULL,
 	`Admin` ENUM('Y','N') NOT NULL DEFAULT 'N' COLLATE 'utf8mb4_unicode_ci',
 	PRIMARY KEY (`UserID`) USING BTREE,
 	UNIQUE INDEX `UNIQUE FIELD` (`Email`) USING BTREE,
@@ -19,7 +19,9 @@ CREATE TABLE `userdetails` (
 COMMENT='Table containing user details'
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
+AUTO_INCREMENT=25
 ;
+
 
 -- --------------------
 -- Universal Devices Table
@@ -73,7 +75,7 @@ ENGINE=InnoDB
 CREATE TABLE `energyhourly` (
 	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`DeviceID` INT(5) UNSIGNED NOT NULL,
-	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`EnergyVal` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
 	`Hour` INT(2) NOT NULL DEFAULT '0',
 	`Date` DATE NOT NULL,
 	PRIMARY KEY (`RecordNum`) USING BTREE,
@@ -84,11 +86,12 @@ COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
 ;
 
+
 -- --------------------
 CREATE TABLE `energydaily` (
 	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`DeviceID` INT(5) UNSIGNED NOT NULL,
-	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`EnergyVal` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
 	`Date` DATE NOT NULL,
 	PRIMARY KEY (`RecordNum`) USING BTREE,
 	INDEX `FK_energy (daily)_alldevices` (`DeviceID`) USING BTREE,
@@ -102,7 +105,7 @@ ENGINE=InnoDB
 CREATE TABLE `energyweekly` (
 	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`DeviceID` INT(5) UNSIGNED NOT NULL,
-	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`EnergyVal` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
 	`Date` DATE NOT NULL,
 	PRIMARY KEY (`RecordNum`) USING BTREE,
 	INDEX `FK_energy (weekly)_alldevices` (`DeviceID`) USING BTREE,
@@ -112,11 +115,12 @@ COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
 ;
 
+
 -- --------------------
 CREATE TABLE `energymonthly` (
 	`RecordNum` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`DeviceID` INT(5) UNSIGNED NOT NULL,
-	`EnergyVal` FLOAT NOT NULL DEFAULT '0',
+	`EnergyVal` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
 	`Date` DATE NOT NULL,
 	PRIMARY KEY (`RecordNum`) USING BTREE,
 	INDEX `FK_energy (monthly)_alldevices` (`DeviceID`) USING BTREE,
@@ -125,5 +129,6 @@ CREATE TABLE `energymonthly` (
 COLLATE='utf8mb4_unicode_ci'
 ENGINE=InnoDB
 ;
+
 
 
