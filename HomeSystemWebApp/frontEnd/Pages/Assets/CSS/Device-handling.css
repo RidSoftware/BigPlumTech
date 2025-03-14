@@ -1,282 +1,265 @@
-/* Google Font */
+/* Basic reset & fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    color: #333;
-    padding-top: 80px; /* Prevents navbar collision */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: #333;
+  padding-top: 80px; /* Space for navbar if fixed */
+  background: #f5f5f5;
 }
 
-/* Main Container */
+/* Main Container: side-by-side */
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+/* Section Container */
+.section-container {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1.2s ease-in-out;
+  flex: 1 1 500px;
+}
+
+/* Add Product Container */
 .add-product-container {
-    max-width: 500px;
-    background: white;
-    padding: 40px;
-    margin: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    animation: fadeIn 1.5s ease-in-out;
+  max-width: 600px;
+  transition: transform 0.3s ease-in-out;
 }
-
 .add-product-container:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
-/* Heading & Description */
+/* Headings & Paragraphs */
 h2 {
-    color: #007BFF;
-    font-size: 2rem;
+  color: #007BFF;
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+p {
+  margin-bottom: 20px;
+  color: #555;
 }
 
-
-/* Form Styling */
+/* Form */
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
-
 .form-group {
-    margin-bottom: 15px;
-    text-align: left;
+  margin-bottom: 15px;
+  text-align: left;
 }
-
 label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
 }
-
+input,
 select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background: #fff;
-    font-size: 1rem;
-    transition: 0.3s;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: 0.3s;
+  background: #fff;
 }
-
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background: #fff;
-    font-size: 1rem;
-    transition: 0.3s;
-}
-
-
+input:focus,
 select:focus {
-    border-color: #007BFF;
-    outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+/* AC slider style */
+input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+#acAddTempValue,
+#acEditTempValue {
+  margin-left: 10px;
+  font-weight: bold;
 }
 
 /* Buttons */
-.primary-button {
-    padding: 12px 20px;
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    margin-top: 15px;
-    transition: 0.3s;
-}
-
-.primary-button:hover {
-    background-color: #45a049;
-}
-
-/* Secondary Button (Return) */
+.primary-button,
 .secondary-button {
-    padding: 10px 18px;
-    background: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    margin-top: 10px;
-    transition: 0.3s;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+.primary-button {
+  background-color: #4CAF50;
+  color: white;
+}
+.primary-button:hover {
+  background-color: #45a049;
+}
+.secondary-button {
+  background-color: #007BFF;
+  color: white;
+}
+.secondary-button:hover {
+  background-color: #0056b3;
 }
 
-.secondary-button:hover {
-    background: #0056b3;
+/* Filter Section */
+.filter-section {
+  margin-bottom: 15px;
+  text-align: center;
+}
+.filter-section label {
+  margin-right: 10px;
+  font-size: 0.9rem;
+  color: #333;
+}
+.filter-section select {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Device List */
+.device-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Device Item */
+.device-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 8px;
+}
+.device-info h3 {
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #007bff;
+}
+.device-info p {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 2px 0;
+}
+
+/* Device Actions */
+.device-actions button {
+  margin-left: 5px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.device-actions button:hover {
+  filter: brightness(0.9);
+}
+.toggle-btn {
+  background-color: #4CAF50;
+  color: #fff;
+}
+.edit-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Modal & Overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none; /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+/* Overlay behind modal */
+.confirmation-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+/* Hidden class */
+.hidden {
+  display: none !important;
 }
 
 /* Footer */
 #footer {
-    margin-top: auto;
-    padding: 15px;
-    text-align: center;
-    width: 100%;
-    font-size: 14px;
-    background: #007BFF;
-    color: white;
-    position: relative;
-    bottom: 0;
+  margin-top: auto;
+  padding: 15px;
+  text-align: center;
+  width: 100%;
+  font-size: 14px;
+  background: #007BFF;
+  color: white;
+  position: relative;
+  bottom: 0;
 }
 
-/* Dark overlay background */
-.confirmation-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-    z-index: 1000; /* Behind the confirmation message */
-  }
-  
-  /* Center the confirmation message */
-  #confirmationMessage {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #e0ffe0;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1001; /* Ensure it appears above the overlay */
-  }
-  
-  /* Confirmation Message Text */
-  #confirmationMessage h2 {
-    color: black;
-    margin-bottom: 5 px;
-  }
-  
-  #confirmationMessage p {
-    font-size: 16px;
-    color: #333;
-  }
-  
-  /* Confirmation Button */
-  .dashboard-btn {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-  }
-  
-  .continue-btn:hover {
-    background: #218838;
-  }
-
-   /* Device Management Section */
-   .device-management {
-    max-width: 100000px;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .device-management h2 {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .filter-section {
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  .filter-section label {
-    margin-right: 10px;
-    font-size: 0.9rem;
-    color: #333;
-  }
-
-  .filter-section select {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .device-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .device-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f8f8f8;
-    padding: 10px;
-    border-radius: 8px;
-  }
-  
-  .device-info h3 {
-    margin-bottom: 5px;
-    font-size: 1rem;
-    color: #007bff;
-  }
-  
-  .device-info p {
-    font-size: 0.85rem;
-    color: #555;
-    margin: 2px 0;
-  }
-  
-  .device-actions button {
-    margin-left: 5px;
-    padding: 5px 10px;
-    font-size: 0.8rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .device-actions .toggle-btn {
-    background-color: #4CAF50;
-    color: #fff;
-  }
-  
-  .device-actions .edit-btn {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .device-actions .delete-btn {
-    background-color: #dc3545;
-    color: #fff;
-  }
-
-  
-
-/* Fade-in Animation */
+/* Fade-in animation */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

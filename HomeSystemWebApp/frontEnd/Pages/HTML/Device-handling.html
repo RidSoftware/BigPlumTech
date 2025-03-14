@@ -2,64 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Add New Smart Product</title>
-  <link rel="stylesheet" href="../Assets/CSS/Device-handling.css" />
+
+  <!-- Optional: If you have a navbar/footer loader -->
   <script defer src="../Assets/JS/navbar-footer-loader.js"></script>
+
+  <!-- Device Handling CSS -->
+  <link rel="stylesheet" href="../Assets/CSS/Device-handling.css" />
+
+  <!-- Main Logic -->
   <script defer src="../Assets/JS/device-handling.js"></script>
 </head>
 <body>
   <!-- Navbar -->
   <div id="navbar"></div>
 
-  <!-- Add New Smart Product Section -->
-  <div class="add-product-container fade-in section-container">
-    <h2>Add a New Smart Product</h2>
-    <p>Customize and add your smart home devices for better automation and control.</p>
+  <!-- Main Container: side-by-side layout -->
+  <div class="main-container">
+    <!-- Add New Smart Product (Left) -->
+    <div class="add-product-container fade-in section-container">
+      <h2>Add a New Smart Product</h2>
+      <p>Customize and add your smart home devices for better automation and control.</p>
 
-    <!-- Product Form -->
-    <form id="addProductForm">
-      <div class="form-group">
-        <label for="deviceName">Name:</label>
-        <input type="text" name="deviceName" id="deviceName" required />
-      </div>
-      <div id="errMsg"></div>
-      <div class="form-group">
-        <label for="productCategory">Category:</label>
-        <select id="productCategory" required>
-          <option value="Living Room">Living Room</option>
-          <option value="Kitchen">Kitchen</option>
-          <option value="Bedroom">Bedroom</option>
-          <option value="All">All</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="productType">Device Type:</label>
-        <select id="productType" required>
-          <option value="Light">Light</option>
-          <option value="Curtain">Curtain</option>
-          <option value="Main Door">Main Door</option>
-          <option value="Robot">Robot</option>
-          <option value="Air Conditioning">Air Conditioning</option>
-        </select>
-      </div>
-      <button type="submit" class="primary-button">Add Product</button>
-    </form>
+      <!-- Add Form -->
+      <form id="addProductForm">
+        <div class="form-group">
+          <label for="deviceName">Name:</label>
+          <input type="text" id="deviceName" required />
+        </div>
 
-    <!-- Return Button -->
-    <button id="returnButton" class="secondary-button">Return</button>
-  </div>
+        <div class="form-group">
+          <label for="deviceRoom">Room:</label>
+          <select id="deviceRoom" required>
+            <option value="Living Room">Living Room</option>
+            <option value="Kitchen">Kitchen</option>
+            <option value="Bedroom">Bedroom</option>
+            <option value="All">All</option>
+          </select>
+        </div>
 
-  <!-- Smart Product Controller Section -->
-  <div class="section-container">
-    <h2>Smart Product Controller</h2>
-    <p id="product-controller-text">
-      <!-- Dynamically update this text depending on user type -->
-    </p>
+        <div class="form-group">
+          <label for="deviceInfo">Info (optional):</label>
+          <input type="text" id="deviceInfo" placeholder="Additional info..." />
+        </div>
 
-    <!-- Device Management Section -->
-    <section class="device-management">
-      <h3>Control Smart Devices</h3>
+        <div class="form-group">
+          <label for="deviceType">Device Type:</label>
+          <select id="deviceType" required>
+            <option value="Light">Light</option>
+            <option value="Curtain">Curtain</option>
+            <option value="Main Door">Main Door</option>
+            <option value="Robot">Robot</option>
+            <option value="Air Conditioning">Air Conditioning</option>
+          </select>
+        </div>
+
+        <!-- AC Slider Group (hidden unless "Air Conditioning" is selected) -->
+        <div class="form-group hidden" id="acAddSliderGroup">
+          <label for="acAddTemp">Temperature:</label>
+          <input type="range" id="acAddTemp" min="16" max="30" value="24" />
+          <span id="acAddTempValue">24°C</span>
+        </div>
+
+        <button type="submit" class="primary-button">Add Product</button>
+      </form>
+
+      <!-- Return Button -->
+      <button id="returnButton" class="secondary-button">Return</button>
+    </div>
+
+    <!-- Smart Product Controller (Right) -->
+    <div class="section-container fade-in">
+      <h2>Smart Product Controller</h2>
+      <p id="product-controller-text">
+        <!-- Dynamically set based on userType -->
+      </p>
+
       <div class="filter-section">
         <label for="roomFilter">Filter by Room:</label>
         <select id="roomFilter">
@@ -69,15 +88,63 @@
           <option value="Bedroom">Bedroom</option>
         </select>
       </div>
-      <div class="device-list">
-        <!-- Device items will be rendered here as cards -->
-      </div>
-    </section>
+
+      <!-- Device List -->
+      <div class="device-list"></div>
+    </div>
   </div>
 
-  <!-- Dark Overlay & Confirmation Message -->
+  <!-- Edit Device Modal -->
+  <div id="editModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" id="closeEditModal">&times;</span>
+      <h2>Edit Device</h2>
+      <form id="editDeviceForm">
+        <div class="form-group">
+          <label for="editName">Name:</label>
+          <input type="text" id="editName" required />
+        </div>
+
+        <div class="form-group">
+          <label for="editRoom">Room:</label>
+          <select id="editRoom" required>
+            <option value="Living Room">Living Room</option>
+            <option value="Kitchen">Kitchen</option>
+            <option value="Bedroom">Bedroom</option>
+            <option value="All">All</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="editInfo">Info (optional):</label>
+          <input type="text" id="editInfo" placeholder="Additional info..." />
+        </div>
+
+        <div class="form-group">
+          <label for="editType">Device Type:</label>
+          <select id="editType" required>
+            <option value="Light">Light</option>
+            <option value="Curtain">Curtain</option>
+            <option value="Main Door">Main Door</option>
+            <option value="Robot">Robot</option>
+            <option value="Air Conditioning">Air Conditioning</option>
+          </select>
+        </div>
+
+        <!-- AC Slider for Edit (only show if device type is AC) -->
+        <div class="form-group hidden" id="acEditSliderGroup">
+          <label for="acEditTemp">Temperature:</label>
+          <input type="range" id="acEditTemp" min="16" max="30" value="24" />
+          <span id="acEditTempValue">24°C</span>
+        </div>
+
+        <button type="submit" class="primary-button">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dark Overlay (for modal) -->
   <div id="confirmationOverlay" class="confirmation-overlay"></div>
-  <div id="confirmationMessage"></div>
 
   <!-- Footer -->
   <div id="footer"></div>
