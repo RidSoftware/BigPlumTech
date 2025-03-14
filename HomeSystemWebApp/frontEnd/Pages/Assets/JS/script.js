@@ -234,273 +234,272 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Load products from localStorage or initialize with default products
-    let products = JSON.parse(localStorage.getItem('products'));
-    if (!products) {
-      products = [
-        { name: 'Light', category: 'Living Room', type: 'Light' },
-        { name: 'Light', category: 'Kitchen', type: 'Light' },
-        { name: 'Air Conditioning', category: 'Bedroom', type: 'Air Conditioning' }
-      ];
-      localStorage.setItem('products', JSON.stringify(products));
-    }
-    
-    // Preset categories
-    const categories = ['All', 'Living Room', 'Kitchen', 'Bedroom'];
-  
-    // Build category buttons
-    const categoryNav = document.getElementById('categoryNav');
-    categories.forEach(category => {
-      const button = document.createElement('button');
-      button.textContent = category;
-      button.classList.add('category-button');
-      button.addEventListener('click', () => filterProducts(category));
-      categoryNav.appendChild(button);
-    });
-  
-    // Initially display all products (plus the add-new product card)
-    displayProducts(products);
-  
-    
-  //   // Fetch data dynamically
-  //   async function fetchEnergyData() {
-  //       try {
-  //           const response = await fetch("/api/energy/hourly");
-  //           const data = await response.json();
-    
-  //           myChart.data.labels = data.hours;
-  //           myChart.data.datasets[0].data = data.usage;
-  //           myChart.update();
-  //       } catch (error) {
-  //           console.error("Error fetching energy data:", error);
-  //       }
-  //   }
-    
-  //   // Fetch data on page load
-  //   fetchEnergyData();
-
-  //   async function fetchSmartProducts() {
-  //     try {
-  //         const response = await fetch("/api/user/products"); // Fetch user-specific products
-  //         const data = await response.json();
-  
-  //         const productsContainer = document.getElementById("productsContainer");
-  //         productsContainer.innerHTML = ""; // Clear existing products
-  
-  //         data.products.forEach(product => {
-  //             const productCard = document.createElement("div");
-  //             productCard.classList.add("productCard");
-  //             productCard.innerHTML = `
-  //                 <p>${product.name}</p>
-  //                 <span>${product.category}</span>
-  //             `;
-  //             productsContainer.appendChild(productCard);
-  //         });
-  //     } catch (error) {
-  //         console.error("Error fetching products:", error);
-  //     }
-  // }
-  
-  // Fetch on page load
-  //fetchSmartProducts();
-  
-//     const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-//     const dataThisWeek = [20, 30, 35, 50, 51, 40, 35];
-//     const dataLastWeek = [15, 25, 28, 35, 45, 35, 30];
-  
-//     new Chart(ctx, {
-//       type: 'line',
-//       data: {
-//         labels: labels,
-//         datasets: [
-//           {
-//             label: 'This Week',
-//             data: dataThisWeek,
-//             borderColor: 'rgba(59,130,246,1)',
-//             backgroundColor: 'rgba(59,130,246,0.1)',
-//             fill: true,
-//             tension: 0.3,
-//             borderWidth: 2,
-//             pointRadius: 4,
-//             pointBorderWidth: 2,
-//             pointBackgroundColor: '#ffffff',
-//             pointBorderColor: 'rgba(59,130,246,1)'
-//           },
-//           {
-//             label: 'Last Week',
-//             data: dataLastWeek,
-//             borderColor: 'rgba(192,192,192,0.7)',
-//             backgroundColor: 'rgba(192,192,192,0.1)',
-//             fill: true,
-//             tension: 0.3,
-//             borderWidth: 2,
-//             pointRadius: 4,
-//             pointBorderWidth: 2,
-//             pointBackgroundColor: '#ffffff',
-//             pointBorderColor: 'rgba(192,192,192,0.7)'
-//           }
-//         ]
-//       },
-//       options: {
-//         responsive: true,
-//         maintainAspectRatio: false,
-//         scales: {
-//           x: { grid: { display: false }, ticks: { color: '#555' } },
-//           y: {
-//             beginAtZero: true,
-//             max: 60,
-//             grid: { color: 'rgba(220,220,220,0.3)', drawBorder: false },
-//             ticks: { color: '#555' }
-//           }
-//         },
-//         plugins: {
-//           legend: { display: false },
-//           tooltip: {
-//             backgroundColor: 'rgba(0, 0, 0, 0.7)',
-//             titleColor: '#fff',
-//             bodyColor: '#fff',
-//             displayColors: false,
-//             callbacks: {
-//               label: function(context) {
-//                 return context.parsed.y;
-//               }
-//             }
-//           }
-//         }
-//       }
-//     });
-   });
-  
-  function displayProducts(productList) {
-    const container = document.getElementById('productsContainer');
-    container.innerHTML = '';
-
-    productList.forEach(product => {
-        let card = document.createElement('div');
-        card.classList.add('productCard');
-
-        // Product Icon
-        let icon;
-        if (product.type === 'Light') {
-            icon = "💡"; // Lightbulb icon
-        } else if (product.type === 'Air Conditioning') {
-            icon = "❄️"; // AC icon
-        } else if (product.type === 'Curtain') {
-            icon = "🏠"; // Curtain icon
+    document.addEventListener("DOMContentLoaded", () => {
+        // ----- Load user & devices from localStorage -----
+        const user = JSON.parse(localStorage.getItem("user")) || {};
+        const userType = user.userType || "homeUser";
+        let devices = JSON.parse(localStorage.getItem("devices")) || [];
+      
+        // DOM references
+        const profileNameEl = document.getElementById("profile-name");
+        const dashboardIntroEl = document.getElementById("dashboardintro-text");
+        const categoryNav = document.getElementById("categoryNav");
+        const productsContainer = document.getElementById("productsContainer");
+      
+        // Optionally set user name & intro text
+        profileNameEl.textContent = user.name || "Welcome";
+        if (userType === "homeManager") {
+          dashboardIntroEl.textContent = "As a Home Manager, you have full control over your smart devices.";
         } else {
-            icon = "🔌"; // Default icon
+          dashboardIntroEl.textContent = "You can view your smart devices here. Contact a Home Manager for changes.";
         }
-
-        // Build card UI
-        card.innerHTML = `
-            <div class="product-header">
-                <span class="product-icon">${icon}</span>
-                <h3>${product.name}</h3>
-            </div>
-            <p class="product-category">${product.category}</p>
-            <label class="switch">
-                <input type="checkbox" class="toggle" data-id="${product.id}" ${product.status ? 'checked' : ''}>
-                <span class="slider round"></span>
-            </label>
-        `;
-
-        // If the product is an AC, add a temperature slider
-        if (product.type === "Air Conditioning") {
-            let slider = document.createElement('input');
-            slider.type = "range";
-            slider.min = "14";
-            slider.max = "30";
-            slider.step = "1";
-            slider.value = product.temperature || "22";
-            slider.classList.add("temperature-slider");
-
-            let tempLabel = document.createElement("div");
-            tempLabel.classList.add("temp-label");
-            tempLabel.innerText = `${slider.value}°C`;
-
-            slider.addEventListener("input", function () {
-                tempLabel.innerText = `${this.value}°C`;
-                product.temperature = this.value;
-                localStorage.setItem("smartDevices", JSON.stringify(productList));
-            });
-
-            card.appendChild(tempLabel);
-            card.appendChild(slider);
+      
+        // Categories
+        const categories = ["all", "Living Room", "Kitchen", "Bedroom"];
+        let currentFilter = "all";
+      
+        // Save devices to localStorage
+        function saveDevices() {
+          localStorage.setItem("devices", JSON.stringify(devices));
         }
-
-        container.appendChild(card);
-
-        function getCurrentUserDevices() {
-          let user = JSON.parse(localStorage.getItem("user")) || [];
-          //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-          //let currentUser = users.find(user => user.email === lastLoggedInEmail);
       
-          if (!user) return [];
-      
-          // Retrieve devices linked to this user's email
-          let allDevices = JSON.parse(localStorage.getItem("smartDevices")) || {};
-          return allDevices[user.Email] || [];
-      }
-      
-      function saveUserDevices(devices) {
-          let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail");
-          let allDevices = JSON.parse(localStorage.getItem("smartDevices")) || {};
-          allDevices[lastLoggedInEmail] = devices;
-          localStorage.setItem("smartDevices", JSON.stringify(allDevices));
-      }
-      
-      
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("deleteAllDevices").addEventListener("click", function () {
-        if (confirm("Are you sure you want to delete all devices?")) {
-            let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail");
-            let allDevices = JSON.parse(localStorage.getItem("smartDevices")) || {};
-            allDevices[lastLoggedInEmail] = []; // Clear only the current user's devices
-            localStorage.setItem("smartDevices", JSON.stringify(allDevices));
-            displayProducts([]); // Refresh UI
-        }
-    });
-});
-
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const container = document.getElementById("productsContainer");
-  
-      container.addEventListener("change", function (e) {
-          if (e.target.classList.contains("toggle")) {
-              let devices = JSON.parse(localStorage.getItem("smartDevices")) || [];
-              let device = devices.find(d => d.id === parseInt(e.target.dataset.id));
-  
-              if (device) {
-                  device.status = e.target.checked;
-                  localStorage.setItem("smartDevices", JSON.stringify(devices));
-              }
+        // Font Awesome icon by type
+        function getDeviceIcon(type) {
+          switch (type) {
+            case "Light":
+              return "fa-lightbulb";
+            case "Curtain":
+              return "fa-window-maximize";
+            case "Main Door":
+              return "fa-door-open";
+            case "Robot":
+              return "fa-robot";
+            case "Air Conditioning":
+              return "fa-snowflake";
+            default:
+              return "fa-cog";
           }
-      });
-  });
-  
-  
-    // Add a final "plus card" to create new products (depending on the userType)
-    const plusCard = document.createElement('div');
-    let user = JSON.parse(localStorage.getItem("user")) || [];
-    //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-    //let currentUser = users.find(user => user.email === lastLoggedInEmail);
-
-    if (user.userType === "homeManager") {  
-        plusCard.classList.add('add-card');
-        plusCard.textContent = '+';
-        plusCard.addEventListener('click', () => {
-            window.location.href = 'Device-handling.html';
+        }
+      
+        // Render category nav
+        function renderCategoryNav() {
+          categoryNav.innerHTML = "";
+          categories.forEach(cat => {
+            const btn = document.createElement("button");
+            btn.className = "category-button";
+            btn.textContent = cat;
+            if (cat.toLowerCase() === currentFilter.toLowerCase()) {
+              btn.classList.add("active");
+            }
+            btn.addEventListener("click", () => {
+              currentFilter = cat;
+              renderCategoryNav();
+              renderProducts();
+            });
+            categoryNav.appendChild(btn);
+          });
+        }
+      
+        // Render products
+        function renderProducts() {
+          productsContainer.innerHTML = "";
+          
+          // Filter by room
+          let filtered = devices;
+          if (currentFilter.toLowerCase() !== "all") {
+            filtered = devices.filter(d => d.room.toLowerCase() === currentFilter.toLowerCase());
+          }
+          if (filtered.length === 0) {
+            productsContainer.innerHTML = "<p>No devices added in this section</p>";
+            // Still show plus button if user is admin
+            renderPlusButton();
+            return;
+          }
+      
+          // Build product cards
+          filtered.forEach(device => {
+            const card = document.createElement("div");
+            card.className = "productCard";
+      
+            // Device icon
+            const iconClass = getDeviceIcon(device.type);
+            // On/Off switch checked state
+            const checkedAttr = device.status ? "checked" : "";
+            // AC Temp
+            const acTemp = device.acTemp !== undefined ? device.acTemp : 24;
+      
+            // Build card HTML
+            let cardHTML = `
+              <div class="product-header">
+                <i class="fas ${iconClass} product-icon"></i>
+              </div>
+              <h3>${device.name}</h3>
+              <p>${device.room} - ${device.type}</p>
+              <p>Info: ${device.info || "N/A"}</p>
+              
+              <!-- iOS-style on/off switch -->
+              <label class="switch">
+                <input type="checkbox" data-id="${device.id}" class="status-switch" ${checkedAttr}>
+                <span class="slider"></span>
+              </label>
+            `;
+      
+            // If AC, show slider
+            if (device.type === "Air Conditioning") {
+              cardHTML += `
+                <div class="ac-slider-container">
+                  <input 
+                    type="range" 
+                    min="16" 
+                    max="30" 
+                    value="${acTemp}" 
+                    data-id="${device.id}" 
+                    class="ac-slider" />
+                  <div class="temp-label" id="tempLabel-${device.id}">${acTemp}°C</div>
+                </div>
+              `;
+            }
+      
+            // If homeManager, show Edit & Delete
+            if (userType === "homeManager") {
+              cardHTML += `
+                <button class="edit-btn" data-id="${device.id}">Edit</button>
+                <button class="delete-btn" data-id="${device.id}">Delete</button>
+              `;
+            }
+      
+            card.innerHTML = cardHTML;
+            productsContainer.appendChild(card);
+          });
+          
+          // If admin, add the plus button
+          renderPlusButton();
+        }
+      
+        // Plus button for admin
+        function renderPlusButton() {
+          if (userType === "homeManager") {
+            const plusBtn = document.createElement("button");
+            plusBtn.className = "add-card";
+            plusBtn.textContent = "+";
+            plusBtn.addEventListener("click", () => {
+              window.location.href = "Device-handling.html";
+            });
+            productsContainer.appendChild(plusBtn);
+          }
+        }
+      
+        // Toggle device status
+        function toggleStatus(deviceId) {
+          devices = devices.map(d => {
+            if (d.id === deviceId) {
+              return { ...d, status: !d.status };
+            }
+            return d;
+          });
+          saveDevices();
+          renderProducts();
+        }
+      
+        // Update AC temp
+        function updateACTemp(deviceId, newTemp) {
+          devices = devices.map(d => {
+            if (d.id === deviceId && d.type === "Air Conditioning") {
+              return { ...d, acTemp: parseInt(newTemp) };
+            }
+            return d;
+          });
+          saveDevices();
+          const tempLabel = document.getElementById(`tempLabel-${deviceId}`);
+          if (tempLabel) {
+            tempLabel.textContent = `${newTemp}°C`;
+          }
+        }
+      
+        // Listen for clicks in productsContainer
+        productsContainer.addEventListener("click", (e) => {
+          const target = e.target;
+          const deviceIdAttr = target.getAttribute("data-id");
+          if (!deviceIdAttr) return;
+          const deviceId = parseInt(deviceIdAttr);
+      
+          // Edit
+          if (target.classList.contains("edit-btn")) {
+            if (userType === "homeManager") {
+              openEditModal(deviceId);
+            }
+          }
+          // Delete
+          else if (target.classList.contains("delete-btn")) {
+            if (userType === "homeManager") {
+              if (confirm("Are you sure you want to delete this device?")) {
+                devices = devices.filter(d => d.id !== deviceId);
+                saveDevices();
+                renderProducts();
+              }
+            }
+          }
         });
-        container.appendChild(plusCard);
-    }
-  }
+      
+        // Listen for changes on the iOS-style switch and AC slider
+        productsContainer.addEventListener("change", (e) => {
+          // iOS switch
+          if (e.target.classList.contains("status-switch")) {
+            const deviceId = parseInt(e.target.getAttribute("data-id"));
+            toggleStatus(deviceId);
+          }
+          // AC slider
+          else if (e.target.classList.contains("ac-slider")) {
+            const deviceId = parseInt(e.target.getAttribute("data-id"));
+            updateACTemp(deviceId, e.target.value);
+          }
+        });
+      
+        // Category navigation
+        function initCategoryNav() {
+          categoryNav.innerHTML = "";
+          categories.forEach(cat => {
+            const btn = document.createElement("button");
+            btn.className = "category-button";
+            btn.textContent = cat;
+            if (cat.toLowerCase() === currentFilter.toLowerCase()) {
+              btn.classList.add("active");
+            }
+            btn.addEventListener("click", () => {
+              currentFilter = cat;
+              initCategoryNav();
+              renderProducts();
+            });
+            categoryNav.appendChild(btn);
+          });
+        }
+      
+        // (Optional) If you have an edit modal, define openEditModal & closeEditModal
+        // For simplicity, let's just do a prompt-based edit, or skip if you want a modal
+        function openEditModal(deviceId) {
+          const device = devices.find(d => d.id === deviceId);
+          if (!device) return;
+          const newName = prompt("New device name:", device.name) || device.name;
+          const newRoom = prompt("New device room:", device.room) || device.room;
+          const newInfo = prompt("New device info:", device.info) || device.info;
+          devices = devices.map(d => {
+            if (d.id === deviceId) {
+              return { ...d, name: newName, room: newRoom, info: newInfo };
+            }
+            return d;
+          });
+          saveDevices();
+          renderProducts();
+        }
+      
+        // Initialize
+        initCategoryNav();
+        renderProducts();
+      });
+      
   
   function filterProducts(category) {
-    let products = JSON.parse(localStorage.getItem('products')) || [];
+    let products = JSON.parse(localStorage.getItem('devices')) || [];
     if (category !== 'All') {
       products = products.filter(p => p.category === category);
     }

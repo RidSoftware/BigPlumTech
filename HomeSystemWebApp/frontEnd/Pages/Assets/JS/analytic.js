@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const timeString = `${displayHour}:${displayMin} ${amPm}`;
       document.getElementById('currentTime').textContent = timeString;
     }
+
   });
 
   window.addEventListener('resize', () => {

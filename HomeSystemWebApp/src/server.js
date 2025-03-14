@@ -14,12 +14,13 @@ app.use(express.static(path.join(__dirname, '../frontEnd'))); // gives access to
 
 // DB Connection
 const db = require('./config/DBConnection');
-
+const pool = require('./config/DBPool');
 
 const userRoutes = require('./routes/userRoutes');
+const energyDataRoutes = require('./routes/energyDataRoutes');
 // Routes
 app.use(userRoutes);
-app.user(energyDataRoutes);
+app.use(energyDataRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is up and running');
