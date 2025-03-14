@@ -11,41 +11,41 @@
 <body>
   <div id="navbar"></div>
 
-  <div class="container">
-    <h1>Automation Control Panel</h1>
-    <p>This is the automation control panel, where you (admin) can set automation for smart devices for users.</p>
-    <br>
-    <p>Keep in mind that this automation applies every day and will display on the Home User's dashboard.</p>
-    <br>
+  <!-- Main Wrapper for content (not using body flex to center content) -->
+  <div class="main-wrapper">
+    <div class="container">
+      <h1>Automation Control Panel</h1>
+      <p>This is the automation control panel, where you (admin) can set automation for smart devices for users.</p>
+      <br>
+      <p>Keep in mind that this automation applies every day and will display on the Home User's dashboard.</p>
+      <br>
+      <form id="automation-form">
+        <label for="device">Device Type:</label>
+        <select id="device">
+          <option value="Light">Light</option>
+          <option value="Fan">Fan</option>
+          <option value="AC">AC</option>
+        </select>
 
-    <form id="automation-form">
-      <label for="device">Device Type:</label>
-      <select id="device">
-        <option value="Light">Light</option>
-        <option value="Fan">Fan</option>
-        <option value="AC">AC</option>
-      </select>
+        <label for="start-time">Start Time (24h):</label>
+        <input type="time" id="start-time" required>
 
-      <label for="start-time">Start Time (24h):</label>
-      <input type="time" id="start-time" required>
+        <label for="end-time">End Time (24h):</label>
+        <input type="time" id="end-time" required>
 
-      <label for="end-time">End Time (24h):</label>
-      <input type="time" id="end-time" required>
-
-      <label for="status">Status:</label>
-      <select id="status">
-        <option value="ON">ON</option>
-        <option value="OFF">OFF</option>
-      </select>
-      
-      <button type="submit">Save Automation</button>
-    </form>
+        <label for="status">Status:</label>
+        <select id="status">
+          <option value="ON">ON</option>
+          <option value="OFF">OFF</option>
+        </select>
+        
+        <button type="submit">Save Automation</button>
+      </form>
+    </div>
   </div>
 
-
-  <!-- Dark Overlay -->
+  <!-- Dark Overlay and Confirmation Panel -->
   <div id="confirmationOverlay" class="confirmation-overlay"></div>
-  
   <div id="confirmation-message" class="confirmation-container" style="display: none;">
     <!-- Content is dynamically added via JS -->
   </div>

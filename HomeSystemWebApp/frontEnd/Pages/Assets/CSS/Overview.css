@@ -278,6 +278,7 @@ input:checked + .slider:before {
   box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
 }
 
+
 /* Responsive Styling */
 @media (max-width: 768px) {
   .device-grid,

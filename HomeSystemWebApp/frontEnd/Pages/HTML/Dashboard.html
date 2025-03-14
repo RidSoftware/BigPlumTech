@@ -1,45 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Smart Home</title>
-  <link rel="stylesheet" href="../Assets/CSS/styles.css">
+  <title>Smart Home Dashboard</title>
+  <!-- Font Awesome (for icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Your main Dashboard CSS -->
+  <link rel="stylesheet" href="../Assets/CSS/styles.css" />
+  
+  <!-- Chart Libraries (if you have them) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script> <!-- Zoom plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+
+  <!-- Navbar/Footer Loader (if you have it) -->
   <script src="../Assets/JS/navbar-footer-loader.js"></script>
-  <script src="../Assets/JS/script.js"></script>
+  
+  <!-- Main Dashboard JS -->
+  <script defer src="../Assets/JS/script.js"></script>
 </head>
 <body>
+  <!-- Navbar (injected by navbar-footer-loader.js, presumably) -->
   <div id="navbar"></div>
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
-    
     <!-- Main Header -->
     <div class="header-left">
       <div class="header-text">
         <h1 id="profile-name"></h1>
-        <p id="dashboardintro-text"><!-- will add dynamically --></p><br>
+        <p id="dashboardintro-text"><!-- Dynamic text from script.js --></p>
       </div>
     </div>
 
-    <!-- Energy Usage Graph Section -->
+    <!-- Energy Usage Graph Section (if needed) -->
     <section>
       <h2>Current Daily Energy Usage Overview</h2>
-      <p> This is the energy usage overview by day. Use mouse scroll to expand and compress the graph.</p>
-      <p> If you want to see your weekly and monthly overview go to <a href="Overview.html" style="text-decoration: none;"> Overview</a> page!</p>
-      <br>
+      <p>This is the energy usage overview by day. Use mouse scroll to expand and compress the graph.</p>
+      <p>If you want to see your weekly and monthly overview go to 
+        <a href="Overview.html" style="text-decoration: none;">Overview</a> page!</p>
       <div class="chart-container">
         <canvas id="myChart"></canvas>
-
       </div>
       <button id="resetZoom">Reset Zoom</button>
     </section>
 
-    <!-- Energy Level Reminder Panel -->
+    <!-- Energy Level Reminder Panel (optional) -->
     <div id="energy-panel" class="draggable-panel">
       <h2>⚡Daily Energy Reminder Panel</h2>
-      <p>Move this panel anywhere, but it stays visible for easy tracking.</p><br>
+      <p>Move this panel anywhere, but it stays visible for easy tracking.</p>
       <p id="energy-message"></p>
       <div class="energy-bar">
         <div id="energy-fill"></div>
@@ -56,53 +64,48 @@
 
     <!-- Smart Products Section -->
     <section>
-      <br><h2>Smart Products</h2>
+      <h2>Smart Products</h2>
+      <!-- Category Navigation -->
       <nav id="categoryNav"></nav>
+      <!-- Product Cards Container -->
       <div id="productsContainer"></div>
-      
     </section>
 
-    <!-- Two new features: automation container and energy recommendation -->
- <!-- Smart Automation Section -->
- <section>
-  <h2>Smart Automation Status</h2>
-  <p id="automation-text"></p>
+    <!-- (Other sections like Automation, Social Share, etc.) -->
+    <section>
+      <h2>Smart Automation Status</h2>
+      <p id="automation-text"></p>
+      <table id="automation-table" class="automation-table">
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>Status</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Setup By</th>
+            <th>Admin control (deletion)</th>
+          </tr>
+        </thead>
+        <tbody id="automation-list"></tbody>
+      </table>
+      <div id="add-device-automation" style="display: none;">
+        <a href="Automation.html" class="add-automation-btn">Add Device Automation</a>
+      </div>
 
-  <table id="automation-table" class="automation-table">
-    <thead>
-      <tr>
-        <th>Device</th>
-        <th>Status</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Setup By</th>
-        <th>Admin control (deletion)</th>
-      </tr>
-    </thead>
-    <tbody id="automation-list"></tbody>
-  </table>
-
-  <!-- Add Device Automation Button -->
-  <div id="add-device-automation" style="display: none;">
-    <a href="Automation.html" class="add-automation-btn">Add Device Automation</a>
+      <!-- Share to Social Media Section -->
+      <section class="share-section">
+        <h2>Share Your Smart Home Experience</h2>
+        <p>Tell your friends about your smart home automation!</p>
+        <div class="social-share">
+          <a id="share-twitter" href="#" class="share-btn twitter"><i class="fa fa-twitter"></i> Twitter</a>
+          <a id="share-facebook" href="#" class="share-btn facebook"><i class="fa fa-facebook"></i> Facebook</a>
+          <a id="share-instagram" href="#" class="share-btn instagram"><i class="fa fa-instagram"></i> Instagram</a>
+        </div>
+      </section>
+    </section>
   </div>
 
-  <!-- Share to Social Media Section -->
-  <section class="share-section">
-    <h2>Share Your Smart Home Experience</h2>
-    <p>Tell your friends about your smart home automation!</p>
-    
-    <div class="social-share">
-      <a id="share-twitter" href="#" class="share-btn twitter"><i class="fa fa-twitter"></i> Twitter</a>
-      <a id="share-facebook" href="#" class="share-btn facebook"><i class="fa fa-facebook"></i> Facebook</a>
-      <a id="share-instagram" href="#" class="share-btn instagram"><i class="fa fa-instagram"></i> Instagram</a>
-    </div>
-  </section>
-
-</section>
-
-  </div> <!-- End of Content Wrapper -->
-
+  <!-- Footer (possibly loaded by navbar-footer-loader.js) -->
   <div id="footer"></div>
 </body>
 </html>

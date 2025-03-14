@@ -84,74 +84,6 @@ select, input {
     background: #ccc;
 }
 
-/* Products Container */
-#productsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-/* Product Card: default (non-AC) */
-#productsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    padding: 20px;
-}
-
-.productCard {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.product-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.product-icon {
-    font-size: 20px;
-}
-
-.product-category {
-    font-size: 14px;
-    color: gray;
-}
-
-.temperature-slider {
-    width: 80%;
-    margin-top: 10px;
-}
-
-.temp-label {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 5px;
-}
-
-
-/* AC Card: bigger, different layout */
-.ac-card {
-    width: 320px;/* Larger width for AC */
-    background: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 20px;/* Less "pill" shaped, more standard rounding */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    padding: 15px;
-    display: flex;
-    flex-direction: column;/* Stack top row + slider vertically */
-    gap: 10px;/* Space between top row and slider container */
-}
 
 /* Top row: name/category + toggle side by side */
 .top-row {
@@ -167,68 +99,7 @@ select, input {
     align-items: flex-start;/* left-align text */
 }
 
-/* iOS Slider Toggle Style */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-    margin-left: 5px;
-}
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 20px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 2px;
-    bottom: 2px;
-    background-color: #fff;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-
-.switch input:checked + .slider {
-    background-color: #4CAF50;
-}
-
-.switch input:checked + .slider:before {
-    transform: translateX(20px);
-}
-
-/* "Plus Card" to add new products */
-.add-card {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: #4CAF50;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    cursor: pointer;
-    border: none;
-}
-.add-card:hover {
-    background-color: #45a049;
-}
 
 /* Chart Container */
 .chart-container {
@@ -242,50 +113,183 @@ select, input {
     position: relative;
 }
 
-/* AC slider container at the bottom */
-.ac-slider-container {
+/* Container for all product cards (grid layout) */
+#productsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Individual product card */
+  .productCard {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-}
-
-/* Min/max labels for the slider row */
-.ac-slider-labels {
+    align-items: center; /* Center contents horizontally */
+    text-align: center;
+    position: relative;
+    min-height: 280px; /* Enough space for content + toggle + slider if AC */
+    transition: transform 0.3s ease;
+  }
+  
+  /* Subtle hover effect */
+  .productCard:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Product icon at the top */
+  .product-header {
+    margin-bottom: 10px;
+  }
+  
+  .product-icon {
+    font-size: 2rem; /* Larger icon */
+    color: #007BFF;  /* or your preferred accent color */
+  }
+  
+  /* Product Title & Info */
+  .productCard h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  .productCard p {
+    margin: 3px 0;
+    color: #555;
+    font-size: 0.9rem;
+  }
+  
+  /* iOS-Style Switch Container */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;   /* Increase width for a bigger switch */
+    height: 26px; /* Increase height for a bigger switch */
+    margin-top: 8px; /* Some spacing above the switch if needed */
+    margin-bottom: 10px; /* Some spacing below as well */
+  }
+  
+  /* Hide the default checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider (the track) */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 26px; /* match height for full pill shape */
+  }
+  
+  /* The circle (thumb) */
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; 
+    width: 20px; 
+    left: 3px; 
+    bottom: 3px;
+    background-color: #fff;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  
+  /* When checkbox is checked, move the thumb */
+  .switch input:checked + .slider {
+    background-color: #4CAF50;
+  }
+  .switch input:checked + .slider:before {
+    transform: translateX(24px); /* move thumb to the right */
+  }
+  
+  /* AC slider container (only shown if device.type === "Air Conditioning") */
+  .ac-slider-container {
     display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.temperature-slider {
+    flex-direction: column;
+    align-items: center; /* center slider & label horizontally */
+    margin-top: 10px;
+    gap: 5px; /* space between slider and label */
+  }
+  
+  .ac-slider-container input[type="range"] {
     width: 100%;
-    height: 4px;
-    background: #ddd;
-    border-radius: 2px;
+    max-width: 200px; /* optional max width to keep it narrower */
+    cursor: pointer;
+  }
+  
+  /* Temperature label below AC slider */
+  .ac-slider-container .temp-label {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  /* The plus button (for homeManager) to add new devices */
+  .add-card {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin-top: 10px; /* space above if needed */
+    align-self: center; /* center in the grid cell */
+  }
+  .add-card:hover {
+    background-color: #45a049;
+  }
+  
+  /* Optional: small style for edit/delete buttons in card if you want them inline */
+  .productCard button.edit-btn,
+  .productCard button.delete-btn {
+    margin: 5px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     outline: none;
-    cursor: pointer;
-}
-
-.temperature-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: #4CAF50;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #fff;
-    box-shadow: 0 0 2px rgba(0,0,0,0.2);
-}
-
-.temperature-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: #4CAF50;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #fff;
-    box-shadow: 0 0 2px rgba(0,0,0,0.2);
-}
+  }
+  .productCard button.edit-btn {
+    background-color: #007BFF;
+    color: #fff;
+  }
+  .productCard button.delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  .productCard button.edit-btn:hover {
+    background-color: #0056b3;
+  }
+  .productCard button.delete-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* If you want to reduce space, or center them side-by-side: 
+  .productCard .edit-btn, .productCard .delete-btn {
+    display: inline-block;
+  } 
+  */
+  
+  /* If no devices match the filter, we display a message. Style it: */
+  #productsContainer p {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    grid-column: 1 / -1; /* span entire grid width */
+  }
 
 /* Draggable panel css*/
 .draggable-panel {

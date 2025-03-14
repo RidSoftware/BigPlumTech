@@ -17,7 +17,7 @@ header {
     top: 0;
     left: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Changed to space-between from center */
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 100;
@@ -28,20 +28,39 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    text-decoration: none;
     position: relative;
-    width: 60px; /* Default width with just the logo */
-    transition: width 0.5s ease-in-out; /* Smooth expand animation */
+    width: 200px;
+    overflow: hidden;
+    text-decoration: none;
 }
 
-/* Logo Image */
-#logo-img {
+/* Logo Images */
+#logo-img-1, #logo-img-2 {
     width: 50px;
     height: 50px;
-    transition: transform 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    flex-shrink: 0;
 }
 
-/* Logo Text - Initially Hidden */
+#logo-img-2 {
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    transform: rotateY(-180deg);
+}
+
+/* Hover Effect */
+.logo:hover #logo-img-1 {
+    opacity: 0;
+    transform: rotateY(360deg);
+}
+
+.logo:hover #logo-img-2 {
+    opacity: 1;
+    transform: rotateY(180deg);
+}
+
+/* Logo Text */
 #logo-text {
     margin-left: 10px;
     font-size: 18px;
@@ -54,14 +73,6 @@ header {
 }
 
 /* Hover Effect */
-.logo:hover {
-    width: 200px; /* Expand to show text */
-}
-
-.logo:hover #logo-img {
-    transform: rotateY(360deg);
-}
-
 .logo:hover #logo-text {
     opacity: 1;
     transform: translateX(0);
@@ -72,19 +83,12 @@ header {
     transform: translateY(-100px);
 }
 
-/* Navbar Logo */
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #007BFF;
-    text-decoration: none;
-}
-
 /* Navbar Centered Items */
 .nav-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center based on screen width */
+    width: auto; /* Width based on content */
 }
 
 /* Navbar Links */
@@ -99,11 +103,19 @@ header {
     text-decoration: none;
     color: #333;
     font-weight: 600;
-    transition: color 0.3s;
+    transition: color 0.3s, border-bottom 0.3s;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
 }
 
 .nav-links li a:hover {
     color: #007BFF;
+}
+
+/* Active link highlighting */
+.nav-links li a.active {
+    color: #007BFF;
+    border-bottom: 2px solid #007BFF;
 }
 
 /* Right Menu (Register, Login, Profile Icon) */
@@ -303,21 +315,61 @@ header {
     display: none !important;
 }
 
+/* Sidebar styles */
+/* Active sidebar link highlighting */
+.sidebar-menu li {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.sidebar-menu li a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.sidebar-menu li a:hover {
+    color: #007BFF;
+}
+
+.sidebar-menu li a.active {
+    color: #007BFF;
+    font-weight: bold;
+}
+
+.sidebar-menu li.active {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-left: 3px solid #007BFF;
+    padding-left: 5px;
+}
+
 /* Adjustments for smaller screens */
 @media (max-width: 768px) {
     header {
         flex-direction: column;
+        padding: 15px;
     }
 
     .nav-container {
+        position: relative;
+        left: 0;
+        transform: none;
         order: 3;
         width: 100%;
+        margin-top: 15px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .right-menu {
+        margin-top: 10px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
         justify-content: center;
+        gap: 15px;
     }
 }
-
-
-  
-
-
-

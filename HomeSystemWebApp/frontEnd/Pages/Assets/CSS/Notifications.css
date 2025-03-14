@@ -85,6 +85,24 @@ html, body {
   background: #c82333;
 }
 
+/* Add to Notifications.css */
+#notification-list li {
+  animation: slideIn 0.1s ease-out;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateX(100%);
+      opacity: 0;
+  }
+  to {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
 /* Stick footer to the bottom */
 #footer {
   padding: 20px;
