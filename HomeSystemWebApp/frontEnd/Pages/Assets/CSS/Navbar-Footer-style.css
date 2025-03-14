@@ -24,7 +24,7 @@ header {
     transition: transform 0.4s ease-in-out;
 }
 
-/* Logo Container 
+/* Logo Container */
 .logo {
     display: flex;
     align-items: center;
