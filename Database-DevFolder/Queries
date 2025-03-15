@@ -61,6 +61,13 @@ JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
 JOIN homedetails ON alldevices.HomeID = homedetails.HomeID
 WHERE homedetails.HomeID = 1 AND energyhourly.Date = "2025-03-11"
 
+-- select sum of energyhourly energy values for a specific device and day
+SELECT SUM(EnergyVal) AS DeviceDailyValue
+FROM energyhourly
+JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
+WHERE alldevices.DeviceID = 1 AND energyhourly.Date = "2025-03-11"
+
 -- inserts automation information for a device
 INSERT INTO automationinfo (DeviceID, TimeStart, TimeEnd, DayToBegin)
 VALUES ('1', '00:00:00', '10:00:00', 'Monday');
+
