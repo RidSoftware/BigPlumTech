@@ -1,4 +1,10 @@
+import { syncDevicesFromBackend, updateDevice } from './deviceAPI.js';
+
+let user = JSON.parse(localStorage.getItem("user"));
+let userID = user.userID;
+
 document.addEventListener("DOMContentLoaded", function () {
+    syncDevicesFromBackend(userID);
     initializeChart();
     updateEnergyPanel();
     makePanelDraggable();
