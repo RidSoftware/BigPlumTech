@@ -54,3 +54,10 @@ SELECT DeviceID
 FROM alldevices
 WHERE HomeID = 2
 
+-- select sum of all energyhourly values for a specific day for all devices in a given homeID
+SELECT SUM(EnergyVal) AS TotalDailyValue
+FROM energyhourly
+JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
+JOIN homedetails ON alldevices.HomeID = homedetails.HomeID
+WHERE homedetails.HomeID = 1 AND energyhourly.Date = "2025-03-11"
+
