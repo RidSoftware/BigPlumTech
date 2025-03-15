@@ -1,119 +1,167 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    margin: 0;
-    min-height: 100vh; /* Ensures full-page height */
-  }
-  
-  .container {
-    background: white;
-    margin: 125px auto;
-    padding: 20px;
-    max-width: 500px;
-    margin-bottom: 80px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1, h2 {
-    color: #007BFF;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  input, select, button {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  button {
-    background: #007BFF;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background: #0056b3;
-  }
-  
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  min-height: 100vh; /* Ensures full-page height */
+}
+
+.container {
+  background: white;
+  margin: 125px auto;
+  padding: 20px;
+  max-width: 900px;
+  margin-bottom: 80px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  color: #007BFF;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input, select, button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  background: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
 /* Fix Overlay Background */
 .confirmation-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-  z-index: 999; /* Ensure it's above everything */
-  display: none; /* Hidden by default */
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+z-index: 999; /* Ensure it's above everything */
+display: none; /* Hidden by default */
 }
 
 /* Fix Confirmation Panel */
 .confirmation-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  z-index: 1000;
-  display: none; /* Hidden by default */
-  flex-direction: column;
-  align-items: center;
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: white;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+text-align: center;
+z-index: 1000;
+display: none; /* Hidden by default */
+flex-direction: column;
+align-items: center;
 }
 
 /* Confirmation Message */
 .confirmation-container h2 {
-  color: #007BFF;
-  margin-bottom: 10px;
+color: #007BFF;
+margin-bottom: 10px;
 }
 
 .confirmation-container p {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 15px;
+font-size: 16px;
+color: #333;
+margin-bottom: 15px;
 }
 
 /* Go to Dashboard Button */
 .dashboard-btn {
-  background: #007BFF;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s ease;
+background: #007BFF;
+color: white;
+border: none;
+padding: 10px 15px;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+transition: background 0.3s ease;
 }
 
 .dashboard-btn:hover {
-  background: #0056b3;
+background: #0056b3;
 }
 
+/* Device Selector */
+.device-selector {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-bottom: 15px;
+padding: 10px;
+border: 1px solid #ddd;
+border-radius: 5px;
+background-color: #f9f9f9;
+}
 
-  /* Footer Stays at Bottom */
-  #footer {
-    padding: 20px;
-    text-align: center;
-    width: 100%;
-    font-size: 14px;
-    background: #007BFF;
-    color: white;
-    position: relative;
-    bottom: 0;
-    margin-top: auto; 
-  }
+.device-selector h3 {
+margin-top: 0;
+margin-bottom: 10px;
+color: #007BFF;
+}
+
+.device-list-container {
+max-height: 200px;
+overflow-y: auto;
+border: 1px solid #ddd;
+border-radius: 5px;
+padding: 5px;
+}
+
+.device-option {
+padding: 8px;
+margin: 5px 0;
+border-radius: 3px;
+cursor: pointer;
+transition: background-color 0.2s;
+}
+
+.device-option:hover {
+background-color: #e9f5ff;
+}
+
+.device-option.selected {
+background-color: #007BFF;
+color: white;
+}
+
+.no-devices {
+color: #777;
+font-style: italic;
+padding: 10px;
+}
+
+/* Footer Stays at Bottom */
+#footer {
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  font-size: 14px;
+  background: #007BFF;
+  color: white;
+  position: relative;
+  bottom: 0;
+  margin-top: auto; 
+}
