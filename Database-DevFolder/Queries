@@ -71,3 +71,7 @@ WHERE alldevices.DeviceID = 1 AND energyhourly.Date = "2025-03-11"
 INSERT INTO automationinfo (DeviceID, TimeStart, TimeEnd, DayToBegin)
 VALUES ('1', '00:00:00', '10:00:00', 'Monday');
 
+-- inserts energyhourly record
+INSERT INTO energyhourly (DeviceID, EnergyVal, Hour, Date)
+VALUES ('1', '10.0', '0', '2025-03-15');
+
