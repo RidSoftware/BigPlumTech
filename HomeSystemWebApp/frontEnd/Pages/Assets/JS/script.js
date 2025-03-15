@@ -676,21 +676,60 @@ document.addEventListener("DOMContentLoaded", function () {
         return `${hours12}:${minutes} ${period}`;
     }
 
+    // Updated the delete automation, this is very brute force but i essentially re-apply the "rule" when the automation is deleted
+    // meaning automation is no longer active.
     function deleteAutomation(index) {
-        let automations = JSON.parse(localStorage.getItem("automations")) || [];
-        
-        // Add a fade-out animation
-        const row = automationList.children[index];
-        row.classList.add("fade-out");
-        
-        // Remove after animation completes
-        setTimeout(() => {
-            automations.splice(index, 1);
-            localStorage.setItem("automations", JSON.stringify(automations));
-            loadAutomations();
-        }, 500); // Match with CSS animation duration
-    }
-
+      let automations = JSON.parse(localStorage.getItem("automations")) || [];
+      const automationToDelete = automations[index];
+      
+      // Check if the automation is currently active
+      if (automationToDelete && automationToDelete.active) {
+          const now = new Date();
+          const currentHour = now.getHours();
+          const currentMinute = now.getMinutes();
+          
+          // Parse start and end times
+          const [startHour, startMinute] = automationToDelete.start.split(':').map(num => parseInt(num));
+          const [endHour, endMinute] = automationToDelete.end.split(':').map(num => parseInt(num));
+          
+          // Calculate time in minutes for easier comparison
+          const currentTimeInMinutes = currentHour * 60 + currentMinute;
+          const startTimeInMinutes = startHour * 60 + startMinute;
+          const endTimeInMinutes = endHour * 60 + endMinute;
+          
+          // Check if current time is within the automation period
+          if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
+              // This automation is currently active, so reset the device status
+              const devices = JSON.parse(localStorage.getItem("devices")) || [];
+              const deviceToUpdate = devices.find(d => d.id === automationToDelete.deviceId);
+              
+              if (deviceToUpdate) {
+                  // Reset the device to the opposite status of what the automation set
+                  deviceToUpdate.status = automationToDelete.status === 'OFF';
+                  
+                  // Save the updated devices
+                  localStorage.setItem("devices", JSON.stringify(devices));
+                  console.log(`Device ${deviceToUpdate.name} status reset after automation deletion`);
+                  
+                  // If we're on the dashboard, refresh the UI
+                  if (typeof renderProducts === "function") {
+                      renderProducts();
+                  }
+              }
+          }
+      }
+      
+      // Add a fade-out animation
+      const row = automationList.children[index];
+      row.classList.add("fade-out");
+      
+      // Remove after animation completes
+      setTimeout(() => {
+          automations.splice(index, 1);
+          localStorage.setItem("automations", JSON.stringify(automations));
+          loadAutomations();
+      }, 500); // Match with CSS animation duration
+  }
     loadAutomations();
     
 
