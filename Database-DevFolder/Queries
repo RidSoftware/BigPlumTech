@@ -61,3 +61,6 @@ JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
 JOIN homedetails ON alldevices.HomeID = homedetails.HomeID
 WHERE homedetails.HomeID = 1 AND energyhourly.Date = "2025-03-11"
 
+-- inserts automation information for a device
+INSERT INTO automationinfo (DeviceID, TimeStart, TimeEnd, DayToBegin)
+VALUES ('1', '00:00:00', '10:00:00', 'Monday');
