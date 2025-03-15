@@ -67,6 +67,19 @@ FROM energyhourly
 JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
 WHERE alldevices.DeviceID = 1 AND energyhourly.Date = "2025-03-11"
 
+-- Same as above but for between a certain range of dates instead (all in home)
+SELECT SUM(EnergyVal) AS TotalWeeklyValue
+FROM energydaily
+JOIN alldevices ON energydaily.DeviceID = alldevices.DeviceID
+JOIN homedetails ON alldevices.HomeID = homedetails.HomeID
+WHERE homedetails.HomeID = 1 AND energydaily.Date BETWEEN '2025-03-01' AND '2025-03-07'
+
+-- for 1 device
+SELECT SUM(EnergyVal) AS DeviceWeeklyValue
+FROM energydaily
+JOIN alldevices ON energydaily.DeviceID = alldevices.DeviceID
+WHERE alldevices.DeviceID = 1 AND energydaily.Date BETWEEN '2025-03-01' AND '2025-03-07'
+
 -- inserts automation information for a device
 INSERT INTO automationinfo (DeviceID, TimeStart, TimeEnd, DayToBegin)
 VALUES ('1', '00:00:00', '10:00:00', 'Monday');
