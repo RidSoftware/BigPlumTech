@@ -24,8 +24,17 @@
         <select id="device">
           <option value="Light">Light</option>
           <option value="Fan">Fan</option>
-          <option value="AC">AC</option>
+          <option value="Air Conditioning">Air Conditioning</option>
+          <option value="Robot">Robot</option>
         </select>
+        
+        <!-- Device Selector -->
+        <div id="device-selector" class="device-selector">
+          <h3>Select Specific Device:</h3>
+          <div id="device-list-container" class="device-list-container">
+            <!-- Device options will be populated here -->
+          </div>
+        </div>
 
         <label for="start-time">Start Time (24h):</label>
         <input type="time" id="start-time" required>
@@ -33,7 +42,7 @@
         <label for="end-time">End Time (24h):</label>
         <input type="time" id="end-time" required>
 
-        <label for="status">Status:</label>
+        <label for="status">Status at Start Time:</label>
         <select id="status">
           <option value="ON">ON</option>
           <option value="OFF">OFF</option>
