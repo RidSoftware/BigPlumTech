@@ -94,6 +94,37 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             console.log("Error fetching 7-day energy data:", error);
             localStorage.setItem("energyDataWeek", JSON.stringify({})); //empty object if naothing
         }
+//////////////////////
+        ////pulls device details
+        try {
+            let deviceResponse = await fetch("http://localhost:8080/api/pullDevices", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userID })
+            })
+            if (deviceResponse.ok) {
+                let deviceData = await deviceResponse.json();
+                if (deviceData.success) {
+                    localStorage.setItem("devices", JSON.stringify(deviceData.sentDevices));
+                } else {
+                    console.log("7-day energy data pull failed:", deviceData.message);
+                }
+            } else {
+                throw new Error("Failed to fetch device data.");
+            }
+        } catch (error) { /////errror for device try
+            console.log("Error fetching device data:", error);
+        }
+
+///////debuging logs
+console.log(localStorage.getItem('energyDataDay'));
+console.log(localStorage.getItem('energyDataWeek'));
+console.log(localStorage.getItem('devices'));
+
+
+
+
+
 ///////////////errot for login
     } catch (error) {
         console.error("Login error:", error);

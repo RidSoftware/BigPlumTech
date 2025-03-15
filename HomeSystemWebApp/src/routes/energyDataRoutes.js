@@ -64,7 +64,7 @@ router.post('/api/pull24hr', async (req, res) => {
 
         connection.release();
 
-        console.log("SQL Results:", energyResults); 
+        console.log("SQL energyResults24:", energyResults); 
 
         if (energyResults.length === 0) {
             return res.status(401).json({ success: false, message: 'No energy data found' });
@@ -142,7 +142,7 @@ router.post('/api/pull7days', async (req, res) => {
 
         connection.release();
 
-        console.log("SQL Results:", energyResults);
+        console.log("SQL energyResults7:", energyResults);
 
         if (energyResults.length === 0) {
             return res.status(401).json({ success: false, message: 'No energy data found' });
