@@ -194,6 +194,40 @@ router.post('api/addDevice', async (req, res) => {
     }
 });
 ////////////// delete device
+router.post('api/deleteDevice', async (req, res) => {
+    let connection;
+    try {
+        const {id} = req.body;
 
+        if (!id) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'no devid given' 
+            });
+        }
+
+        connection = await pool.getConnection();
+        console.log(`deleting devide, id: ${id}`);
+
+        const query = `
+            DELETE FROM alldevices 
+            WHERE DeviceID = ?
+        `;
+
+        await connection.execute(query, [id]);
+        connection.release();
+
+        return res.status(200).json({
+            success: true,
+            message: 'successful delete'
+        })
+
+    } catch (error) {
+        console.error('error in api/deleteDevice: ', error);
+    } finally {
+        if (connection) connection.release();
+    }
+
+});
 
 module.exports = router;
