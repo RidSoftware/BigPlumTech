@@ -1,0 +1,70 @@
+-- Population housedetails
+INSERT INTO homedetails (NoOfResidents, HomeManager, AdminCode) VALUES
+(1, 'John Doe', '61234'),
+(2, 'Emily Davis', '75678'),
+(3, 'Lucas Clark', '99101'),
+(4, 'Diana Ross', '31121'),
+(5, 'Evan Green', '53141');
+
+-- ---------------------------------------------------------------------
+
+-- Populating userdetails
+INSERT INTO userdetails (Password, FirstName, Surname, Email, HomeID, Admin) VALUES
+('pass123', 'John', 'Doe', 'john.doe@example.com', 1, 'Y'),
+('secure456', 'Jane', 'Smith', 'jane.smith@example.com', 1, 'N'),
+('test789', 'Mike', 'Brown', 'mike.brown@example.com', 2, 'N'),
+('random321', 'Emily', 'Davis', 'emily.davis@example.com', 2, 'Y'),
+('abc987', 'Chris', 'Wilson', 'chris.wilson@example.com', 4, 'N'),
+('xyz654', 'Anna', 'Moore', 'anna.moore@example.com', 5, 'N'),
+('lmn111', 'David', 'White', 'david.white@example.com', 2, 'N'),
+('opq222', 'Emma', 'Hall', 'emma.hall@example.com', 3, 'N'),
+('rst333', 'Lucas', 'Clark', 'lucas.clark@example.com', 3, 'Y'),
+('uvw444', 'Sophia', 'Young', 'sophia.young@example.com', 5, 'N');
+('fdnc3432r', 'Diana', 'Ross', 'diana.ross@example.com', 4, 'Y');
+('udncjn4534', 'Evan', 'Green', 'evan.green@example.com', 5, 'Y');
+
+-- ---------------------------------------------------------------------
+-- Populating alldevices
+INSERT INTO alldevices (DeviceName, DeviceType, Status, LocationRoom, HomeID) VALUES
+('Vacuum Bot', 'Robot', 'On', 'Living Room', 1),
+('Solar Panel', 'EnergyGeneration', 'N/A', 'Roof', 1),
+('Smart Light', 'EnergyUsage', 'Off', 'Bedroom', 2),
+('Light', 'EnergyUsage', 'On', 'Kitchen', 3),
+('Thermostat', 'EnergyUsage', 'On', 'Hallway', 4),
+('Security Cam', 'Robot', 'On', 'Entrance', 5),
+('Roomba', 'EnergyUsage', 'Off', 'Laundry', 2),
+('Solar Panel', 'EnergyGeneration', 'N/A', 'Roof', 3),
+('Heating System', 'EnergyUsage', 'On', 'Basement', 4),
+('Smart TV', 'EnergyUsage', 'Off', 'Living Room', 5);
+
+-- ---------------------------------------------------------------------
+
+-- Populating automationinfo
+INSERT INTO automationinfo (DeviceID, TimeStart, TimeEnd, DayToBegin) VALUES
+(1, '08:00:00', '10:00:00', 'Monday'),
+(2, '12:00:00', '14:00:00', 'Wednesday'),
+(3, '18:00:00', '20:00:00', 'Friday'),
+(4, '07:00:00', '09:00:00', 'Sunday');
+
+-- ---------------------------------------------------------------------
+
+(Python code to generate energyhourly data)
+for day in range(10, 17):
+    for hour in range(24):
+        print(f"INSERT INTO energyhourly (DeviceID, EnergyVal, Hour, Date) VALUES (3, {1.2 + (hour * 0.1)}, {hour}, '2025-03-{day}');")
+
+-- ---------------------------------------------------------------------
+
+(Python code to generate energydaily data)
+for day in range(10, 17):
+        print(f"INSERT INTO energydaiy (DeviceID, EnergyVal, Date) VALUES (3, {1.2 + (day * 0.1)}, '2025-03-{day}');")
+
+-- ---------------------------------------------------------------------
+
+-- Populating energyweekly
+INSERT INTO energyweekly (DeviceID, EnergyVal, Date) VALUES
+(3, 120.5, '2025-03-10'),
+(3, 130.2, '2025-03-17');
+(3, 134.4, '2025-03-3');
+(3, 127.31, '2025-02-24');
+(3, 141.41, '2025-02-17');
