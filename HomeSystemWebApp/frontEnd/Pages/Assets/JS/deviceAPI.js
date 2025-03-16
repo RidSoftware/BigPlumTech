@@ -26,7 +26,7 @@ export const syncDevicesFromBackend = async (userID) => {
 
         const result = await response.json();
         console.log("raw json in front api: ", result);
-        console.log("raw json in front api: ", result.saveDevices);
+        console.log("raw json in front api: ", result.sentDevices);
         if (!result.success) throw new Error(result.message);
 
         saveDevices(JSON.parse(result.sentDevices)); // updates devices obj locallstoraeg
