@@ -21,12 +21,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Implement the automation check function directly in script.js
-async function checkAutomationsOnDashboard() {
+function checkAutomationsOnDashboard() {
   const automations = JSON.parse(localStorage.getItem("automations")) || [];
   if (automations.length === 0) return;
   
-  let devices = await getSyncedDevices();
-  if (!devices.length) return;
+  const devices = JSON.parse(localStorage.getItem("devices")) || [];
   const now = new Date();
   
   // Format time for comparison
