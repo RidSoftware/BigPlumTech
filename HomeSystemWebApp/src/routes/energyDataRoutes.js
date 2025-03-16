@@ -271,12 +271,13 @@ router.post('/api/pullDailyRange', async (req, res) => {
         // Query to pull daily energy data from the energydaily table.
         // If your energydaily table already contains HomeID, you might not need a join.
         const query = `
-            SELECT Date, SUM(EnergyVal) AS totalEnergy
-            FROM energydaily
-            WHERE HomeID = ? 
-              AND Date BETWEEN ? AND ?
-            GROUP BY Date
-            ORDER BY Date ASC;
+            SELECT ed.Date, SUM(ed.EnergyVal) AS totalEnergy
+            FROM energydaily ed
+            JOIN alldevices ad ON ed.DeviceID = ad.DeviceID
+            WHERE ad.HomeID = ?
+            AND ed.Date BETWEEN ? AND ?
+            GROUP BY ed.Date
+            ORDER BY ed.Date ASC;
         `;
         const [results] = await connection.execute(query, [homeID, startDate, endDate]);
         connection.release();
