@@ -20,8 +20,8 @@ export const registerUser = async (newUser) => {
         body: JSON.stringify(newUser),
       });
       const result = await response.json();
-      if (!result.success) throw new Error(result.message);
-      console.log("User registered successfully:", result.message);
+        console.log("Registration API response:", result);
+        return result;
     } catch (error) {
       console.error("Error registering user:", error);
     }
