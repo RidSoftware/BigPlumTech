@@ -178,6 +178,149 @@ router.post('/api/pull7days', async (req, res) => {
     }
 });
 
+///////////////now these below are for arbitrary given times
+
+/////puls 24 hour values when gove userID and Date
+router.post('/api/pullHourly', async (req, res) => {
+    let connection;
+    try {
+        const { userID, date } = req.body;
+        if (!userID || !date) {
+            return res.status(400).json({ success: false, message: 'UserID and date are required' });
+        }
+        
+        connection = await pool.getConnection();
+        console.log('Database connection acquired for /api/pullHourly');
+
+        // Get the HomeID for the user
+        const [homeIDResults] = await connection.execute(
+            'SELECT HomeID FROM userdetails WHERE userID = ?;',
+            [userID]
+        );
+        if (homeIDResults.length === 0) {
+            connection.release();
+            return res.status(401).json({ success: false, message: 'No homeID found' });
+        }
+        const homeID = homeIDResults[0].HomeID;
+
+        // Query to pull energy data for the given date grouped by hour
+        const query = `
+            SELECT energyhourly.Hour, energyhourly.Date, SUM(energyhourly.EnergyVal) AS totalEnergy
+            FROM energyhourly
+            JOIN alldevices ON energyhourly.DeviceID = alldevices.DeviceID
+            WHERE alldevices.HomeID = ?
+            AND energyhourly.Date = ?
+            GROUP BY energyhourly.Hour, energyhourly.Date
+            ORDER BY energyhourly.Hour ASC;
+        `;
+        const [results] = await connection.execute(query, [homeID, date]);
+        connection.release();
+
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, message: 'No energy data found for the given date' });
+        }
+
+        // Prepare a complete hourly object (0-23) with 0 as default
+        const hourlyData = {};
+        for (let i = 0; i < 24; i++) {
+            hourlyData[i] = 0;
+        }
+        results.forEach(row => {
+            hourlyData[row.Hour] = row.totalEnergy !== null ? row.totalEnergy : 0;
+        });
+
+        console.log("Processed Hourly Energy Data:", hourlyData);
+
+        return res.status(200).json({ 
+            success: true, 
+            message: 'Data pull success', 
+            hourlyData
+        });
+    } catch (error) {
+        console.error('Error in /api/pullHourly:', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
+// pulls range of day values
+
+router.post('/api/pullDailyRange', async (req, res) => {
+    let connection;
+    try {
+        const { userID, startDate, endDate } = req.body;
+        if (!userID || !startDate || !endDate) {
+            return res.status(400).json({ success: false, message: 'UserID, startDate, and endDate are required' });
+        }
+        
+        connection = await pool.getConnection();
+        console.log('Database connection acquired for /api/pullDailyRange');
+
+        // Get the HomeID for the user
+        const [homeIDResults] = await connection.execute(
+            'SELECT HomeID FROM userdetails WHERE userID = ?;',
+            [userID]
+        );
+        if (homeIDResults.length === 0) {
+            connection.release();
+            return res.status(401).json({ success: false, message: 'No homeID found' });
+        }
+        const homeID = homeIDResults[0].HomeID;
+
+        // Query to pull energy data between the two dates grouped by date
+        const query = `
+            SELECT energydaily.Date, SUM(energydaily.EnergyVal) AS totalEnergy
+            FROM energydaily
+            JOIN alldevices ON energydaily.DeviceID = alldevices.DeviceID
+            WHERE alldevices.HomeID = ?
+            AND energydaily.Date BETWEEN ? AND ?
+            GROUP BY energydaily.Date
+            ORDER BY energydaily.Date ASC;
+        `;
+        const [results] = await connection.execute(query, [homeID, startDate, endDate]);
+        connection.release();
+
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, message: 'No energy data found for the given date range' });
+        }
+
+        // Initialize an object with every date between startDate and endDate with 0 as default
+        const dailyData = {};
+        const currentDate = new Date(startDate);
+        const finalDate = new Date(endDate);
+        while (currentDate <= finalDate) {
+            const formattedDate = currentDate.toISOString().split('T')[0];
+            dailyData[formattedDate] = 0;
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        // Populate energy data
+        results.forEach(row => {
+            dailyData[row.Date] = row.totalEnergy !== null ? row.totalEnergy : 0;
+        });
+
+        console.log("Processed Daily Energy Data:", dailyData);
+
+        return res.status(200).json({ 
+            success: true, 
+            message: 'Data pull success', 
+            dailyData
+        });
+    } catch (error) {
+        console.error("Error in /api/pullDailyRange:", error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
+
+
+
+
+
+
 
 
 

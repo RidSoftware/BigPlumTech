@@ -1,5 +1,5 @@
 import { loginUser } from './userAPI.js';
-import { syncEnergy24hr, syncEnergy7days } from './energyAPI.js';
+import * as energyAPI from './energyAPI.js';
 import { syncDevicesFromBackend } from './deviceAPI.js';
 
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
@@ -41,8 +41,8 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         overlay.style.display = "block"; // Show dark background overlay
 
         // These functions automatically update localStorage for energy data and devices.
-        await syncEnergy24hr(userID);
-        await syncEnergy7days(userID);
+        await energyAPI.syncEnergy24hr(userID);
+        await energyAPI.syncEnergy7days(userID);
         await syncDevicesFromBackend(userID);
 ///////debuging logs
 console.log(localStorage.getItem('energyDataDay'));
@@ -50,7 +50,8 @@ console.log(localStorage.getItem('energyDataWeek'));
 console.log(localStorage.getItem('devices'));
 
 
-
+    const debugDay  =   await energyAPI.pullDayEnergy(userID, "2025-03-16");
+    const debugRange=   await energyAPI.pullDailyEnergyRange(userID, "2025-03-10", "2025-03-15");
 
 
 ///////////////errot for login
