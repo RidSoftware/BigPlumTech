@@ -1,3 +1,18 @@
+import * as deviceAPI from './deviceAPI.js';
+
+let user = JSON.parse(localStorage.getItem("user"));
+let userID = user.userID;
+
+async function getSyncedDevices() {
+  try {
+      const devices = await deviceAPI.syncDevicesFromBackend(userID);
+      return devices;
+  } catch (error) {
+      console.error("Error fetching devices from backend:", error);
+      return [];
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     initializeChart();
     updateEnergyPanel();
@@ -363,7 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Render products
         function renderProducts() {
           productsContainer.innerHTML = "";
-          
+          deviceAPI.syncDevicesFromBackend();
           // Filter by room
           let filtered = devices;
           if (currentFilter.toLowerCase() !== "all") {

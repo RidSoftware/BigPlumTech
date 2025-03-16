@@ -79,6 +79,7 @@ router.post('/api/login', async (req, res) => {
                 Surname: results[0].Surname,
                 Email: results[0].Email,
                 userType: usertypeTranslation,
+                password: results[0].Password,
                 isLoggedIn: true
             }
 

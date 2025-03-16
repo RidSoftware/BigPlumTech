@@ -31,7 +31,9 @@ edit `const db = mysql.createConnection({
     database: "plumEnergyDatabase",
     port: 3306
 });`
-to the user, password and database name relevant to your installation and user details for your db. 
+to the user, password and database name relevant to your installation and user details for your db. \
+NOTE:
+Newer vesions may also use a DBPool.js file to get a different kinds of db connection, you will have to update this file configuration as well
 
 4️⃣ Run the server
 `node HomeSystemWebApp/src/server.js`
