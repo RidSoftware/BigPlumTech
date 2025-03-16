@@ -66,7 +66,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         } else {
             errorMessage.textContent = result && result.message ? result.message : "Registration failed";
             errorMessage.style.display = "block";
-        }  errorMessage.style.display = "block";
+        }
     } catch (error) {
         console.error("Error during registration:", error);
         errorMessage.textContent = "An error occurred during registration. Please try again.";

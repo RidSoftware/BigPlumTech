@@ -14,23 +14,13 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     overlay.style.display = "none"; 
 
     try {
-        let response = await fetch("http://localhost:8080/api/login", { 
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-        });
-
-        let data = await response.json();
-
-        if (!data.success) {
-            errorMessage.textContent = data.message;
-            errorMessage.style.display = "block";
-            return;
-        }
-
-        //stores data locally
-        localStorage.setItem("user", JSON.stringify(data.user));
-        let user = JSON.parse(localStorage.getItem("user"));
+         // Use the new loginUser API (which also updates localStorage with the user data)
+         const user = await loginUser(email, password);
+         if (!user) {
+             errorMessage.textContent = "Login failed. Please try again.";
+             errorMessage.style.display = "block";
+             return;
+         }
         let userID = user.userID;
 
         // Show confirmation message & overlay
@@ -45,77 +35,11 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         `;
         confirmationMessage.style.display = "block";
         overlay.style.display = "block"; // Show dark background overlay
-/////////////////////
-        // Attempt to pull 24-hour energy data
-        try {
-            let energyDayResponse = await fetch("http://localhost:8080/api/pull24hr", { 
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userID })
-            });
 
-            if (energyDayResponse.ok) {
-                let energyDataDay = await energyDayResponse.json();
-                if (energyDataDay.success) {
-                    localStorage.setItem("energyDataDay", JSON.stringify(energyDataDay.twentyfourhr));
-                } else {
-                    console.walogrn("24-hour energy data pull failed:", energyDataDay.message);
-                    localStorage.setItem("energyDataDay", JSON.stringify({})); // store empty object if empty results
-                }
-            } else {
-                throw new Error("Failed to fetch 24-hour energy data.");
-            }
-        } catch (error) {// error for 24hr
-            console.log("Error fetching 24-hour energy data:", error);
-            localStorage.setItem("energyDataDay", JSON.stringify({})); //Store empty object if errror
-        }
-
-//////////////////
-        // Attempt to pull 7-day energy data
-        try {
-            let energyWeekResponse = await fetch("http://localhost:8080/api/pull7days", { 
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userID })
-            });
-
-            if (energyWeekResponse.ok) {
-                let energyDataWeek = await energyWeekResponse.json();
-                if (energyDataWeek.success) {
-                    localStorage.setItem("energyDataWeek", JSON.stringify(energyDataWeek.sevenDays));
-                } else {
-                    console.log("7-day energy data pull failed:", energyDataWeek.message);
-                    localStorage.setItem("energyDataWeek", JSON.stringify({})); // store empty object if empty results
-                }
-            } else {
-                throw new Error("Failed to fetch 7-day energy data.");
-            }
-        } catch (error) {/////error for 7days
-            console.log("Error fetching 7-day energy data:", error);
-            localStorage.setItem("energyDataWeek", JSON.stringify({})); //empty object if naothing
-        }
-//////////////////////
-        ////pulls device details
-        try {
-            let deviceResponse = await fetch("http://localhost:8080/api/pullDevices", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userID })
-            })
-            if (deviceResponse.ok) {
-                let deviceData = await deviceResponse.json();
-                if (deviceData.success) {
-                    localStorage.setItem("devices", JSON.stringify(deviceData.sentDevices));
-                } else {
-                    console.log("7-day energy data pull failed:", deviceData.message);
-                }
-            } else {
-                throw new Error("Failed to fetch device data.");
-            }
-        } catch (error) { /////errror for device try
-            console.log("Error fetching device data:", error);
-        }
-
+        // These functions automatically update localStorage for energy data and devices.
+        await syncEnergy24hr(userID);
+        await syncEnergy7days(userID);
+        await syncDevicesFromBackend(userID);
 ///////debuging logs
 console.log(localStorage.getItem('energyDataDay'));
 console.log(localStorage.getItem('energyDataWeek'));
