@@ -58,6 +58,26 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('devices', JSON.stringify(devices));
   }
 
+  function valid(device){
+		const blacklist = ["'", '"', "\\0", "\\n", "\\r", "\\", "\\Z", "--", ";", "/*", "\\*", "(", ")", "=", "|", "%", "_"]; //list of common escape characters, a slash has been added before each so the second slashes can be recognised 
+		//var device = document.getElementById("deviceName").value;
+    
+    
+		for(let i = 0; i < blacklist.length; i++){
+		//looping through each member of list, if any match then we reject it.
+		
+		if(device.includes(blacklist[i])){
+			//document.getElementById("accepted").innerHTML = "Not Valid"
+      
+			return 0;
+
+		}
+	}		//in later build this would also include the actual data being sent to database, but here is just pure example input validation for database
+			//document.getElementById("accepted").innerHTML = "accepted"
+      
+      return 1;
+	}
+
   // ----- RENDER DEVICES -----
   function renderDevices() {
     deviceListContainer.innerHTML = '';
@@ -237,6 +257,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ----- ADD PRODUCT FORM SUBMIT -----
   addProductForm.addEventListener('submit', (e) => {
+
+    //resetting fields to non error state
+    document.getElementById("nameValid").innerHTML = ``;
+    document.getElementById("infoValid").innerHTML = ``;
+
+    document.getElementById("deviceName").style.outline = "#555";
+    document.getElementById("deviceInfo").style.outline = "#555";
+
     e.preventDefault();
     const name = deviceNameEl.value;
     const room = deviceRoomEl.value;
@@ -259,13 +287,42 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type === 'Air Conditioning') {
       newDevice.acTemp = acTemp;
     }
+    const nv = document.getElementById("nameValid");
+    const iv = document.getElementById("infoValid");
 
-    devices.push(newDevice);
-    saveDevices();
-    addProductForm.reset();
+    //1 means parameter is valid 0 means invalid
+
+    if(valid(name) == 1 && valid(info) == 1){
+      devices.push(newDevice);
+      saveDevices();
+      addProductForm.reset();
     // Hide AC slider group
-    acAddSliderGroup.classList.add('hidden');
-    renderDevices();
+      acAddSliderGroup.classList.add('hidden');
+      renderDevices();
+      
+    } else if(valid(name) == 0 && valid(info) == 1){
+        //changes text box outline to red and produces a red error message
+        document.getElementById("deviceName").style.outline = "3px solid red";
+        nv.style.color = "red";
+        nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
+
+    } else if(valid(info) == 0 && valid(name) == 1){
+
+        document.getElementById("deviceInfo").style.outline = "3px solid red";
+        iv.style.color = "red";
+        iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
+
+    }else{
+
+        document.getElementById("deviceName").style.outline = "3px solid red";
+        document.getElementById("deviceInfo").style.outline = "3px solid red";
+
+        nv.style.color = "red";
+        nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
+        iv.style.color = "red";
+        iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
+
+    }
   });
 
   // ----- AC ADD SLIDER EVENTS -----

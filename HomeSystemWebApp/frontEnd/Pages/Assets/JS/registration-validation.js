@@ -58,24 +58,13 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 
     try {
         // Send data to the backend
-        const response = await fetch("/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newUser),
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            // registration post successful
+        const result = await registerUser(newUser);
+        if (result && result.success) {
+            // Clear form and redirect on success
             document.getElementById("registrationForm").reset();
-            window.location.href = "/Pages/HTML/ConfirmationMessage.html";  // im not great at html make this niceer if you want
-             // clears teh registation form
+            window.location.href = "/Pages/HTML/ConfirmationMessage.html";
         } else {
-            // if recieves json false: success then....
-            errorMessage.textContent = result.message;
+            errorMessage.textContent = result && result.message ? result.message : "Registration failed";
             errorMessage.style.display = "block";
         }
     } catch (error) {

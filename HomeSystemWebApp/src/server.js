@@ -18,9 +18,11 @@ const pool = require('./config/DBPool');
 
 const userRoutes = require('./routes/userRoutes');
 const energyDataRoutes = require('./routes/energyDataRoutes');
+const deviceDataRoutes = require('./routes/deviceDataRoutes');
 // Routes
 app.use(userRoutes);
 app.use(energyDataRoutes);
+app.use(deviceDataRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is up and running');
