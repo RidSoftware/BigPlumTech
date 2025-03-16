@@ -45,14 +45,14 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         await energyAPI.syncEnergy7days(userID);
         await syncDevicesFromBackend(userID);
 ///////debuging logs
-console.log(localStorage.getItem('energyDataDay'));
-console.log(localStorage.getItem('energyDataWeek'));
-console.log(localStorage.getItem('devices'));
+        console.log("24hr energy data:", localStorage.getItem('energyDataDay'));
+        console.log("7-day energy data:", localStorage.getItem('energyDataWeek'));
+        console.log("Devices:", localStorage.getItem('devices'));       
 
-
-    const debugDay  =   await energyAPI.pullDayEnergy(userID, "2025-03-16");
-    const debugRange=   await energyAPI.pullDailyEnergyRange(userID, "2025-03-10", "2025-03-15");
-
+        const debugDay  = await energyAPI.pullDayEnergy(userID, "2025-03-16");
+        const debugRange = await energyAPI.pullDailyEnergyRange(userID, "2025-03-10", "2025-03-15");
+        console.log("Arbitrary hourly energy data:", debugDay);
+        console.log("Arbitrary daily energy data range:", debugRange);
 
 ///////////////errot for login
     } catch (error) {
