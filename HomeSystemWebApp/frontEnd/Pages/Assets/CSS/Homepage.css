@@ -43,27 +43,6 @@ body h2 {
     margin-right: auto;
     animation: fadeIn 1.5s ease-in-out;
 }
-.get-started {
-    display: block;
-    justify-content: center;
-    text-align: center;
-}
-
-.btn {
-    display: inline-block;
-    padding: 12px 30px;
-    margin-top: 20px;
-    background: #28a745;
-    color: white;
-    font-size: 1.2rem;
-    border-radius: 30px;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.btn:hover {
-    background: #218838;
-}
 
 /* Features Section */
 .features {
@@ -76,6 +55,7 @@ body h2 {
     margin-bottom: 40px;
 }
 
+/* Feature Grid */
 .feature-grid {
     display: flex;
     justify-content: center;
@@ -95,6 +75,7 @@ body h2 {
     transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
 }
 
+/* Icons in Feature Items */
 .feature-item i {
     font-size: 45px;
     color: #007BFF;
@@ -133,26 +114,35 @@ body h2 {
     padding: 100px 50px;
     background: #007BFF;
     color: white;
+    text-align: center;
 }
 
+/* CTA Title */
 .cta h2 {
     font-size: 2.5rem;
     margin-bottom: 30px;
 }
 
-/* Scroll Fade-in Animation */
-.fade-in {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+/* Ensure Button is Centered */
+.get-started {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
 }
 
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
+/* General Button Styles */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #28a745;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.btn:hover {
+    background: #218838;
 }

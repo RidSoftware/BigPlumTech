@@ -19,7 +19,7 @@
             <h1>Smart Home Energy</h1>
             <h3><em>Big Plum Tech</em></h3>
             <p>Effortless control, energy efficiency, and a smarter way to manage your home.</p>
-            <p>Will add pictures of the features, it will scroll to the left and right auto. </p>
+            <p class="carousel-placeholder">[Feature images will auto-scroll here]</p>
             <a href="#features" class="btn">Discover More</a>
         </div>
     </section>
@@ -65,32 +65,38 @@
         <div class="get-started">
             <a href="Registration.html" class="btn">Get Started Now</a>
         </div>
-
     </section>
 
     <!-- Footer (Will be loaded dynamically) -->
     <div id="footer"></div>
 
-    <!--This script is temporary, will put them in a proper js file, reason is: MIME error in browser-->
+    <!-- Updated JavaScript for Mobile Performance -->
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-        console.log("JavaScript Loaded"); // Debugging message
+        console.log("JavaScript Loaded");
 
         // Select all elements with the fade-in class
         const fadeInElements = document.querySelectorAll(".fade-in");
 
         // Intersection Observer for detecting when elements are in view
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add("visible"); // Apply fade-in effect
                     observer.unobserve(entry.target); // Stop observing once visible
                 }
             });
-        }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+        }, { threshold: 0.2 }); // Adjusted to trigger earlier
 
         fadeInElements.forEach(el => observer.observe(el));
+
+        // New Placeholder for Future Auto-scrolling Images
+        const carouselPlaceholder = document.querySelector(".carousel-placeholder");
+        if (carouselPlaceholder) {
+            carouselPlaceholder.innerHTML = "images needed to be added";
+        }
     });
     </script>
+
 </body>
 </html>
