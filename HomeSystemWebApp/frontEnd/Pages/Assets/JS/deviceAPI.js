@@ -25,11 +25,9 @@ export const syncDevicesFromBackend = async (userID) => {
         });
 
         const result = await response.json();
-        console.log("raw json in front api: ", result);
-        console.log("raw json in front api: ", result.sentDevices);
         if (!result.success) throw new Error(result.message);
 
-        saveDevices(JSON.parse(result.sentDevices)); // updates devices obj locallstoraeg
+        saveDevices(result.sentDevices); // updates devices obj locallstoraeg
         console.log(`devices synced for User ID ${userID}: `, result.sentDevices);
     } catch (error) {
         console.error(`err syncing devices for User ID ${userID}:`, error);
