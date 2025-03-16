@@ -268,15 +268,15 @@ router.post('/api/pullDailyRange', async (req, res) => {
         }
         const homeID = homeIDResults[0].HomeID;
 
-        // Query to pull energy data between the two dates grouped by date
+        // Query to pull daily energy data from the energydaily table.
+        // If your energydaily table already contains HomeID, you might not need a join.
         const query = `
-            SELECT energydaily.Date, SUM(energydaily.EnergyVal) AS totalEnergy
+            SELECT Date, SUM(EnergyVal) AS totalEnergy
             FROM energydaily
-            JOIN alldevices ON energydaily.DeviceID = alldevices.DeviceID
-            WHERE alldevices.HomeID = ?
-            AND energydaily.Date BETWEEN ? AND ?
-            GROUP BY energydaily.Date
-            ORDER BY energydaily.Date ASC;
+            WHERE HomeID = ? 
+              AND Date BETWEEN ? AND ?
+            GROUP BY Date
+            ORDER BY Date ASC;
         `;
         const [results] = await connection.execute(query, [homeID, startDate, endDate]);
         connection.release();
@@ -285,19 +285,20 @@ router.post('/api/pullDailyRange', async (req, res) => {
             return res.status(404).json({ success: false, message: 'No energy data found for the given date range' });
         }
 
-        // Initialize an object with every date between startDate and endDate with 0 as default
+        // Initialize an object with every date between startDate and endDate with 0 as default.
         const dailyData = {};
-        const currentDate = new Date(startDate);
-        const finalDate = new Date(endDate);
-        while (currentDate <= finalDate) {
-            const formattedDate = currentDate.toISOString().split('T')[0];
+        const currentDateObj = new Date(startDate);
+        const finalDateObj = new Date(endDate);
+        while (currentDateObj <= finalDateObj) {
+            const formattedDate = currentDateObj.toISOString().split('T')[0];
             dailyData[formattedDate] = 0;
-            currentDate.setDate(currentDate.getDate() + 1);
+            currentDateObj.setDate(currentDateObj.getDate() + 1);
         }
 
-        // Populate energy data
+        // Populate energy data with formatted dates
         results.forEach(row => {
-            dailyData[row.Date] = row.totalEnergy !== null ? row.totalEnergy : 0;
+            const formattedDate = new Date(row.Date).toISOString().split('T')[0];
+            dailyData[formattedDate] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
         console.log("Processed Daily Energy Data:", dailyData);
@@ -314,6 +315,7 @@ router.post('/api/pullDailyRange', async (req, res) => {
         if (connection) connection.release();
     }
 });
+
 
 
 
