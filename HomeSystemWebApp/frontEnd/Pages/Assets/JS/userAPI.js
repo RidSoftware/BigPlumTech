@@ -1,4 +1,4 @@
-// userAPI.js
+//user apis
 
 //
 //      cleanly -- registers a new user.
