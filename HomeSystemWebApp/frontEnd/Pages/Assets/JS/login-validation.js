@@ -1,3 +1,7 @@
+import { loginUser } from './userAPI.js';
+import { syncEnergy24hr, syncEnergy7days } from './energyAPI.js';
+import { syncDevicesFromBackend } from './deviceAPI.js';
+
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
