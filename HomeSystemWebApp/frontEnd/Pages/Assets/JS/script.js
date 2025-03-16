@@ -1,10 +1,19 @@
-import { syncDevicesFromBackend, updateDevice } from './deviceAPI.js';
+import * as deviceAPI from './deviceAPI.js';
 
 let user = JSON.parse(localStorage.getItem("user"));
 let userID = user.userID;
 
+async function getSyncedDevices() {
+  try {
+      const devices = await deviceAPI.syncDevicesFromBackend(userID);
+      return devices;
+  } catch (error) {
+      console.error("Error fetching devices from backend:", error);
+      return [];
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    syncDevicesFromBackend(userID);
     initializeChart();
     updateEnergyPanel();
     makePanelDraggable();
@@ -12,11 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Implement the automation check function directly in script.js
-function checkAutomationsOnDashboard() {
+async function checkAutomationsOnDashboard() {
   const automations = JSON.parse(localStorage.getItem("automations")) || [];
   if (automations.length === 0) return;
   
-  const devices = JSON.parse(localStorage.getItem("devices")) || [];
+  let devices = await getSyncedDevices();
+  if (!devices.length) return;
   const now = new Date();
   
   // Format time for comparison
@@ -369,7 +379,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Render products
         function renderProducts() {
           productsContainer.innerHTML = "";
-          
+          deviceAPI.syncDevicesFromBackend();
           // Filter by room
           let filtered = devices;
           if (currentFilter.toLowerCase() !== "all") {

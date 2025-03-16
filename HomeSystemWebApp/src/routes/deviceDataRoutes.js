@@ -68,14 +68,17 @@ router.post('/api/pullDevices', async (req, res) => {
             return res.status(401).json({ success: false, message: 'No devuce data found' });
         }
 
-        const formattedDeviceData = JSON.stringify(deviceResults);
+        const formattedDeviceResults = deviceResults.map(device => ({
+            ...device,
+            status: device.status === 1 // Convert 1 to true, 0 to false
+        }));
 
-        console.log("Processed Energy Data:", formattedDeviceData);
+        console.log("Processed Energy Data:", formattedDeviceResults);
 
         return res.status(200).json({ 
             success: true, 
             message: 'datapull success', 
-            sentDevices: deviceResults //i was double parsing farmatted results
+            sentDevices: formattedDeviceResults //i was double parsing farmatted results
         });
 
     } catch (error) {
