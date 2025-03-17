@@ -19,11 +19,17 @@ const pool = require('./config/DBPool');
 const userRoutes = require('./routes/userRoutes');
 const energyDataRoutesUA = require('./routes/energyDataRoutesUserArray');
 const energyDataRoutesDA = require('./routes/energyDataRoutesDeviceArray');
+const energyDataRoutesUI = require('./routes/energyDataRoutesUserInt');
+const energyDataRoutesDI = require('./routes/energyDataRoutesDeviceInt');
+
+
 const deviceDataRoutes = require('./routes/deviceDataRoutes');
 // Routes
 app.use(userRoutes);
 app.use(energyDataRoutesUA);
 app.use(energyDataRoutesDA);
+app.use(energyDataRoutesUI);
+app.use(energyDataRoutesDI);
 app.use(deviceDataRoutes);
 
 app.get('/', (req, res) => {
