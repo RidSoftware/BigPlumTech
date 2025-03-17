@@ -150,14 +150,14 @@ router.post('/api/pull7days', async (req, res) => {
 
         // Initialize a data structure to ensure all 7 days are represented
         const energyWeekProcessed = {};
-        for (let i = 0; i < 7; i++) {
-            energyWeekProcessed[i] = 0; 
-        }
+        // for (let i = 0; i < 7; i++) {
+        //     energyWeekProcessed[i] = 0; 
+        // }
 
         // Populate energy data
         energyResults.forEach(row => {
             const ProcessedDate = row.Date.toISOString().split('T')[0]
-            energyWeekProcessed[row.Date] = row.totalEnergy !== null ? row.totalEnergy : 0;
+            energyWeekProcessed[ProcessedDate] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
         console.log("Processed Energy Data:", energyWeekProcessed);
