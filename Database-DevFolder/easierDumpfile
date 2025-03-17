@@ -23,7 +23,7 @@ ENGINE=InnoDB;
 -- User Details Table
 CREATE TABLE `userdetails` (
 	`UserID` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`Password` VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`Password` VARCHAR(80) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	`FirstName` VARCHAR(30) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
 	`Surname` VARCHAR(30) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 	`Email` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_unicode_ci',
