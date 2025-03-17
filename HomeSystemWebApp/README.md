@@ -33,12 +33,12 @@ This is set to run on port 8080 (eg. localhost:8080/Pages/HTML/index.html in bro
 *NODE*
 To get node working on your mahcine and configured for the right modules;
 you gotta go to the /src/ directorty and run these commands:
-`
-npm init -y
-npm install -y
-npm uninstall bcrypt
-npm install bcrypt
-`
+
+`npm init -y`
+`npm install -y`
+`npm uninstall bcrypt`
+`npm install bcrypt`
+
 
 
 
