@@ -1,5 +1,8 @@
 /////////////THIS IS THE ENERGY API YOU SHOULD IMPORT AND USE ITS FUNCTIONS/////////////////////
 
+import { application } from "express";
+import { EUCKR_KOREAN_CI } from "mysql/lib/protocol/constants/charsets";
+
 ///
 // fetches 24-hour energy data for a given user THE PREVIOUS 24 HRS NOT AN ARBITRARY DAY
 // returns an object with energy values keyed by hour
@@ -306,3 +309,26 @@ export const sumDayEnergyUser = async (userID, date) => {
       return 0;
     }
   };
+
+
+// day range int return when given user ID and 2 dates
+
+export const sumRangeEnergyUser = async (userID, startDate, endDate) => {
+    try {
+        if (!userID || !startDate || !endDate)
+            throw new Error("User ID and both a start and end date arguments are required to sum range energy");
+
+        const response = await fetch("/api/sumRangeUser", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ userID, startDate, endDate }),
+        });
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        console.log("Energy range sum for device: ", result.rangeSum);
+        return result.rangeSum;
+    }   catch (error) {
+        console.error("Error summing energy range for device: ", error);
+        return 0;
+    }
+}
