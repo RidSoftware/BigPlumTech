@@ -86,7 +86,8 @@ router.post('/api/login', async (req, res) => {
                 Surname: results[0].Surname,
                 Email: results[0].Email,
                 userType: usertypeTranslation,
-                isLoggedIn: true
+                isLoggedIn: true,
+                homeID: results[0].homeID
             }
 
              //check hashed password
