@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const db = require('../config/DBConnection'); 
 const e = require('express');
 
+
+
 //////// REGISTRATION
-router.post("/api/register", (req, res) => {
+router.post("/api/register", async (req, res) => {
     const { firstname, lastname, email, password, userType } = req.body;
 
     if (!firstname || !lastname || !email || !password || !userType) {
@@ -20,8 +23,11 @@ router.post("/api/register", (req, res) => {
 
 	const homeid = 99;	//setting home id 99 as default for new users
 
-    
-    db.query( q, [firstname, lastname, email, password, admin, homeid], (err, results) => {
+    //hashing password google said 10-12
+    const hashPassword = await bcrypt.hash (password, 11);
+
+                                            //change to hashpassword 
+    db.query( q, [firstname, lastname, email, hashPassword, admin, homeid], (err, results) => {
                     if (err) {
                         console.error('DB error on inserting new user', err);
                         return res.status(500).json({ 
@@ -73,22 +79,31 @@ router.post('/api/login', async (req, res) => {
 
             const usertypeTranslation = results[0].Admin === 'Y' ? 'homeManager': 'homeUser';
 
+
             const trimmedResult = {
                 userID: results[0].UserID,
                 firstname: results[0].FirstName,
                 Surname: results[0].Surname,
                 Email: results[0].Email,
                 userType: usertypeTranslation,
-                password: results[0].Password,
                 isLoggedIn: true
             }
 
+             //check hashed password
+             const samePassword = await bcrypt.compare(password,results[0].Password);
 
-			if (password !== results[0].Password) {
-                return res.status(401).json({ success: false, message: "incorrect pword", debug: trimmedResult});
-            }
-		
+             //not same password
+             if (!samePassword){
+                 return res.status(401).json({
+                     success:false,
+                     message: "guessed wrong password"});
+             }
 
+            //not needed using bcrypt
+			//if (password !== results[0].Password) {
+              //  return res.status(401).json({ success: false, message: "incorrect pword", debug: trimmedResult});
+            //}
+	
 
             // success
             res.status(201).json({ 
