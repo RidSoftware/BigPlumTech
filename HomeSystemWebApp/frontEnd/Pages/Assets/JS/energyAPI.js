@@ -284,3 +284,25 @@ export const syncEnergy24hrDevice = async (deviceID) => {
       return 0;
     }
   };
+
+// day version int reutrn from user total energy
+
+export const sumDayEnergyUser = async (userID, date) => {
+    try {
+      if (!userID || !date)
+        throw new Error("User ID and date are required for summing daily energy.");
+        
+      const response = await fetch("/api/sumDayUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userID, date }),
+      });
+      const result = await response.json();
+      if (!result.success) throw new Error(result.message);
+      console.log("Daily energy sum for user:", result.dailySum);
+      return result.dailySum;
+    } catch (error) {
+      console.error("Error summing daily energy for user:", error);
+      return 0;
+    }
+  };

@@ -1,11 +1,10 @@
-
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/DBPool');
 
-// ---------------------------------------------
+// -
 // Sum of Hourly Energy for a Given Date & DeviceID
-// ---------------------------------------------
+// 
 // This endpoint returns the total energy consumed on a given date by summing all 24 hourly entries.
 // Example request body:
 // {
@@ -47,9 +46,9 @@ router.post('/api/sumDayDevice', async (req, res) => {
     }
 });
 
-// ---------------------------------------------
+// 
 // Sum of Daily Energy Between Two Dates for a Given DeviceID
-// ---------------------------------------------
+// 
 // This endpoint returns the total energy consumption over a date range.
 // Example request body:
 // {
