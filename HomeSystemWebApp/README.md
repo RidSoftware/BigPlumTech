@@ -30,8 +30,20 @@ And similarly if you wanna refamiliar with git have a look at the readme in `Big
 **Note on server.js:**
 This is set to run on port 8080 (eg. localhost:8080/Pages/HTML/index.html in browser).
 
+*NODE*
+To get node working on your mahcine and configured for the right modules;
+you gotta go to the /src/ directorty and run these commands:
+`
+npm init -y
+npm install -y
+npm uninstall bcrypt
+npm install bcrypt
+`
+
+
+
 #### DataBase
-	DB connection is handled by config/DBConnection.js
+	DB connection is handled by config/DBConnection.js and DBPool.js
 
 	Please lookup readme in BigPlumTech/Database-DevFolder/
 	 		
