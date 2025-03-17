@@ -466,8 +466,13 @@ document.addEventListener("DOMContentLoaded", function () {
       
         // Toggle device status
         function toggleStatus(deviceId) {
-          deviceAPI.updateDevice(deviceId, { status: false });
-          deviceAPI.syncDevicesFromBackend(userID);
+          devices = devices.map(d => {
+            if (d.id === deviceId) {
+              return { ...d, status: !d.status };
+            }
+            return d;
+          });
+          saveDevices();
           renderProducts();
         }
       
