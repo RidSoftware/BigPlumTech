@@ -69,10 +69,10 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 //         console.log("Arbitrary hourly energy data:", debugDay);
 //         console.log("Arbitrary daily energy data range:", debugRange);
 //round3 -- int_userID
-const debugDay  = await energyAPI.sumDayEnergyUser(14,"2025-03-10");
-const debugRange  = await energyAPI.sumRangeEnergyUser(14,"2025-03-10", "2025-03-15");
-console.log("Arbitrary hourly energy data:", debugDay);
-console.log("Arbitrary daily energy data range:", debugRange);
+// const debugDay  = await energyAPI.sumDayEnergyUser(14,"2025-03-10");
+// const debugRange  = await energyAPI.sumRangeEnergyUser(14,"2025-03-10", "2025-03-15");
+// console.log("Arbitrary hourly energy data:", debugDay);
+// console.log("Arbitrary daily energy data range:", debugRange);
 //round4 -- int_deviceID
 // const debugDay  = await energyAPI.sumDayEnergyDevice(3,"2025-03-10");
 // const debugRange  = await energyAPI.sumRangeEnergyDevice(3,"2025-03-10", "2025-03-15");
