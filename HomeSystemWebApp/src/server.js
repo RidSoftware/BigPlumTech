@@ -28,7 +28,7 @@ const deviceDataRoutes = require('./routes/deviceDataRoutes');
 app.use(userRoutes);
 app.use(energyDataRoutesUA);
 app.use(energyDataRoutesDA);
-//app.use(energyDataRoutesUI);
+app.use(energyDataRoutesUI);
 app.use(energyDataRoutesDI);
 app.use(deviceDataRoutes);
 
