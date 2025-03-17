@@ -59,7 +59,7 @@ router.post('/api/login', async (req, res) => {
 
     try {
         const q = 'SELECT * FROM userdetails WHERE email = ?';
-        db.query(q/*sends query*/, [email], async (err, results) => {
+        db.query(q, [email], async (err, results) => {
             if (err) {
                 console.error('db error selecting user', err);
                 return res.status(500).json({ 
@@ -68,7 +68,6 @@ router.post('/api/login', async (req, res) => {
                 });
             }
 
-
             if (results.length === 0) {
                 return res.status(401).json({ 
                     success: false, 
@@ -76,50 +75,51 @@ router.post('/api/login', async (req, res) => {
                 });
             }
 
+            console.log("User Found: ", results[0]);
 
-            const usertypeTranslation = results[0].Admin === 'Y' ? 'homeManager': 'homeUser';
+            //Check what is actually returned in results[0].Password
+            const hashedPassword = results[0].Password;
+            console.log("Entered Password:", password);
+            console.log("Hashed Password from DB:", hashedPassword);
 
-
-            const trimmedResult = {
-                userID: results[0].UserID,
-                firstname: results[0].FirstName,
-                Surname: results[0].Surname,
-                Email: results[0].Email,
-                userType: usertypeTranslation,
-                isLoggedIn: true,
-                homeID: results[0].homeID
+            if (!hashedPassword) {
+                return res.status(500).json({ 
+                    success: false, 
+                    message: 'Password field is empty in database' 
+                });
             }
 
-             //check hashed password
-             const samePassword = await bcrypt.compare(password,results[0].Password);
+            //Compare entered password with hashed password
+            const samePassword = await bcrypt.compare(password, hashedPassword);
 
-             //not same password
-             if (!samePassword){
-                 return res.status(401).json({
-                     success:false,
-                     message: "guessed wrong password"});
-             }
+            if (!samePassword) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Incorrect password"
+                });
+            }
 
-            //not needed using bcrypt
-			//if (password !== results[0].Password) {
-              //  return res.status(401).json({ success: false, message: "incorrect pword", debug: trimmedResult});
-            //}
-	
-
-            // success
+            // Success
             res.status(201).json({ 
                 success: true, 
-                message: 'login succes', 
-                user: trimmedResult
+                message: 'Login successful!', 
+                user: {
+                    userID: results[0].UserID,
+                    firstname: results[0].FirstName,
+                    Surname: results[0].Surname,
+                    Email: results[0].Email,
+                    userType: results[0].Admin === 'Y' ? 'homeManager' : 'homeUser',
+                    isLoggedIn: true,
+                    homeID: results[0].homeID
+                }
             });
         });
     } catch (error) {
-        console.error('err from login:', error);
-        res.status(500).json({ 
-            success: false, 
-        });
+        console.error('Error from login:', error);
+        res.status(500).json({ success: false });
     }
 });
+
 /////////////////LOgin
 
 
