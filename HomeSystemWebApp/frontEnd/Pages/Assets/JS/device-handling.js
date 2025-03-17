@@ -1,3 +1,4 @@
+import * as deviceAPI from './deviceAPI.js';
 document.addEventListener('DOMContentLoaded', () => {
   // ----- USER TYPE LOGIC -----
   const user = JSON.parse(localStorage.getItem("user")) || {};
