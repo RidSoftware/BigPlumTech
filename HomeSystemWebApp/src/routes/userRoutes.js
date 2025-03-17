@@ -110,7 +110,7 @@ router.post('/api/login', async (req, res) => {
                     Email: results[0].Email,
                     userType: results[0].Admin === 'Y' ? 'homeManager' : 'homeUser',
                     isLoggedIn: true,
-                    homeID: results[0].homeID
+                    homeID: results[0].HomeID
                 }
             });
         });
