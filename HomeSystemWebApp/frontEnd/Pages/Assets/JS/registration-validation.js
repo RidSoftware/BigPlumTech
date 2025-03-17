@@ -1,3 +1,5 @@
+import * as userAPI from './userAPI.js';
+
 document.getElementById("registrationForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
@@ -58,7 +60,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 
     try {
         // Send data to the backend
-        const result = await registerUser(newUser);
+        const result = await userAPI.registerUser(newUser);
         if (result && result.success) {
             // Clear form and redirect on success
             document.getElementById("registrationForm").reset();
