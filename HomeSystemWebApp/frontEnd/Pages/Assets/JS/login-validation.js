@@ -41,18 +41,31 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         overlay.style.display = "block"; // Show dark background overlay
 
         // These functions automatically update localStorage for energy data and devices.
-        await energyAPI.syncEnergy24hr(userID);
-        await energyAPI.syncEnergy7days(userID);
+        await energyAPI.syncEnergy24hrUser(userID);
+        await energyAPI.syncEnergy7daysUser(userID);
         await syncDevicesFromBackend(userID);
-///////debuging logs
         console.log("24hr energy data:", localStorage.getItem('energyDataDay'));
         console.log("7-day energy data:", localStorage.getItem('energyDataWeek'));
-        console.log("Devices:", localStorage.getItem('devices'));       
 
-        const debugDay  = await energyAPI.pullDayEnergy(userID, "2025-03-16");
-        const debugRange = await energyAPI.pullDailyEnergyRange(userID, "2025-03-10", "2025-03-15");
+///////debuging logs
+//round1 -- obj/array_userID
+        // console.log("24hr energy data:", localStorage.getItem('energyDataDay'));
+        // console.log("7-day energy data:", localStorage.getItem('energyDataWeek'));
+        // console.log("Devices:", localStorage.getItem('devices'));       
+
+        // const debugDay  = await energyAPI.pullDayEnergyUser(userID, "2025-03-16");
+        // const debugRange = await energyAPI.pullDailyEnergyRangeUser(userID, "2025-03-10", "2025-03-15");
+        // console.log("Arbitrary hourly energy data:", debugDay);
+        // console.log("Arbitrary daily energy data range:", debugRange);
+//round2 -- obj/array_deviceID
+        const debugDay  = await energyAPI.pullDayEnergyDevice(deviceID, "2025-03-16");
+        const debugRange = await energyAPI.pullDailyEnergyRangeDevice(deviceID, "2025-03-10", "2025-03-15");
         console.log("Arbitrary hourly energy data:", debugDay);
         console.log("Arbitrary daily energy data range:", debugRange);
+//round3 -- int_userID
+
+
+//round4 -- int_deviceID
 
 ///////////////errot for login
     } catch (error) {

@@ -17,7 +17,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/DBPool'); 
 
-router.post('/api/pull24hr', async (req, res) => {
+router.post('/api/pull24hrUser', async (req, res) => {
     let connection;
     try {
         const { userID } = req.body;
@@ -97,7 +97,7 @@ router.post('/api/pull24hr', async (req, res) => {
 });
 
 /////////
-router.post('/api/pull7days', async (req, res) => {
+router.post('/api/pull7daysUser', async (req, res) => {
     let connection;
     try {
         const { userID } = req.body;
@@ -179,7 +179,7 @@ router.post('/api/pull7days', async (req, res) => {
 ///////////////now these below are for arbitrary given times
 
 /////puls 24 hour values when gove userID and Date
-router.post('/api/pullHourly', async (req, res) => {
+router.post('/api/pullHourlyUser', async (req, res) => {
     let connection;
     try {
         const { userID, date } = req.body;
@@ -244,7 +244,7 @@ router.post('/api/pullHourly', async (req, res) => {
 
 // pulls range of day values
 
-router.post('/api/pullDailyRange', async (req, res) => {
+router.post('/api/pullDailyRangeUser', async (req, res) => {
     let connection;
     try {
         const { userID, startDate, endDate } = req.body;
@@ -314,9 +314,9 @@ router.post('/api/pullDailyRange', async (req, res) => {
         if (connection) connection.release();
     }
 });
-
-
-
+//above returns array for all devices a user has
+/////////////////////////
+//below returns arrays for single devices
 
 
 
