@@ -121,6 +121,9 @@ export const pullDailyEnergyRangeUser = async (userID, startDate, endDate) => {
   
 /////////////////////
 
+
+
+///
 /////////////////THIS IS THE ENERGY API YOU SHOULD IMPORT AND USE ITS FUNCTIONS/////////////////////
 
 //

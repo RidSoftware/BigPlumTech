@@ -58,6 +58,12 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         // console.log("Arbitrary hourly energy data:", debugDay);
         // console.log("Arbitrary daily energy data range:", debugRange);
 //round2 -- obj/array_deviceID
+await energyAPI.syncEnergy24hrDevice(1);
+await energyAPI.syncEnergy7daysUser(1);
+console.log("24hr energy data:", localStorage.getItem('energyDataDayDevice'));
+console.log("7-day energy data:", localStorage.getItem('energyDataWeekDevice'));
+
+
         const debugDay  = await energyAPI.pullDayEnergyDevice(deviceID, "2025-03-16");
         const debugRange = await energyAPI.pullDailyEnergyRangeDevice(deviceID, "2025-03-10", "2025-03-15");
         console.log("Arbitrary hourly energy data:", debugDay);
