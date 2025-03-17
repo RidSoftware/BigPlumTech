@@ -1,8 +1,4 @@
-/////////////THIS IS THE ENERGY API YOU SHOULD IMPORT AND USE ITS FUNCTIONS/////////////////////
-
-import { application } from "express";
-import { EUCKR_KOREAN_CI } from "mysql/lib/protocol/constants/charsets";
-
+///enregy api
 ///
 // fetches 24-hour energy data for a given user THE PREVIOUS 24 HRS NOT AN ARBITRARY DAY
 // returns an object with energy values keyed by hour
