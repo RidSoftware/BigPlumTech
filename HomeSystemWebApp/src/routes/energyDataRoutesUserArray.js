@@ -64,7 +64,7 @@ router.post('/api/pull24hrUser', async (req, res) => {
 
         connection.release();
 
-        console.log("SQL energyResults24:", energyResults); 
+        console.log("SQL energyResults24user:", energyResults); 
 
         if (energyResults.length === 0) {
             return res.status(401).json({ success: false, message: 'No energy data found' });
@@ -80,7 +80,7 @@ router.post('/api/pull24hrUser', async (req, res) => {
             energyDayProcessed[row.Hour] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Energy Data:", energyDayProcessed); 
+        console.log("Processed Energy Datauser:", energyDayProcessed); 
 
         return res.status(200).json({ 
             success: true, 
@@ -142,7 +142,7 @@ router.post('/api/pull7daysUser', async (req, res) => {
 
         connection.release();
 
-        console.log("SQL energyResults7:", energyResults);
+        console.log("SQL energyResults7user:", energyResults);
 
         if (energyResults.length === 0) {
             return res.status(401).json({ success: false, message: 'No energy data found' });
@@ -160,7 +160,7 @@ router.post('/api/pull7daysUser', async (req, res) => {
             energyWeekProcessed[ProcessedDate] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Energy Data:", energyWeekProcessed);
+        console.log("Processed Energy Datauser:", energyWeekProcessed);
 
         return res.status(200).json({ 
             success: true, 
@@ -227,7 +227,7 @@ router.post('/api/pullHourlyUser', async (req, res) => {
             hourlyData[row.Hour] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Hourly Energy Data:", hourlyData);
+        console.log("Processed Hourly Energy Datauser: ", hourlyData);
 
         return res.status(200).json({ 
             success: true, 
@@ -300,7 +300,7 @@ router.post('/api/pullDailyRangeUser', async (req, res) => {
             dailyData[formattedDate] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Daily Energy Data:", dailyData);
+        console.log("Processed Daily Energy Datauser:", dailyData);
 
         return res.status(200).json({ 
             success: true, 

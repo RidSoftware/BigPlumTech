@@ -44,8 +44,8 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         await energyAPI.syncEnergy24hrUser(userID);
         await energyAPI.syncEnergy7daysUser(userID);
         await syncDevicesFromBackend(userID);
-        console.log("24hr energy data:", localStorage.getItem('energyDataDay'));
-        console.log("7-day energy data:", localStorage.getItem('energyDataWeek'));
+        console.log("24hr energy dataUSER:", localStorage.getItem('energyDataDay'));
+        console.log("7-day energy dataUSER:", localStorage.getItem('energyDataWeek'));
 
 ///////debuging logs
 //round1 -- obj/array_userID
@@ -59,7 +59,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         // console.log("Arbitrary daily energy data range:", debugRange);
 //round2 -- obj/array_deviceID
 await energyAPI.syncEnergy24hrDevice(3);
-await energyAPI.syncEnergy7daysUser(3);
+await energyAPI.syncEnergy7daysDevice(3);
 console.log("24hr energy data:", localStorage.getItem('energyDataDayDevice'));
 console.log("7-day energy data:", localStorage.getItem('energyDataWeekDevice'));
 
