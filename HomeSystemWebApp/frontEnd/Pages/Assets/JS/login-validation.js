@@ -41,11 +41,11 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         overlay.style.display = "block"; // Show dark background overlay
 
         // These functions automatically update localStorage for energy data and devices.
-        await energyAPI.syncEnergy24hrUser(userID);
-        await energyAPI.syncEnergy7daysUser(userID);
-        await syncDevicesFromBackend(userID);
-        console.log("24hr energy dataUSER:", localStorage.getItem('energyDataDay'));
-        console.log("7-day energy dataUSER:", localStorage.getItem('energyDataWeek'));
+        // await energyAPI.syncEnergy24hrUser(userID);
+        // await energyAPI.syncEnergy7daysUser(userID);
+        // await syncDevicesFromBackend(userID);
+        // console.log("24hr energy dataUSER:", localStorage.getItem('energyDataDay'));
+        // console.log("7-day energy dataUSER:", localStorage.getItem('energyDataWeek'));
 
 ///////debuging logs
 //round1 -- obj/array_userID
@@ -58,19 +58,21 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         // console.log("Arbitrary hourly energy data:", debugDay);
         // console.log("Arbitrary daily energy data range:", debugRange);
 //round2 -- obj/array_deviceID
-await energyAPI.syncEnergy24hrDevice(3);
-await energyAPI.syncEnergy7daysDevice(3);
-console.log("24hr energy data:", localStorage.getItem('energyDataDayDevice'));
-console.log("7-day energy data:", localStorage.getItem('energyDataWeekDevice'));
+// await energyAPI.syncEnergy24hrDevice(3);
+// await energyAPI.syncEnergy7daysDevice(3);
+// console.log("24hr energy data:", localStorage.getItem('energyDataDayDevice'));
+// console.log("7-day energy data:", localStorage.getItem('energyDataWeekDevice'));
 
 
-        const debugDay  = await energyAPI.pullDayEnergyDevice(3, "2025-03-16");
-        const debugRange = await energyAPI.pullDailyEnergyRangeDevice(3, "2025-03-10", "2025-03-15");
-        console.log("Arbitrary hourly energy data:", debugDay);
-        console.log("Arbitrary daily energy data range:", debugRange);
+//         const debugDay  = await energyAPI.pullDayEnergyDevice(3, "2025-03-16");
+//         const debugRange = await energyAPI.pullDailyEnergyRangeDevice(3, "2025-03-10", "2025-03-15");
+//         console.log("Arbitrary hourly energy data:", debugDay);
+//         console.log("Arbitrary daily energy data range:", debugRange);
 //round3 -- int_userID
-
-
+const debugDay  = await energyAPI.sumDayEnergyDevice(3,"2025-03-10");
+const debugRange  = await energyAPI.sumRangeEnergyDevice(3,"2025-03-10", "2025-03-15");
+console.log("Arbitrary hourly energy data:", debugDay);
+console.log("Arbitrary daily energy data range:", debugRange);
 //round4 -- int_deviceID
 
 ///////////////errot for login

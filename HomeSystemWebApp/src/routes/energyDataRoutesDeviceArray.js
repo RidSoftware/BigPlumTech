@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/DBPool');
 
-// ================================================================
-// 1. 24-Hour Energy Data by DeviceID
-// ================================================================
+// 
+// 24-Hour Energy Data by DeviceID
+//  RETURNS ARRAY OF 24 HOUR VALUES
 router.post('/api/pull24hrDevice', async (req, res) => {
     let connection;
     try {
@@ -63,9 +63,9 @@ router.post('/api/pull24hrDevice', async (req, res) => {
     }
 });
 
-// ================================================================
-// 2. 7-Day Energy Data by DeviceID
-// ================================================================
+// 
+// 7-Day Energy Data by DeviceID
+//      RETURNS ARRAY OF 7 DAY VALUES
 router.post('/api/pull7daysDevice', async (req, res) => {
     let connection;
     try {
@@ -120,9 +120,9 @@ router.post('/api/pull7daysDevice', async (req, res) => {
     }
 });
 
-// ================================================================
-// 3. Hourly Energy Data by DeviceID for a Given Date
-// ================================================================
+// 
+// Hourly Energy Data by DeviceID for a Given Date
+//      RETURNS ARAY OVE 24 HOURS FOR ANY DATE GIVEN
 router.post('/api/pullHourlyDevice', async (req, res) => {
     let connection;
     try {
@@ -173,9 +173,9 @@ router.post('/api/pullHourlyDevice', async (req, res) => {
     }
 });
 
-// ================================================================
-// 4. Daily Energy Data Range by DeviceID
-// ================================================================
+// 
+//  Daily Energy Data Range by DeviceID
+//      RETURNS ARRAY OF DAY VALUES FROM A RANGE OF 2 DATES GIVEN
 router.post('/api/pullDailyRangeDevice', async (req, res) => {
     let connection;
     try {

@@ -237,3 +237,50 @@ export const syncEnergy24hrDevice = async (deviceID) => {
     }
   };
   
+
+
+  ////////////////integer versions
+/////give device ID and a date and it will sum the day into an int and return
+  export const sumDayEnergyDevice = async (deviceID, date) => {
+    try {
+      if (!deviceID || !date)
+        throw new Error("Device ID and date are required for summing daily energy.");
+        
+      const response = await fetch("/api/sumDayDevice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deviceID, date }),
+      });
+      const result = await response.json();
+      if (!result.success) throw new Error(result.message);
+      console.log("Daily energy sum for device:", result.dailySum);
+      return result.dailySum;
+    } catch (error) {
+      console.error("Error summing daily energy for device:", error);
+      return 0;
+    }
+  };
+
+
+
+  /////same but for an arbitrary gioven range
+  //returns int
+  export const sumRangeEnergyDevice = async (deviceID, startDate, endDate) => {
+    try {
+      if (!deviceID || !startDate || !endDate)
+        throw new Error("Device ID, startDate, and endDate are required for summing energy over a range.");
+        
+      const response = await fetch("/api/sumRangeDevice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deviceID, startDate, endDate }),
+      });
+      const result = await response.json();
+      if (!result.success) throw new Error(result.message);
+      console.log("Energy range sum for device:", result.rangeSum);
+      return result.rangeSum;
+    } catch (error) {
+      console.error("Error summing energy range for device:", error);
+      return 0;
+    }
+  };
