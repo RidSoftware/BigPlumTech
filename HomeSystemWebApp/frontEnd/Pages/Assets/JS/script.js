@@ -36,8 +36,7 @@ function createDeviceSelector() {
     // Create dropdown container
     const selectorContainer = document.createElement("div");
     selectorContainer.className = "device-selector-container";
-    selectorContainer.style.margin = "20px 0";
-    selectorContainer.style.textAlign = "center";
+    selectorContainer.style.margin = "10px 0";
     
     // Create label
     const label = document.createElement("label");
@@ -50,7 +49,7 @@ function createDeviceSelector() {
     select.className = "device-selector";
     select.style.padding = "8px";
     select.style.borderRadius = "4px";
-    select.style.marginLeft = "10px";
+    select.style.marginLeft = "15px";
     
     // Add "All Devices" option
     const allOption = document.createElement("option");
