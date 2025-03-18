@@ -3,8 +3,8 @@ import * as deviceAPI from './deviceAPI.js'; // Ensure device API is imported
 
 let user = JSON.parse(localStorage.getItem("user"));
 let userID = user ? user.userID : null;
-let selectedDeviceID = null; // Track the selected device
-
+let devices = JSON.parse(localStorage.getItem("devices")); 
+let selectedDeviceID = devices.id;// Track the selected device
 
 document.addEventListener("DOMContentLoaded", async function () {
     
@@ -18,114 +18,104 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 async function initializeChart(deviceID) {
-  const ctx = document.getElementById("myChart").getContext("2d");
-  // Get real energy data from the API
-  let energyData = {};
+    const ctx = document.getElementById("myChart").getContext("2d");
 
-  try {
-      if (deviceID) {
-          // Fetch the last 24 hours of energy data for specific device
-          energyData = await energyAPI.syncEnergy24hrDevice(deviceID);
-          console.log("Device energy data fetched:", energyData);
-          
-          // Check if data is empty
-          if (Object.keys(energyData).length === 0) {
-              console.warn("No energy data returned for device", deviceID);
-          }
-      } else if (userID) {
-          // If no device selected but user exists, get aggregate data
-          energyData = await energyAPI.syncEnergy24hrUser(userID);
-          console.log("User energy data fetched:", energyData);
-          
-          // Check if data is empty
-          if (Object.keys(energyData).length === 0) {
-              console.warn("No energy data returned for user", userID);
-          }
-      } else {
-          console.warn("No user or device ID available, using empty energy data");
-      }
-  } catch (error) {
-      console.error("Error fetching energy data:", error);
-      energyData = {}; // Ensure energyData is an object even on error
-  }
+    // Get real energy data from the API
+    let energyData = {};
+    
+    try {
+        if (deviceID) {
+            // Fetch the last 24 hours of energy data for specific device
+            energyData = await energyAPI.syncEnergy24hrDevice(deviceID);
+            console.log("Device energy data fetched:", energyData);
+        } else if (userID) {
+            // If no device selected but user exists, get aggregate data
+            energyData = await energyAPI.syncEnergy24hrUser(userID);
+            console.log("User energy data fetched:", energyData);
+        } else {
+            console.warn("No user or device ID available, using empty energy data");
+        }
+    } catch (error) {
+        console.error("Error fetching energy data:", error);
+    }
 
-  // Create array of hours 0-23
-  const hours = Array.from({ length: 24 }, (_, i) => i);
-  const labels = hours.map(hour => `${hour.toString().padStart(2, '0')}:00`);
- 
-  // Map the energy data to the correct format based on API response
-  const dataValues = hours.map(hour => {
-      const hourKey = hour.toString();
-      return energyData && typeof energyData === 'object' && hourKey in energyData ? 
-             Number(energyData[hourKey]) : 0;
-  });
+    // Create array of hours 0-23
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    const labels = hours.map(hour => `${hour.toString().padStart(2, '0')}:00`);
+    
+    // Map the energy data to the correct format based on API response
+    // The API returns data in the format { "0": value, "1": value, ... }
+    const dataValues = hours.map(hour => {
+        const hourKey = hour.toString();
+        return energyData && hourKey in energyData ? energyData[hourKey] : 0;
+    });
 
-  // Check if chart already exists and destroy it
-  if (window.energyChart) {
-      window.energyChart.destroy();
-  }
-  
-  window.energyChart = new Chart(ctx, {
-      type: "line",
-      data: {
-          labels: labels,
-          datasets: [{
-              label: deviceID ? "Device Energy Consumption (kWh)" : "Total Energy Consumption (kWh)",
-              data: dataValues,
-              borderColor: "rgba(75, 192, 192, 1)",
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              borderWidth: 2,
-              fill: true,
-              pointRadius: 3
-          }]
-      },
-      options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-              x: {
-                  type: "category",
-                  title: { display: true, text: "Time (Hours)" },
-                  ticks: {
-                      autoSkip: true,
-                      maxTicksLimit: 20
-                  }
-              },
-              y: {
-                  title: { display: true, text: "Energy Consumption (kWh)" },
-                  beginAtZero: true
-              }
-          },
-          plugins: {
-              zoom: {
-                  pan: {
-                      enabled: true,
-                      mode: "x",
-                      speed: 10,
-                      modifierKey: "ctrl",
-                      threshold: 5
-                  },
-                  zoom: {
-                      enabled: true,
-                      mode: "x",
-                      speed: 0.1,
-                      limits: {
-                          x: { minRange: 1 }
-                      },
-                      wheel: {
-                          enabled: true,
-                          speed: 0.05
-                      },
-                      pinch: {
-                          enabled: true
-                      }
-                  }
-              }
-          }
-      }
-  });
-  
-  return window.energyChart;
+    // Check if chart already exists and destroy it
+    if (window.energyChart) {
+        window.energyChart.destroy();
+    }
+
+    window.energyChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: deviceID ? "Device Energy Consumption (kWh)" : "Total Energy Consumption (kWh)",
+                data: dataValues,
+                borderColor: "rgba(75, 192, 192, 1)",
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderWidth: 2,
+                fill: true,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: "category",
+                    title: { display: true, text: "Time (Hours)" },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 20
+                    }
+                },
+                y: {
+                    title: { display: true, text: "Energy Consumption (kWh)" },
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: "x",
+                        speed: 10,
+                        modifierKey: "ctrl",
+                        threshold: 5
+                    },
+                    zoom: {
+                        enabled: true,
+                        mode: "x",
+                        speed: 0.1,
+                        limits: {
+                            x: { minRange: 1 }
+                        },
+                        wheel: {
+                            enabled: true,
+                            speed: 0.05
+                        },
+                        pinch: {
+                            enabled: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    return window.energyChart;
 }
 
 // Update Energy Panel Based on Selected Device or User Data
@@ -343,19 +333,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let devices = deviceAPI.getDevices();
   
     // DOM references
-    const profileNameEl = document.getElementById("profile-name");
-    const dashboardIntroEl = document.getElementById("dashboardintro-text");
     const categoryNav = document.getElementById("categoryNav");
     const productsContainer = document.getElementById("productsContainer");
-  
-    // Optionally set user name & intro text
-    profileNameEl.textContent = user.name || "Welcome";
-    if (userType === "homeManager") {
-      dashboardIntroEl.textContent = "As a Home Manager, you have full control over your smart devices.";
-    } else {
-      dashboardIntroEl.textContent = "You can view your smart devices here. Contact a Home Manager for changes.";
-    }
-  
+
     // Categories
     const categories = ["all", "Living Room", "Kitchen", "Bedroom"];
     let currentFilter = "all";
