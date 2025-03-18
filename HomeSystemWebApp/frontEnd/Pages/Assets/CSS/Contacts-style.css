@@ -193,3 +193,58 @@ h2::after {
         width: 100%;
     }
 }
+
+/* Mobile Responsiveness Enhancements */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .contact {
+        padding: 40px 20px;
+        margin: 80px auto;
+    }
+
+    .contact-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .contact-info, .contact-form {
+        width: 100%;
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .contact-info h3, .contact-form h3 {
+        font-size: 1.5rem;
+    }
+
+    .contact-info p, .contact-form input, .contact-form textarea {
+        font-size: 0.95rem;
+    }
+
+    .contact-form input, .contact-form textarea {
+        padding: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .social-links a {
+        font-size: 1.3rem;
+        margin: 0 8px;
+    }
+
+    #footer {
+        font-size: 12px;
+        padding: 15px;
+    }
+}
