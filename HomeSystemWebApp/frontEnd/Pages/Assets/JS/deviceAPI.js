@@ -68,21 +68,38 @@ export const updateDevice = async (deviceID, updatedFields) => {
     // });
 export const insertDevice = async (newDevice) => {
     try {
+        // Ensure all required fields are present
+        if (!newDevice.name || !newDevice.room || !newDevice.type || !newDevice.homeID) {
+            throw new Error("Missing required device information");
+        }
+        
+        console.log("Sending new device to backend:", newDevice);
+        
         const response = await fetch("/api/addDevice", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newDevice)
         });
-
+        
+        if (!response.ok) {
+            throw new Error(`Server responded with status: ${response.status}`);
+        }
+        
         const result = await response.json();
-        if (!result.success) throw new Error(result.message);
-
+        
+        if (!result.success) {
+            throw new Error(result.message || "Failed to add device");
+        }
+        
         console.log("Device added successfully:", result);
+        return result.device; // Return the created device with ID
+        
     } catch (error) {
         console.error("Error adding device:", error);
+        throw error; // Re-throw to allow the caller to handle it
     }
 };
-
+    
 // ////  Delete a device from backend
 export const deleteDeviceBackend = async (deviceID) => {
     try {
