@@ -124,3 +124,48 @@ button:hover {
     background: #007BFF;
     color: white;
 }
+
+@media (max-width: 768px) {
+
+    /* Adjust Profile Container for Small Screens */
+    .profile-container, .settings-container {
+        width: 90% !important;
+        max-width: 100% !important;
+        padding: 15px !important;
+        text-align: center !important;
+    }
+
+    /* Center Profile Picture */
+    .profile-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .profile-card img {
+        width: 90px !important;
+        height: 90px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Adjust Headings */
+    .profile-card h3 {
+        font-size: 1.4rem !important;
+    }
+
+    /* Form Inputs - Reduce Size */
+    input {
+        font-size: 14px !important;
+        padding: 8px !important;
+    }
+
+    /* Adjust Buttons */
+    .btn, button {
+        width: 90% !important;
+        max-width: 280px !important;
+        font-size: 14px !important;
+        padding: 10px !important;
+        margin: 10px auto !important;
+    }
+}

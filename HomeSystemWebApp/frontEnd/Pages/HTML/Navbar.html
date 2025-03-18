@@ -10,13 +10,40 @@
 
     <!-- Navbar -->
     <header id="navbar">
-        <!-- In Navbar.html (unchanged code except IDs) -->
-        <a href="#" id="logo-id" class="logo">
+        <!-- Desktop Logo -->
+        <a href="#" id="logo-id" class="logo desktop-logo">
             <img id="logo-img-1" src="../Assets/Images/whitelogo.png" alt="Logo">
             <img id="logo-img-2" src="../Assets/Images/bluelogo.png" alt="Logo 2" class="hidden-logo">
             <span id="logo-text">Big Plum Tech</span>
         </a>
             
+        <!-- Mobile Hamburger (will replace logo on mobile) -->
+        <div class="mobile-menu-container">
+            <div class="hamburger-menu" id="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav-container" id="mobile-nav-container">
+            <div class="mobile-close-btn" id="mobile-close-btn">×</div>
+            
+            <div class="mobile-menu-panel">
+                <ul class="mobile-nav-links" id="mobile-nav-links">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                
+                <div class="mobile-auth-toggle">
+                    <a href="Registration.html" id="mobile-register-btn">Register</a>
+                    <a href="Login.html" id="mobile-login-btn">Log in</a>
+                </div>
+            </div>
+        </div>
+        
         <nav class="nav-container">
             <ul class="nav-links" id="nav-links">
                 <!-- This will be updated dynamically -->
@@ -48,23 +75,24 @@
             <!-- Menu items dynamically added -->
         </ul>
     </div>
-<!-- Logout Confirmation Modal -->
-<div id="logoutModal" class="modal">
-    <div class="modal-content">
-        <h2>Are you sure you want to log out?</h2>
-        <button id="confirmLogout" class="logout-btn">Yes, Log Out</button>
-        <button id="cancelLogout" class="cancel-btn">Cancel</button>
+    
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>Are you sure you want to log out?</h2>
+            <button id="confirmLogout" class="logout-btn">Yes, Log Out</button>
+            <button id="cancelLogout" class="cancel-btn">Cancel</button>
+        </div>
     </div>
-</div>
 
-<!-- Logout Thank You Message -->
-<div id="logout-confirmation"></div>
+    <!-- Logout Thank You Message -->
+    <div id="logout-confirmation"></div>
 
-<!-- Background Overlay -->
-<div id="overlay-logout"></div>
+    <!-- Background Overlay -->
+    <div id="overlay-logout"></div>
 
-<!-- Background Overlay -->
-<div id="overlay"></div>
+    <!-- Background Overlay -->
+    <div id="overlay"></div>
 
 </body>
 </html>

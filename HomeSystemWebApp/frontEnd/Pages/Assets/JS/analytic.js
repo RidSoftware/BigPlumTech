@@ -109,6 +109,7 @@ async function setupEnergyChart(energyData7days, userID) {
   let gradient = ctx.createLinearGradient(0, 0, 0, 400);
   gradient.addColorStop(0, 'rgba(54, 162, 235, 0.6)');
   gradient.addColorStop(1, 'rgba(54, 162, 235, 0.1)');
+
   
   // Process weekly data
   const weeklyLabels = [];

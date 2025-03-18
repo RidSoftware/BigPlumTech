@@ -166,3 +166,63 @@
     background: #e5e7eb;
     margin: 5px 0 10px;
 }
+
+@media (max-width: 768px) {
+
+    /* Adjust Sidebar Width for Smaller Screens */
+    .sidebar {
+        width: 80% !important;  /* Reduce width for mobile */
+        max-width: 300px !important;
+        right: -80% !important; /* Keep it off-screen initially */
+    }
+
+    /* Ensure Sidebar Opens Fully on Small Screens */
+    .sidebar.show {
+        right: 0 !important;
+    }
+
+    /* Adjust Sidebar Header Spacing */
+    .sidebar-header {
+        padding-bottom: 8px !important;
+    }
+
+    .sidebar-header h1 {
+        font-size: 20px !important;
+    }
+
+    /* Make Close Button Larger for Better Touch Target */
+    .close-btn {
+        font-size: 22px !important;
+        top: 0 !important;
+    }
+
+    /* Adjust Sidebar Buttons */
+    .sidebar-button, #logout-btn {
+        font-size: 14px !important;
+        padding: 10px !important;
+        margin-top: 8px !important;
+    }
+
+    /* Adjust Sidebar Menu Items */
+    .sidebar-menu li {
+        font-size: 14px !important;
+        padding: 10px !important;
+    }
+
+    .sidebar-menu li i {
+        font-size: 16px !important;
+        width: 25px !important;
+    }
+
+    /* Ensure Sidebar Section Titles Fit Well */
+    .sidebar-section-title {
+        font-size: 12px !important;
+        padding-left: 8px !important;
+        margin: 10px 0 4px !important;
+    }
+
+    /* Adjust Sidebar Overlay for Mobile */
+    #overlay {
+        backdrop-filter: blur(3px) !important; /* Reduce blur for better performance */
+    }
+}
