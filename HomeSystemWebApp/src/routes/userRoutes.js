@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const db = require('../config/DBConnection'); 
 const e = require('express');
 
@@ -24,7 +24,7 @@ router.post("/api/register", async (req, res) => {
 	const homeid = 99;	//setting home id 99 as default for new users
 
     //hashing password google said 10-12
-    const hashPassword = await bcrypt.hash (password, 11);
+    const hashPassword = await bcrypt.hash (password, 13);
 
                                             //change to hashpassword 
     db.query( q, [firstname, lastname, email, hashPassword, admin, homeid], (err, results) => {
@@ -110,7 +110,7 @@ router.post('/api/login', async (req, res) => {
                     Email: results[0].Email,
                     userType: results[0].Admin === 'Y' ? 'homeManager' : 'homeUser',
                     isLoggedIn: true,
-                    homeID: results[0].homeID
+                    homeID: results[0].HomeID
                 }
             });
         });

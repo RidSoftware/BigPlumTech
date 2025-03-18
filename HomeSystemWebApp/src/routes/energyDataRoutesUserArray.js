@@ -17,7 +17,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/DBPool'); 
 
-router.post('/api/pull24hr', async (req, res) => {
+router.post('/api/pull24hrUser', async (req, res) => {
     let connection;
     try {
         const { userID } = req.body;
@@ -64,7 +64,7 @@ router.post('/api/pull24hr', async (req, res) => {
 
         connection.release();
 
-        console.log("SQL energyResults24:", energyResults); 
+        console.log("SQL energyResults24user:", energyResults); 
 
         if (energyResults.length === 0) {
             return res.status(401).json({ success: false, message: 'No energy data found' });
@@ -80,7 +80,7 @@ router.post('/api/pull24hr', async (req, res) => {
             energyDayProcessed[row.Hour] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Energy Data:", energyDayProcessed); 
+        console.log("Processed Energy Datauser:", energyDayProcessed); 
 
         return res.status(200).json({ 
             success: true, 
@@ -97,7 +97,7 @@ router.post('/api/pull24hr', async (req, res) => {
 });
 
 /////////
-router.post('/api/pull7days', async (req, res) => {
+router.post('/api/pull7daysUser', async (req, res) => {
     let connection;
     try {
         const { userID } = req.body;
@@ -142,7 +142,7 @@ router.post('/api/pull7days', async (req, res) => {
 
         connection.release();
 
-        console.log("SQL energyResults7:", energyResults);
+        console.log("SQL energyResults7user:", energyResults);
 
         if (energyResults.length === 0) {
             return res.status(401).json({ success: false, message: 'No energy data found' });
@@ -150,19 +150,17 @@ router.post('/api/pull7days', async (req, res) => {
 
         // Initialize a data structure to ensure all 7 days are represented
         const energyWeekProcessed = {};
-        for (let i = 0; i < 7; i++) {
-            const date = new Date();
-            date.setDate(date.getDate() - i);
-            const formattedDate = date.toISOString().split('T')[0];
-            energyWeekProcessed[formattedDate] = 0;
-        }
+        // for (let i = 0; i < 7; i++) {
+        //     energyWeekProcessed[i] = 0; 
+        // }
 
         // Populate energy data
         energyResults.forEach(row => {
-            energyWeekProcessed[row.Date] = row.totalEnergy !== null ? row.totalEnergy : 0;
+            const ProcessedDate = row.Date.toISOString().split('T')[0]
+            energyWeekProcessed[ProcessedDate] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Energy Data:", energyWeekProcessed);
+        console.log("Processed Energy Datauser:", energyWeekProcessed);
 
         return res.status(200).json({ 
             success: true, 
@@ -181,7 +179,7 @@ router.post('/api/pull7days', async (req, res) => {
 ///////////////now these below are for arbitrary given times
 
 /////puls 24 hour values when gove userID and Date
-router.post('/api/pullHourly', async (req, res) => {
+router.post('/api/pullHourlyUser', async (req, res) => {
     let connection;
     try {
         const { userID, date } = req.body;
@@ -229,7 +227,7 @@ router.post('/api/pullHourly', async (req, res) => {
             hourlyData[row.Hour] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Hourly Energy Data:", hourlyData);
+        console.log("Processed Hourly Energy Datauser: ", hourlyData);
 
         return res.status(200).json({ 
             success: true, 
@@ -246,7 +244,7 @@ router.post('/api/pullHourly', async (req, res) => {
 
 // pulls range of day values
 
-router.post('/api/pullDailyRange', async (req, res) => {
+router.post('/api/pullDailyRangeUser', async (req, res) => {
     let connection;
     try {
         const { userID, startDate, endDate } = req.body;
@@ -302,7 +300,7 @@ router.post('/api/pullDailyRange', async (req, res) => {
             dailyData[formattedDate] = row.totalEnergy !== null ? row.totalEnergy : 0;
         });
 
-        console.log("Processed Daily Energy Data:", dailyData);
+        console.log("Processed Daily Energy Datauser:", dailyData);
 
         return res.status(200).json({ 
             success: true, 
@@ -316,9 +314,9 @@ router.post('/api/pullDailyRange', async (req, res) => {
         if (connection) connection.release();
     }
 });
-
-
-
+//above returns array for all devices a user has
+/////////////////////////
+//below returns arrays for single devices
 
 
 

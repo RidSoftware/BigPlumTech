@@ -19,17 +19,19 @@ You must have the following installed:
 
 2️⃣ Install Dependencies
 `cd HomeSystemWebApp/src`
+`npm uninstall bcrypt` *will likely not work unless you reconfigure bcrypt for your system*
+`npm uninstall bcrypt`
 `npm install` **shouldn't be necessary, but no harm**
 
 3️⃣ Reconfigure DB connection
-go to readme in `Database-DevFolder` if you havent already
+go to readme in `Database-DevFolder` if you havent already **must also od this in DBPool**
 go to `HomeSystemWebApp/src/config/DBConnection.js`
 edit `const db = mysql.createConnection({
     host: "localhost",
-    user: "SmallPlum",
-    password: "PlumPassword",
-    database: "plumEnergyDatabase",
-    port: 3306
+    user: "SmallPlum", //change may be root for some
+    password: "PlumPassword",//change
+    database: "plumEnergyDatabase",//change
+    port: 3306 //probably dont need to change
 });`
 to the user, password and database name relevant to your installation and user details for your db. \
 NOTE:
