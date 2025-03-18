@@ -21,13 +21,10 @@ body {
 /* Page Layout */
 .page-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 85%;
-    max-width: 1100px;
-    margin: auto;
-    flex-grow: 1;
-    padding: 15px 0;
+    justify-content: center; 
+    align-items: center;     
+    min-height: calc(100vh - 50px); 
+    width: 100vw;
 }
 
 /* Promo Section*/
@@ -70,13 +67,13 @@ body {
 
 /* Registration & Login Containers */
 .container-registration, .container-login {
-    flex: 1;
-    max-width: 45%;
     background: white;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 400px; 
+    width: 100%;
 }
 
 /* Form Adjustments */
