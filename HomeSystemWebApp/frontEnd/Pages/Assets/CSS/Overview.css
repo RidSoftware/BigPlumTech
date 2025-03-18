@@ -130,7 +130,14 @@ canvas {
 
 .device-status {
   font-weight: bold;
+}
+
+.device-status.active {
   color: #28a745;
+}
+
+.device-status.inactive {
+  color: #dc3545;
 }
 
 /* Toggle Switch Styling */
@@ -249,6 +256,35 @@ input:checked + .slider:before {
 
 .home-details strong {
   color: #007BFF;
+}
+
+/* Home Details enhancements */
+.user-details-panel {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f0f7ff;
+  border-radius: 8px;
+  border-left: 4px solid #007BFF;
+}
+
+#home-users-list {
+  list-style: none;
+  padding: 0;
+}
+
+#home-users-list li {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.clickable {
+  cursor: pointer;
+  color: #007BFF;
+  text-decoration: underline;
+  font-weight: bold;
 }
 
 /* Quick Navigation Links */

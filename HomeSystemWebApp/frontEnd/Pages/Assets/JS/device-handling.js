@@ -1,8 +1,13 @@
-import * as deviceAPI from './deviceAPI.js';
-document.addEventListener('DOMContentLoaded', () => {
+  // ----- API FUNCTIONS -----
+  // Import API functions from deviceAPI.js
+  import { getDevices, saveDevices, syncDevicesFromBackend, updateDevice, insertDevice, deleteDeviceBackend } from './deviceAPI.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
   // ----- USER TYPE LOGIC -----
   const user = JSON.parse(localStorage.getItem("user")) || {};
+  const userID = user.id; // Get user ID for API calls
   const userType = user.userType || "homeUser"; // default if undefined
+  const homeID = user.homeID; // Get home ID for adding new devices
 
   const productControllerText = document.getElementById("product-controller-text");
   if (userType === "homeUser") {
@@ -46,38 +51,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const acEditTempValueEl = document.getElementById('acEditTempValue');
 
   let editingDeviceId = null;
+  let devices = [];
 
-  // ----- LOAD OR CREATE devices in localStorage -----
-  let devices = JSON.parse(localStorage.getItem('devices')) || [
-    // fallback if none
-    { id: 1, name: 'Light', room: 'Living Room', info: 'Default info', type: 'Light', status: true },
-    { id: 2, name: 'Robot', room: 'Bedroom', info: 'Default info', type: 'Robot', status: false },
-  ];
 
-  // Save to localStorage
-  function saveDevices() {
-    localStorage.setItem('devices', JSON.stringify(devices));
+  // ----- LOAD DEVICES -----
+  async function loadDevices() {
+    // First try to get from localStorage
+    devices = getDevices();
+    
+    // Then sync with backend
+    if (userID) {
+      try {
+        await syncDevicesFromBackend(userID);
+        // Refresh local devices after sync
+        devices = getDevices();
+      } catch (error) {
+        console.error("Error syncing devices:", error);
+      }
+    } else {
+      console.warn("No user ID found. Using local devices only.");
+    }
+    
+    renderDevices();
   }
 
-  function valid(device){
-		const blacklist = ["'", '"', "\\0", "\\n", "\\r", "\\", "\\Z", "--", ";", "/*", "\\*", "(", ")", "=", "|", "%", "_"]; //list of common escape characters, a slash has been added before each so the second slashes can be recognised 
-		//var device = document.getElementById("deviceName").value;
+  // Input validation function
+  function valid(device) {
+    const blacklist = ["'", '"', "\\0", "\\n", "\\r", "\\", "\\Z", "--", ";", "/*", "\\*", "(", ")", "=", "|", "%", "_"];
     
-    
-		for(let i = 0; i < blacklist.length; i++){
-		//looping through each member of list, if any match then we reject it.
-		
-		if(device.includes(blacklist[i])){
-			//document.getElementById("accepted").innerHTML = "Not Valid"
-      
-			return 0;
-
-		}
-	}		//in later build this would also include the actual data being sent to database, but here is just pure example input validation for database
-			//document.getElementById("accepted").innerHTML = "accepted"
-      
-      return 1;
-	}
+    for (let i = 0; i < blacklist.length; i++) {
+      if (device.includes(blacklist[i])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
 
   // ----- RENDER DEVICES -----
   function renderDevices() {
@@ -139,22 +147,55 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ----- TOGGLE DEVICE ON/OFF -----
-  function toggleDevice(id) {
-    devices = devices.map(d => {
-      if (d.id === id) {
-        return { ...d, status: !d.status };
-      }
-      return d;
-    });
-    saveDevices();
-    renderDevices();
+  async function toggleDevice(id) {
+    try {
+      // Find the device to toggle
+      const device = devices.find(d => d.id === id);
+      if (!device) return;
+      
+      // Toggle status
+      const newStatus = !device.status;
+      
+      // Update backend first
+      await updateDevice(id, { status: newStatus });
+      
+      // If successful, update local devices
+      devices = devices.map(d => {
+        if (d.id === id) {
+          return { ...d, status: newStatus };
+        }
+        return d;
+      });
+      
+      // Save to local storage
+      saveDevices(devices);
+      
+      // Rerender UI
+      renderDevices();
+    } catch (error) {
+      console.error(`Error toggling device ${id}:`, error);
+      alert("Failed to update device status. Please try again.");
+    }
   }
 
   // ----- DELETE DEVICE -----
-  function deleteDevice(id) {
-    devices = devices.filter(d => d.id !== id);
-    saveDevices();
-    renderDevices();
+  async function deleteDevice(id) {
+    try {
+      // Delete from backend first
+      await deleteDeviceBackend(id);
+      
+      // If successful, update local devices
+      devices = devices.filter(d => d.id !== id);
+      
+      // Save to local storage
+      saveDevices(devices);
+      
+      // Rerender UI
+      renderDevices();
+    } catch (error) {
+      console.error(`Error deleting device ${id}:`, error);
+      alert("Failed to delete device. Please try again.");
+    }
   }
 
   // ----- OPEN EDIT MODAL -----
@@ -193,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
   closeEditModalBtn.addEventListener('click', closeEditModal);
 
   // ----- EDIT FORM SUBMIT -----
-  editDeviceForm.addEventListener('submit', (e) => {
+  editDeviceForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const updatedName = editNameEl.value;
     const updatedRoom = editRoomEl.value;
@@ -201,28 +242,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const updatedType = editTypeEl.value;
     const updatedTemp = acEditTempEl.value; // only relevant if AC
 
-    devices = devices.map(d => {
-      if (d.id === editingDeviceId) {
-        const updatedDevice = {
-          ...d,
-          name: updatedName,
-          room: updatedRoom,
-          info: updatedInfo,
-          type: updatedType
-        };
-        // If AC, store temp
-        if (updatedType === 'Air Conditioning') {
-          updatedDevice.acTemp = parseInt(updatedTemp);
-        } else {
-          delete updatedDevice.acTemp;
+    try {
+      // Build updated fields object to send to API
+      const updatedFields = {
+        name: updatedName,
+        room: updatedRoom,
+        type: updatedType
+      };
+
+      // Update backend first
+      await updateDevice(editingDeviceId, updatedFields);
+      
+      // If successful, update local devices
+      devices = devices.map(d => {
+        if (d.id === editingDeviceId) {
+          const updatedDevice = {
+            ...d,
+            name: updatedName,
+            room: updatedRoom,
+            info: updatedInfo,
+            type: updatedType
+          };
+          // If AC, store temp
+          if (updatedType === 'Air Conditioning') {
+            updatedDevice.acTemp = parseInt(updatedTemp);
+          } else {
+            delete updatedDevice.acTemp;
+          }
+          return updatedDevice;
         }
-        return updatedDevice;
-      }
-      return d;
-    });
-    saveDevices();
-    renderDevices();
-    closeEditModal();
+        return d;
+      });
+      
+      // Save to local storage
+      saveDevices(devices);
+      
+      // Rerender UI and close modal
+      renderDevices();
+      closeEditModal();
+    } catch (error) {
+      console.error(`Error updating device ${editingDeviceId}:`, error);
+      alert("Failed to update device. Please try again.");
+    }
   });
 
   // ----- EDIT SLIDER EVENT -----
@@ -257,72 +318,103 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ----- ADD PRODUCT FORM SUBMIT -----
-  addProductForm.addEventListener('submit', (e) => {
-
-    //resetting fields to non error state
+  addProductForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Reset validation error states
     document.getElementById("nameValid").innerHTML = ``;
     document.getElementById("infoValid").innerHTML = ``;
-
     document.getElementById("deviceName").style.outline = "#555";
     document.getElementById("deviceInfo").style.outline = "#555";
 
-    e.preventDefault();
     const name = deviceNameEl.value;
     const room = deviceRoomEl.value;
-    const info = deviceInfoEl.value;
+    const info = deviceInfoEl.value || "No additional info";
     const type = deviceTypeEl.value;
+    const status = false; // Default to Off for new devices
     const acTemp = parseInt(acAddTempEl.value); // only relevant if AC
 
-    // Generate new ID
-    const newId = devices.length ? Math.max(...devices.map(d => d.id)) + 1 : 1;
-    const newDevice = {
-      id: newId,
-      name,
-      room,
-      info,
-      type,
-      status: false
-    };
-
-    // If AC, store temperature
-    if (type === 'Air Conditioning') {
-      newDevice.acTemp = acTemp;
-    }
     const nv = document.getElementById("nameValid");
     const iv = document.getElementById("infoValid");
 
-    //1 means parameter is valid 0 means invalid
-
-    if(valid(name) == 1 && valid(info) == 1){
-      devices.push(newDevice);
-      saveDevices();
-      addProductForm.reset();
-    // Hide AC slider group
-      acAddSliderGroup.classList.add('hidden');
-      renderDevices();
-      
-    } else if(valid(name) == 0 && valid(info) == 1){
-        //changes text box outline to red and produces a red error message
-        document.getElementById("deviceName").style.outline = "3px solid red";
-        nv.style.color = "red";
-        nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
-
-    } else if(valid(info) == 0 && valid(name) == 1){
-
-        document.getElementById("deviceInfo").style.outline = "3px solid red";
-        iv.style.color = "red";
-        iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
-
-    }else{
-
-        document.getElementById("deviceName").style.outline = "3px solid red";
-        document.getElementById("deviceInfo").style.outline = "3px solid red";
-
-        nv.style.color = "red";
-        nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
-        iv.style.color = "red";
-        iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
-
+    // Validate input
+    if(valid(name) == 1 && valid(info) == 1) {
+      try {
+        // Make sure we have homeID
+        if (!homeID) {
+          throw new Error("No homeID found in user data. Cannot add device.");
+        }
+        
+        // Create new device object to send to API
+        const newDeviceData = {
+          name: name,
+          room: room,
+          type: type,
+          status: status,
+          homeID: homeID
+        };
+        
+        console.log("Sending new device data:", newDeviceData);
+        
+        // Insert to backend
+        const addedDevice = await insertDevice(newDeviceData);
+        
+        if (!addedDevice) {
+          throw new Error("Failed to add device - no response from server");
+        }
+        
+        console.log("Device added to database:", addedDevice);
+        
+        // Create a complete device object for local storage
+        // This combines the returned device data with any additional fields we want to track locally
+        const completeDevice = {
+          ...addedDevice,
+          info: info
+        };
+        
+        // Add temperature if it's an AC
+        if (type === 'Air Conditioning') {
+          completeDevice.acTemp = acTemp;
+        }
+        
+        // Update local devices array with the new device
+        devices.push(completeDevice);
+        
+        // Save updated devices to local storage
+        saveDevices(devices);
+        
+        // Reset form
+        addProductForm.reset();
+        
+        // Hide AC slider group
+        acAddSliderGroup.classList.add('hidden');
+        
+        // Refresh device display
+        renderDevices();
+        
+        console.log("Device added successfully");
+      } catch (error) {
+        console.error("Error adding device:", error);
+        alert(`Failed to add device: ${error.message}`);
+      }
+    } else if(valid(name) == 0 && valid(info) == 1) {
+      // Invalid name
+      document.getElementById("deviceName").style.outline = "3px solid red";
+      nv.style.color = "red";
+      nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
+    } else if(valid(info) == 0 && valid(name) == 1) {
+      // Invalid info
+      document.getElementById("deviceInfo").style.outline = "3px solid red";
+      iv.style.color = "red";
+      iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
+    } else {
+      // Both invalid
+      document.getElementById("deviceName").style.outline = "3px solid red";
+      document.getElementById("deviceInfo").style.outline = "3px solid red";
+      nv.style.color = "red";
+      nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
+      iv.style.color = "red";
+      iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
     }
   });
 
@@ -335,6 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
       acAddSliderGroup.classList.add('hidden');
     }
   });
+  
   acAddTempEl.addEventListener('input', () => {
     acAddTempValueEl.textContent = `${acAddTempEl.value}°C`;
   });
@@ -349,6 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'Dashboard.html';
   });
 
-  // ----- INITIAL RENDER -----
-  renderDevices();
+  // ----- INITIAL LOAD -----
+  await loadDevices();
 });

@@ -66,23 +66,28 @@ export const updateDevice = async (deviceID, updatedFields) => {
     //     status: true,
     //     homeID: 56
     // });
-export const insertDevice = async (newDevice) => {
-    try {
-        const response = await fetch("/api/addDevice", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newDevice)
-        });
+    export const insertDevice = async (newDevice) => {
 
-        const result = await response.json();
-        if (!result.success) throw new Error(result.message);
-
-        console.log("Device added successfully:", result);
-    } catch (error) {
-        console.error("Error adding device:", error);
-    }
-};
-
+        try {
+    
+            const response = await fetch("/api/addDevice", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newDevice)
+    
+            });
+            const result = await response.json();
+            if (!result.success) throw new Error(result.message);
+    
+            console.log("Device added successfully:", result);
+            return result.device; // Return the created device with ID
+    
+        } catch (error) {
+            console.error("Error adding device:", error);
+            return null; // Return null on error
+        }
+    };
+    
 // ////  Delete a device from backend
 export const deleteDeviceBackend = async (deviceID) => {
     try {

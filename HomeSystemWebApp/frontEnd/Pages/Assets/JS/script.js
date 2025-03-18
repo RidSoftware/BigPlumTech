@@ -1,107 +1,77 @@
-import * as deviceAPI from './deviceAPI.js';
+import * as energyAPI from './energyAPI.js'; // Import the energy API
+import * as deviceAPI from './deviceAPI.js'; // Ensure device API is imported
 
 let user = JSON.parse(localStorage.getItem("user"));
-let userID = user.userID;
+let userID = user ? user.userID : null;
+let selectedDeviceID = null; // Track the selected device
 
-async function getSyncedDevices() {
-  try {
-      const devices = await deviceAPI.syncDevicesFromBackend(userID);
-      return devices;
-  } catch (error) {
-      console.error("Error fetching devices from backend:", error);
-      return [];
-  }
-}
 
-document.addEventListener("DOMContentLoaded", function () {
-    initializeChart();
+document.addEventListener("DOMContentLoaded", async function () {
+    
+    // Initialize chart with default device or no device
+    await initializeChart(selectedDeviceID);
+    
+    // Update other UI elements
     updateEnergyPanel();
     makePanelDraggable();
     checkAutomationsOnDashboard();
 });
 
-// Implement the automation check function directly in script.js
-function checkAutomationsOnDashboard() {
-  const automations = JSON.parse(localStorage.getItem("automations")) || [];
-  if (automations.length === 0) return;
-  
-  const devices = JSON.parse(localStorage.getItem("devices")) || [];
-  const now = new Date();
-  
-  // Format time for comparison
-  const currentHour = now.getHours();
-  const currentMinute = now.getMinutes();
-  
-  let devicesUpdated = false;
-  
-  automations.forEach(automation => {
-      if (!automation.active) return;
-      
-      // Parse start and end times to hours and minutes
-      const [startHour, startMinute] = automation.start.split(':').map(num => parseInt(num));
-      const [endHour, endMinute] = automation.end.split(':').map(num => parseInt(num));
-      
-      // Calculate time in minutes for easier comparison
-      const currentTimeInMinutes = currentHour * 60 + currentMinute;
-      const startTimeInMinutes = startHour * 60 + startMinute;
-      const endTimeInMinutes = endHour * 60 + endMinute;
-      
-      const device = devices.find(d => d.id === automation.deviceId);
-      if (!device) return; // Device not found
-      
-      // Check if current time is within automation period (between start and end)
-      if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
-          // Set device status based on automation setting
-          device.status = automation.status === 'ON';
-          devicesUpdated = true;
-          
-          console.log(`Automation applied on dashboard load: ${device.name} set to ${automation.status}`);
-      } 
-      // Check if current time is after end time 
-      else if (currentTimeInMinutes >= endTimeInMinutes) {
-          // Set device to the opposite status of what it was set to at start time
-          device.status = automation.status === 'OFF'; // If automation turns ON, we now turn OFF
-          devicesUpdated = true;
-          
-          console.log(`Automation end time reached: ${device.name} set to ${automation.status === 'ON' ? 'OFF' : 'ON'}`);
-      }
-  });
-  
-  // Save updated devices if any changes were made
-  if (devicesUpdated) {
-      localStorage.setItem("devices", JSON.stringify(devices));
-      console.log("Devices updated due to automation rules on dashboard load");
-      
-      // Refresh the UI since we're on the dashboard
-      if (typeof renderProducts === "function") {
-          renderProducts();
-      }
-  }
-}
-
-function initializeChart() {
+async function initializeChart(deviceID) {
   const ctx = document.getElementById("myChart").getContext("2d");
+  // Get real energy data from the API
+  let energyData = {};
 
-  // Simulated test data (hourly consumption in kWh)
-  const testLabels = [
-      "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", 
-      "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", 
-      "20:00", "21:00", "22:00", "23:00"
-  ];
+  try {
+      if (deviceID) {
+          // Fetch the last 24 hours of energy data for specific device
+          energyData = await energyAPI.syncEnergy24hrDevice(deviceID);
+          console.log("Device energy data fetched:", energyData);
+          
+          // Check if data is empty
+          if (Object.keys(energyData).length === 0) {
+              console.warn("No energy data returned for device", deviceID);
+          }
+      } else if (userID) {
+          // If no device selected but user exists, get aggregate data
+          energyData = await energyAPI.syncEnergy24hrUser(userID);
+          console.log("User energy data fetched:", energyData);
+          
+          // Check if data is empty
+          if (Object.keys(energyData).length === 0) {
+              console.warn("No energy data returned for user", userID);
+          }
+      } else {
+          console.warn("No user or device ID available, using empty energy data");
+      }
+  } catch (error) {
+      console.error("Error fetching energy data:", error);
+      energyData = {}; // Ensure energyData is an object even on error
+  }
+
+  // Create array of hours 0-23
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const labels = hours.map(hour => `${hour.toString().padStart(2, '0')}:00`);
+ 
+  // Map the energy data to the correct format based on API response
+  const dataValues = hours.map(hour => {
+      const hourKey = hour.toString();
+      return energyData && typeof energyData === 'object' && hourKey in energyData ? 
+             Number(energyData[hourKey]) : 0;
+  });
+
+  // Check if chart already exists and destroy it
+  if (window.energyChart) {
+      window.energyChart.destroy();
+  }
   
-  const testData = [
-      10, 12, 8, 6, 15, 25, 35, 45, 30, 20, 
-      55, 60, 40, 35, 50, 45, 65, 70, 80, 85, 
-      90, 95, 85, 70
-  ];
-
-  let myChart = new Chart(ctx, {
+  window.energyChart = new Chart(ctx, {
       type: "line",
       data: {
-          labels: testLabels, // Use test labels (hourly intervals)
+          labels: labels,
           datasets: [{
-              label: "Energy Consumption (kWh)",
-              data: testData, // Use test data values
+              label: deviceID ? "Device Energy Consumption (kWh)" : "Total Energy Consumption (kWh)",
+              data: dataValues,
               borderColor: "rgba(75, 192, 192, 1)",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderWidth: 2,
@@ -118,7 +88,7 @@ function initializeChart() {
                   title: { display: true, text: "Time (Hours)" },
                   ticks: {
                       autoSkip: true,
-                      maxTicksLimit: 20 // Ensure proper interval spacing
+                      maxTicksLimit: 20
                   }
               },
               y: {
@@ -131,20 +101,20 @@ function initializeChart() {
                   pan: {
                       enabled: true,
                       mode: "x",
-                      speed: 10, // Increase smoothness of panning
-                      modifierKey: "ctrl", // Pan only when "Ctrl" is held
+                      speed: 10,
+                      modifierKey: "ctrl",
                       threshold: 5
                   },
                   zoom: {
                       enabled: true,
                       mode: "x",
-                      speed: 0.1, // Adjust zoom sensitivity
+                      speed: 0.1,
                       limits: {
-                          x: { minRange: 1 } // Prevent over-zooming
+                          x: { minRange: 1 }
                       },
                       wheel: {
                           enabled: true,
-                          speed: 0.05 // Reduce zoom speed for better control
+                          speed: 0.05
                       },
                       pinch: {
                           enabled: true
@@ -154,22 +124,55 @@ function initializeChart() {
           }
       }
   });
-
-  // Function to reset zoom (optional)
-  document.getElementById("resetZoom").addEventListener("click", function () {
-      myChart.resetZoom();
-  });
+  
+  return window.energyChart;
 }
 
-// Update Energy Panel Based on Energy Level
-function updateEnergyPanel() {
+// Update Energy Panel Based on Selected Device or User Data
+async function updateEnergyPanel() {
     const panel = document.getElementById('energy-panel');
     const message = document.getElementById('energy-message');
     const energyFill = document.getElementById('energy-fill');
     const energyValue = document.getElementById('energy-value');
     const reportButton = document.getElementById('report-button');
 
-    let energyLevel = Math.floor(Math.random() * 100); // Simulated energy level
+    let energyLevel = 50; // Default value
+
+    try {
+        let energyData = {};
+        
+        if (selectedDeviceID) {
+            // Use device-specific data if a device is selected
+            energyData = await energyAPI.syncEnergy24hrDevice(selectedDeviceID);
+        } else if (userID) {
+            // Otherwise use user aggregate data
+            energyData = await energyAPI.syncEnergy24hrUser(userID);
+        }
+        
+        if (Object.keys(energyData).length > 0) {
+            // Calculate energy level based on data
+            const totalEnergy = Object.values(energyData).reduce((sum, val) => sum + val, 0);
+            
+            // Set a threshold (adjust based on your requirements)
+            const lowThreshold = selectedDeviceID ? 20 : 50; // Lower threshold for individual devices
+            const highThreshold = selectedDeviceID ? 50 : 100; // Lower threshold for individual devices
+            
+            // Map the energy consumption to a 0-100 scale inversely (lower consumption = higher score)
+            if (totalEnergy <= lowThreshold) {
+                energyLevel = 100;
+            } else if (totalEnergy >= highThreshold) {
+                energyLevel = 0;
+            } else {
+                // Linear mapping between thresholds
+                energyLevel = 100 - ((totalEnergy - lowThreshold) / (highThreshold - lowThreshold) * 100);
+            }
+            
+            // Ensure energyLevel is within bounds
+            energyLevel = Math.max(0, Math.min(100, Math.round(energyLevel)));
+        }
+    } catch (error) {
+        console.error("Error updating energy panel:", error);
+    }
 
     energyValue.innerText = `Energy Level: ${energyLevel}%`;
     energyFill.style.width = `${energyLevel}%`;
@@ -189,7 +192,7 @@ function updateEnergyPanel() {
     }
 }
 
-// Make Energy Panel Draggable
+// Make Energy Panel Draggable - keeping the existing function
 function makePanelDraggable() {
   const panel = document.getElementById("energy-panel");
   let offsetX = 0, offsetY = 0, isDragging = false;
@@ -208,6 +211,21 @@ function makePanelDraggable() {
 
   document.addEventListener("mouseup", () => isDragging = false);
 }
+
+// Function to refresh data when needed
+async function refreshEnergyData() {
+    await initializeChart(selectedDeviceID);
+    updateEnergyPanel();
+}
+
+// Add refresh button functionality if it exists
+document.addEventListener("DOMContentLoaded", function() {
+    const refreshButton = document.getElementById('refresh-energy-data');
+    if (refreshButton) {
+        refreshButton.addEventListener('click', refreshEnergyData);
+    }
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const panel = document.getElementById("energy-panel");
@@ -285,8 +303,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   let user = JSON.parse(localStorage.getItem("user")) || [];
-  //let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail") || null;
-  //let currentUser = users.find(user => user.email === lastLoggedInEmail);
   
   const energyPanel = document.getElementById("energy-panel");
   const energyPanelPin = document.getElementById("placeholder-panel");
@@ -308,401 +324,482 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
-    document.addEventListener("DOMContentLoaded", () => {
-        // ----- Load user & devices from localStorage -----
-        const user = JSON.parse(localStorage.getItem("user")) || {};
-        const userType = user.userType || "homeUser";
-        let devices = JSON.parse(localStorage.getItem("devices")) || [];
-      
-        // DOM references
-        const profileNameEl = document.getElementById("profile-name");
-        const dashboardIntroEl = document.getElementById("dashboardintro-text");
-        const categoryNav = document.getElementById("categoryNav");
-        const productsContainer = document.getElementById("productsContainer");
-      
-        // Optionally set user name & intro text
-        profileNameEl.textContent = user.name || "Welcome";
-        if (userType === "homeManager") {
-          dashboardIntroEl.textContent = "As a Home Manager, you have full control over your smart devices.";
-        } else {
-          dashboardIntroEl.textContent = "You can view your smart devices here. Contact a Home Manager for changes.";
+// Main dashboard device handling with API calls
+document.addEventListener("DOMContentLoaded", async () => {
+    // ----- Load user & devices from localStorage -----
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+    const userID = user.userID;
+    const userType = user.userType || "homeUser";
+    
+    // Fetch devices from backend first, then load from localStorage
+    if (userID) {
+        try {
+            await deviceAPI.syncDevicesFromBackend(userID);
+        } catch (error) {
+            console.error("Failed to sync devices from backend:", error);
         }
-      
-        // Categories
-        const categories = ["all", "Living Room", "Kitchen", "Bedroom"];
-        let currentFilter = "all";
-      
-        // Save devices to localStorage
-        function saveDevices() {
-          localStorage.setItem("devices", JSON.stringify(devices));
-        }
-      
-        // Font Awesome icon by type
-        function getDeviceIcon(type) {
-          switch (type) {
-            case "Light":
-              return "fa-lightbulb";
-            case "Curtain":
-              return "fa-window-maximize";
-            case "Main Door":
-              return "fa-door-open";
-            case "Robot":
-              return "fa-robot";
-            case "Air Conditioning":
-              return "fa-snowflake";
-            default:
-              return "fa-cog";
-          }
-        }
-      
-        // Render category nav
-        function renderCategoryNav() {
-          categoryNav.innerHTML = "";
-          categories.forEach(cat => {
-            const btn = document.createElement("button");
-            btn.className = "category-button";
-            btn.textContent = cat;
-            if (cat.toLowerCase() === currentFilter.toLowerCase()) {
-              btn.classList.add("active");
+    }
+    
+    let devices = deviceAPI.getDevices();
+  
+    // DOM references
+    const profileNameEl = document.getElementById("profile-name");
+    const dashboardIntroEl = document.getElementById("dashboardintro-text");
+    const categoryNav = document.getElementById("categoryNav");
+    const productsContainer = document.getElementById("productsContainer");
+  
+    // Optionally set user name & intro text
+    profileNameEl.textContent = user.name || "Welcome";
+    if (userType === "homeManager") {
+      dashboardIntroEl.textContent = "As a Home Manager, you have full control over your smart devices.";
+    } else {
+      dashboardIntroEl.textContent = "You can view your smart devices here. Contact a Home Manager for changes.";
+    }
+  
+    // Categories
+    const categories = ["all", "Living Room", "Kitchen", "Bedroom"];
+    let currentFilter = "all";
+  
+    // Save devices to localStorage AND update backend
+    async function saveDeviceWithSync(device) {
+        // First save to localStorage
+        deviceAPI.saveDevices(devices);
+        
+        // Then update backend if device has an ID (existing device)
+        if (device && device.id) {
+            try {
+                await deviceAPI.updateDevice(device.id, device);
+                console.log(`Device ${device.id} synced with backend`);
+            } catch (error) {
+                console.error(`Failed to sync device ${device.id} with backend:`, error);
             }
-            btn.addEventListener("click", () => {
-              currentFilter = cat;
-              renderCategoryNav();
-              renderProducts();
-            });
-            categoryNav.appendChild(btn);
-          });
         }
+    }
+  
+    // Font Awesome icon by type
+    function getDeviceIcon(type) {
+      switch (type) {
+        case "Light":
+          return "fa-lightbulb";
+        case "Curtain":
+          return "fa-window-maximize";
+        case "Main Door":
+          return "fa-door-open";
+        case "Robot":
+          return "fa-robot";
+        case "Air Conditioning":
+          return "fa-snowflake";
+        case "EnergyUsage":
+          return "fa-electric";
+        case "EnergyGeneration":
+          return "fa-electric";
+        default:
+          return "fa-cog";
+      }
+    }
+  
+    // Render category nav
+    function renderCategoryNav() {
+      categoryNav.innerHTML = "";
+      categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = "category-button";
+        btn.textContent = cat;
+        if (cat.toLowerCase() === currentFilter.toLowerCase()) {
+          btn.classList.add("active");
+        }
+        btn.addEventListener("click", () => {
+          currentFilter = cat;
+          renderCategoryNav();
+          renderProducts();
+        });
+        categoryNav.appendChild(btn);
+      });
+    }
+  
+    // Render products with updated backend sync
+    async function renderProducts() {
+      productsContainer.innerHTML = "";
       
-        // Render products
-        function renderProducts() {
-          productsContainer.innerHTML = "";
-          deviceAPI.syncDevicesFromBackend();
-          // Filter by room
-          let filtered = devices;
-          if (currentFilter.toLowerCase() !== "all") {
-            filtered = devices.filter(d => d.room.toLowerCase() === currentFilter.toLowerCase());
+      // Refresh devices from backend before rendering
+      if (userID) {
+          try {
+              await deviceAPI.syncDevicesFromBackend(userID);
+              // Update local devices variable after sync
+              devices = deviceAPI.getDevices();
+          } catch (error) {
+              console.error("Failed to refresh devices from backend:", error);
           }
-          if (filtered.length === 0) {
-            productsContainer.innerHTML = "<p>No devices added in this section</p>";
-            // Still show plus button if user is admin
-            renderPlusButton();
-            return;
-          }
+      }
       
-          // Build product cards
-          filtered.forEach(device => {
-            const card = document.createElement("div");
-            card.className = "productCard";
-      
-            // Device icon
-            const iconClass = getDeviceIcon(device.type);
-            // On/Off switch checked state
-            const checkedAttr = device.status ? "checked" : "";
-            // AC Temp
-            const acTemp = device.acTemp !== undefined ? device.acTemp : 24;
-      
-            // Build card HTML
-            let cardHTML = `
-              <div class="product-header">
-                <i class="fas ${iconClass} product-icon"></i>
-              </div>
-              <h3>${device.name}</h3>
-              <p>${device.room} - ${device.type}</p>
-              <p>Info: ${device.info || "N/A"}</p>
-              
-              <!-- iOS-style on/off switch -->
-              <label class="switch">
-                <input type="checkbox" data-id="${device.id}" class="status-switch" ${checkedAttr}>
-                <span class="slider"></span>
-              </label>
-            `;
-      
-            // If AC, show slider
-            if (device.type === "Air Conditioning") {
-              cardHTML += `
-                <div class="ac-slider-container">
-                  <input 
-                    type="range" 
-                    min="16" 
-                    max="30" 
-                    value="${acTemp}" 
-                    data-id="${device.id}" 
-                    class="ac-slider" />
-                  <div class="temp-label" id="tempLabel-${device.id}">${acTemp}°C</div>
-                </div>
-              `;
-            }
-      
-            // If homeManager, show Edit & Delete
-            if (userType === "homeManager") {
-              cardHTML += `
-                <button class="edit-btn" data-id="${device.id}">Edit</button>
-                <button class="delete-btn" data-id="${device.id}">Delete</button>
-              `;
-            }
-      
-            card.innerHTML = cardHTML;
-            productsContainer.appendChild(card);
-          });
+      // Filter by room
+      let filtered = devices;
+      if (currentFilter.toLowerCase() !== "all") {
+        filtered = devices.filter(d => d.room.toLowerCase() === currentFilter.toLowerCase());
+      }
+      if (filtered.length === 0) {
+        productsContainer.innerHTML = "<p>No devices added in this section</p>";
+        // Still show plus button if user is admin
+        renderPlusButton();
+        return;
+      }
+  
+      // Build product cards
+      filtered.forEach(device => {
+        const card = document.createElement("div");
+        card.className = "productCard";
+  
+        // Device icon
+        const iconClass = getDeviceIcon(device.type);
+        // On/Off switch checked state
+        const checkedAttr = device.status ? "checked" : "";
+        // AC Temp
+        const acTemp = device.acTemp !== undefined ? device.acTemp : 24;
+  
+        // Build card HTML
+        let cardHTML = `
+          <div class="product-header">
+            <i class="fas ${iconClass} product-icon"></i>
+          </div>
+          <h3>${device.name}</h3>
+          <p>${device.room} - ${device.type}</p>
+          <p>Info: ${device.info || "N/A"}</p>
           
-          // If admin, add the plus button
-          renderPlusButton();
+          <!-- iOS-style on/off switch -->
+          <label class="switch">
+            <input type="checkbox" data-id="${device.id}" class="status-switch" ${checkedAttr}>
+            <span class="slider"></span>
+          </label>
+        `;
+  
+        // If AC, show slider
+        if (device.type === "Air Conditioning") {
+          cardHTML += `
+            <div class="ac-slider-container">
+              <input 
+                type="range" 
+                min="16" 
+                max="30" 
+                value="${acTemp}" 
+                data-id="${device.id}" 
+                class="ac-slider" />
+              <div class="temp-label" id="tempLabel-${device.id}">${acTemp}°C</div>
+            </div>
+          `;
         }
-      
-        // Plus button for admin
-        function renderPlusButton() {
-          if (userType === "homeManager") {
-            const plusBtn = document.createElement("button");
-            plusBtn.className = "add-card";
-            plusBtn.textContent = "+";
-            plusBtn.addEventListener("click", () => {
-              window.location.href = "Device-handling.html";
-            });
-            productsContainer.appendChild(plusBtn);
-          }
+  
+        // If homeManager, show Edit & Delete
+        if (userType === "homeManager") {
+          cardHTML += `
+            <button class="edit-btn" data-id="${device.id}">Edit</button>
+            <button class="delete-btn" data-id="${device.id}">Delete</button>
+          `;
         }
-      
-        // Toggle device status
-        function toggleStatus(deviceId) {
-          devices = devices.map(d => {
-            if (d.id === deviceId) {
-              return { ...d, status: !d.status };
-            }
-            return d;
-          });
-          saveDevices();
-          renderProducts();
-        }
-      
-        // Update AC temp
-        function updateACTemp(deviceId, newTemp) {
-          devices = devices.map(d => {
-            if (d.id === deviceId && d.type === "Air Conditioning") {
-              return { ...d, acTemp: parseInt(newTemp) };
-            }
-            return d;
-          });
-          saveDevices();
-          const tempLabel = document.getElementById(`tempLabel-${deviceId}`);
-          if (tempLabel) {
-            tempLabel.textContent = `${newTemp}°C`;
-          }
-        }
-      
-        // Listen for clicks in productsContainer
-        productsContainer.addEventListener("click", (e) => {
-          const target = e.target;
-          const deviceIdAttr = target.getAttribute("data-id");
-          if (!deviceIdAttr) return;
-          const deviceId = parseInt(deviceIdAttr);
-      
-          // Edit
-          if (target.classList.contains("edit-btn")) {
-            if (userType === "homeManager") {
-              openEditModal(deviceId);
-            }
-          }
-          // Delete
-          else if (target.classList.contains("delete-btn")) {
-            if (userType === "homeManager") {
-              if (confirm("Are you sure you want to delete this device?")) {
-                devices = devices.filter(d => d.id !== deviceId);
-                saveDevices();
-                renderProducts();
-              }
-            }
-          }
-        });
-      
-        // Listen for changes on the iOS-style switch and AC slider
-        productsContainer.addEventListener("change", (e) => {
-          // iOS switch
-          if (e.target.classList.contains("status-switch")) {
-            const deviceId = parseInt(e.target.getAttribute("data-id"));
-            toggleStatus(deviceId);
-          }
-          // AC slider
-          else if (e.target.classList.contains("ac-slider")) {
-            const deviceId = parseInt(e.target.getAttribute("data-id"));
-            updateACTemp(deviceId, e.target.value);
-          }
-        });
-      
-        // Category navigation
-        function initCategoryNav() {
-          categoryNav.innerHTML = "";
-          categories.forEach(cat => {
-            const btn = document.createElement("button");
-            btn.className = "category-button";
-            btn.textContent = cat;
-            if (cat.toLowerCase() === currentFilter.toLowerCase()) {
-              btn.classList.add("active");
-            }
-            btn.addEventListener("click", () => {
-              currentFilter = cat;
-              initCategoryNav();
-              renderProducts();
-            });
-            categoryNav.appendChild(btn);
-          });
-        }
-      
-        // (Optional) If you have an edit modal, define openEditModal & closeEditModal
-        // For simplicity, let's just do a prompt-based edit, or skip if you want a modal
-        function openEditModal(deviceId) {
-          const device = devices.find(d => d.id === deviceId);
-          if (!device) return;
-          const newName = prompt("New device name:", device.name) || device.name;
-          const newRoom = prompt("New device room:", device.room) || device.room;
-          const newInfo = prompt("New device info:", device.info) || device.info;
-          devices = devices.map(d => {
-            if (d.id === deviceId) {
-              return { ...d, name: newName, room: newRoom, info: newInfo };
-            }
-            return d;
-          });
-          saveDevices();
-          renderProducts();
-        }
-      
-        // Initialize
-        initCategoryNav();
-        renderProducts();
+  
+        card.innerHTML = cardHTML;
+        productsContainer.appendChild(card);
       });
       
+      // If admin, add the plus button
+      renderPlusButton();
+    }
   
-  function filterProducts(category) {
-    let products = JSON.parse(localStorage.getItem('devices')) || [];
-    if (category !== 'All') {
-      products = products.filter(p => p.category === category);
+    // Plus button for admin
+    function renderPlusButton() {
+      if (userType === "homeManager") {
+        const plusBtn = document.createElement("button");
+        plusBtn.className = "add-card";
+        plusBtn.textContent = "+";
+        plusBtn.addEventListener("click", () => {
+          window.location.href = "Device-handling.html";
+        });
+        productsContainer.appendChild(plusBtn);
+      }
     }
-    displayProducts(products);
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    // Retrieve user details from localStorage
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    //If user logs in 
-    if (user) {
-        
-        if (user.userType === "homeUser") {
-            // Set the name in the profile section
-            document.getElementById("profile-name").textContent = `Welcome back, Home User ${user.firstname}!`;
-            document.getElementById("dashboardintro-text").textContent = "To your home page. Enjoy the features we bring to you!";
-        } else {
-            document.getElementById("profile-name").textContent = `Welcome back, Home Manager ${user.firstname}!`;
-            document.getElementById("dashboardintro-text").textContent = "To your home page. Please ensure proper integrity on handling user devices.";
+  
+    // Toggle device status with backend sync
+    async function toggleStatus(deviceId) {
+      const deviceToUpdate = devices.find(d => d.id === deviceId);
+      if (!deviceToUpdate) return;
+      
+      // Toggle the status
+      deviceToUpdate.status = !deviceToUpdate.status;
+      
+      // Update in localStorage
+      devices = devices.map(d => d.id === deviceId ? deviceToUpdate : d);
+      deviceAPI.saveDevices(devices);
+      
+      // Update in backend
+      try {
+          await deviceAPI.updateDevice(deviceId, { status: deviceToUpdate.status });
+          console.log(`Device ${deviceId} status updated to ${deviceToUpdate.status} in backend`);
+      } catch (error) {
+          console.error(`Failed to update device ${deviceId} status in backend:`, error);
+          // Revert local change if backend update fails
+          deviceToUpdate.status = !deviceToUpdate.status;
+          devices = devices.map(d => d.id === deviceId ? deviceToUpdate : d);
+          deviceAPI.saveDevices(devices);
+          
+          alert("Failed to update device status. Please try again.");
+      }
+      
+      renderProducts();
+    }
+  
+    // Update AC temp with backend sync
+    async function updateACTemp(deviceId, newTemp) {
+      const tempValue = parseInt(newTemp);
+      const deviceToUpdate = devices.find(d => d.id === deviceId);
+      
+      if (!deviceToUpdate || deviceToUpdate.type !== "Air Conditioning") return;
+      
+      // Update locally
+      deviceToUpdate.acTemp = tempValue;
+      devices = devices.map(d => d.id === deviceId ? deviceToUpdate : d);
+      deviceAPI.saveDevices(devices);
+      
+      // Update in backend
+      try {
+          await deviceAPI.updateDevice(deviceId, { acTemp: tempValue });
+          console.log(`Device ${deviceId} AC temp updated to ${tempValue} in backend`);
+      } catch (error) {
+          console.error(`Failed to update device ${deviceId} AC temp in backend:`, error);
+      }
+      
+      // Update UI
+      const tempLabel = document.getElementById(`tempLabel-${deviceId}`);
+      if (tempLabel) {
+        tempLabel.textContent = `${tempValue}°C`;
+      }
+    }
+  
+    // Listen for clicks in productsContainer
+    productsContainer.addEventListener("click", async (e) => {
+      const target = e.target;
+      if (!target.hasAttribute("data-id")) return;
+      
+      const deviceIdAttr = target.getAttribute("data-id");
+      const deviceId = parseInt(deviceIdAttr);
+  
+      // Edit button click
+      if (target.classList.contains("edit-btn")) {
+        if (userType === "homeManager") {
+          await openEditModal(deviceId);
         }
-    } else { // If user not logs in, but might be redundant
-        document.getElementById("profile-name").textContent = "Welcome, Guest!";
+      }
+      // Delete button click
+      else if (target.classList.contains("delete-btn")) {
+        if (userType === "homeManager") {
+          await deleteDevice(deviceId);
+        }
+      }
+    });
+  
+    // Listen for changes on the iOS-style switch and AC slider
+    productsContainer.addEventListener("change", async (e) => {
+      if (!e.target.hasAttribute("data-id")) return;
+      
+      const deviceId = parseInt(e.target.getAttribute("data-id"));
+      
+      // iOS switch change
+      if (e.target.classList.contains("status-switch")) {
+        await toggleStatus(deviceId);
+      }
+      // AC slider change
+      else if (e.target.classList.contains("ac-slider")) {
+        await updateACTemp(deviceId, e.target.value);
+      }
+    });
+  
+    // Edit device with backend sync
+    async function openEditModal(deviceId) {
+      const device = devices.find(d => d.id === deviceId);
+      if (!device) return;
+      
+      const newName = prompt("New device name:", device.name) || device.name;
+      const newRoom = prompt("New device room:", device.room) || device.room;
+      const newInfo = prompt("New device info:", device.info) || device.info;
+      
+      // Create updated device object
+      const updatedFields = {
+        name: newName,
+        room: newRoom,
+        info: newInfo
+      };
+      
+      // Update locally
+      const updatedDevice = { ...device, ...updatedFields };
+      devices = devices.map(d => d.id === deviceId ? updatedDevice : d);
+      deviceAPI.saveDevices(devices);
+      
+      // Update in backend
+      try {
+          await deviceAPI.updateDevice(deviceId, updatedFields);
+          console.log(`Device ${deviceId} updated in backend`);
+          renderProducts();
+      } catch (error) {
+          console.error(`Failed to update device ${deviceId} in backend:`, error);
+          alert("Failed to update device. Please try again.");
+      }
     }
+    
+    // Delete device with backend sync
+    async function deleteDevice(deviceId) {
+      if (!confirm("Are you sure you want to delete this device?")) return;
+      
+      try {
+          // Delete from backend first
+          await deviceAPI.deleteDeviceBackend(deviceId);
+          console.log(`Device ${deviceId} deleted from backend`);
+          
+          // If backend deletion successful, update local storage
+          devices = devices.filter(d => d.id !== deviceId);
+          deviceAPI.saveDevices(devices);
+          renderProducts();
+      } catch (error) {
+          console.error(`Failed to delete device ${deviceId} from backend:`, error);
+          alert("Failed to delete device. Please try again.");
+      }
+    }
+  
+    // Initialize
+    renderCategoryNav();
+    renderProducts();
+});
+  
+document.addEventListener("DOMContentLoaded", function () {
+  // Retrieve user details from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  //If user logs in 
+  if (user) {
+      
+      if (user.userType === "homeUser") {
+          // Set the name in the profile section
+          document.getElementById("profile-name").textContent = `Welcome back, Home User ${user.firstname}!`;
+          document.getElementById("dashboardintro-text").textContent = "To your home page. Enjoy the features we bring to you!";
+      } else {
+          document.getElementById("profile-name").textContent = `Welcome back, Home Manager ${user.firstname}!`;
+          document.getElementById("dashboardintro-text").textContent = "To your home page. Please ensure proper integrity on handling user devices.";
+      }
+  } else { // If user not logs in, but might be redundant
+      document.getElementById("profile-name").textContent = "Welcome, Guest!";
+  }
 });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    let automationList = document.getElementById("automation-list");
-    let automationText = document.getElementById("automation-text");
-    let automationTable = document.getElementById("automation-table");
-    let addDeviceAutomationBtn = document.getElementById("add-device-automation");
-    let actionColumnHeader = document.querySelector("#automation-table thead tr th:last-child");
+// Check automations for dashboard
+function checkAutomationsOnDashboard() {
+  let automationList = document.getElementById("automation-list");
+  let automationText = document.getElementById("automation-text");
+  let automationTable = document.getElementById("automation-table");
+  let addDeviceAutomationBtn = document.getElementById("add-device-automation");
+  let actionColumnHeader = document.querySelector("#automation-table thead tr th:last-child");
 
-    let user = JSON.parse(localStorage.getItem("user")) || null;
-    let userRole = user ? user.userType : "user"; // Default to normal user if no role
+  let user = JSON.parse(localStorage.getItem("user")) || null;
+  let userRole = user ? user.userType : "user"; // Default to normal user if no role
 
-    function loadAutomations() {
-        let automations = JSON.parse(localStorage.getItem("automations")) || [];
-        // let filteredAutomations = automations.filter(auto => auto.homeId === homeId);
-        let filteredAutomations = automations; // Use all automations for now
-
-        automationList.innerHTML = "";
-
-        if (filteredAutomations.length === 0) {
-            automationTable.style.display = "none";
-            addDeviceAutomationBtn.style.display = "none";
-            
-            if (userRole === "homeManager") {
-                automationText.innerHTML = `
-                    <p class="no-automation">
-                        No automation setup. <a href="Automation.html">Go to Device Automation</a>
-                    </p>`;
-            } else {
-                automationText.innerHTML = `
-                    <p class="no-automation">
-                        No automation has been set up by the Home Manager! Contact them to configure automations.
-                    </p>`;
-                addDeviceAutomationBtn.style.display = "none";
-            }
-            return;
-        }
-
-        automationText.innerHTML = "";
-        automationTable.style.display = "table";
-        addDeviceAutomationBtn.style.display = "block"; 
-        
-        if (userRole === "homeUser") {
-            addDeviceAutomationBtn.style.display = "none"; // Hide add button for users
-            actionColumnHeader.classList.add("hide-action-column"); // Hide action column header
-        } else {
-            addDeviceAutomationBtn.style.display = "block"; // Show for admins
-        }
-
-        filteredAutomations.forEach((automation, index) => {
-            let row = document.createElement("tr");
-
-            // Format the device information to include name and type
-            let deviceInfo = automation.deviceName;
-            if (automation.deviceType) {
-                deviceInfo += ` (${automation.deviceType})`;
-            }
-
-            row.innerHTML = `
-                <td>${deviceInfo}</td>
-                <td>${automation.status}</td>
-                <td>${formatTime(automation.start)}</td>
-                <td>${formatTime(automation.end)}</td>
-                <td><em> Admin</em></td>
-                ${
-                    userRole === "homeManager"
-                        ? `<td><button class="delete-automation" data-index="${index}">Delete</button></td>`
-                        : ""
-                }
-            `;
-
-            automationList.appendChild(row);
-        });
-
-        document.querySelectorAll(".delete-automation").forEach(button => {
-            button.addEventListener("click", function () {
-                let index = this.getAttribute("data-index");
-                deleteAutomation(index);
-            });
-        });
-    }
-
-    // Format time function for 12-hour format display
-    function formatTime(time24) {
-        if (!time24) return "N/A";
-        
-        const [hours, minutes] = time24.split(':');
-        const period = hours >= 12 ? 'PM' : 'AM';
-        const hours12 = hours % 12 || 12;
-        return `${hours12}:${minutes} ${period}`;
-    }
-
-    // Updated the delete automation, this is very brute force but i essentially re-apply the "rule" when the automation is deleted
-    // meaning automation is no longer active.
-    function deleteAutomation(index) {
+  function loadAutomations() {
       let automations = JSON.parse(localStorage.getItem("automations")) || [];
+      
+      // Check if automation elements exist on the page
+      if (!automationList || !automationTable) {
+          console.warn("Automation elements not found on this page");
+          return;
+      }
+
+      automationList.innerHTML = "";
+
+      if (automations.length === 0) {
+          automationTable.style.display = "none";
+          if (addDeviceAutomationBtn) addDeviceAutomationBtn.style.display = "none";
+          
+          if (automationText) {
+              if (userRole === "homeManager") {
+                  automationText.innerHTML = `
+                      <p class="no-automation">
+                          No automation setup. <a href="Automation.html">Go to Device Automation</a>
+                      </p>`;
+              } else {
+                  automationText.innerHTML = `
+                      <p class="no-automation">
+                          No automation has been set up by the Home Manager! Contact them to configure automations.
+                      </p>`;
+              }
+          }
+          return;
+      }
+
+      // Automations exist, show the table
+      if (automationText) automationText.innerHTML = "";
+      automationTable.style.display = "table";
+      
+      if (addDeviceAutomationBtn) {
+          if (userRole === "homeUser") {
+              addDeviceAutomationBtn.style.display = "none"; // Hide add button for users
+              if (actionColumnHeader) actionColumnHeader.classList.add("hide-action-column"); // Hide action column header
+          } else {
+              addDeviceAutomationBtn.style.display = "block"; // Show for admins
+          }
+      }
+
+      // Populate the automation list
+      automations.forEach((automation, index) => {
+          let row = document.createElement("tr");
+
+          // Format the device information to include name and type
+          let deviceInfo = automation.deviceName || "Unknown Device";
+          if (automation.deviceType) {
+              deviceInfo += ` (${automation.deviceType})`;
+          }
+
+          row.innerHTML = `
+              <td>${deviceInfo}</td>
+              <td>${automation.status || "N/A"}</td>
+              <td>${formatTime(automation.start)}</td>
+              <td>${formatTime(automation.end)}</td>
+              <td><em>Home Manager</em></td>
+              ${
+                  userRole === "homeManager"
+                      ? `<td><button class="delete-automation" data-index="${index}">Delete</button></td>`
+                      : ""
+              }
+          `;
+
+          automationList.appendChild(row);
+      });
+
+      // Add event listeners to delete buttons
+      document.querySelectorAll(".delete-automation").forEach(button => {
+          button.addEventListener("click", function () {
+              let index = parseInt(this.getAttribute("data-index"));
+              deleteAutomation(index);
+          });
+      });
+  }
+
+  // Format time function for 12-hour format display
+  function formatTime(time24) {
+      if (!time24) return "N/A";
+      
+      const [hours, minutes] = time24.split(':');
+      const period = hours >= 12 ? 'PM' : 'AM';
+      const hours12 = hours % 12 || 12;
+      return `${hours12}:${minutes} ${period}`;
+  }
+
+  // Function to delete an automation
+  function deleteAutomation(index) {
+      let automations = JSON.parse(localStorage.getItem("automations")) || [];
+      if (index < 0 || index >= automations.length) return;
+      
       const automationToDelete = automations[index];
       
-      // Check if the automation is currently active
-      if (automationToDelete && automationToDelete.active) {
-          const now = new Date();
-          const currentHour = now.getHours();
-          const currentMinute = now.getMinutes();
-          
+      // Check if automation is currently active to reset device state
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      
+      if (automationToDelete && automationToDelete.start && automationToDelete.end) {
           // Parse start and end times
           const [startHour, startMinute] = automationToDelete.start.split(':').map(num => parseInt(num));
           const [endHour, endMinute] = automationToDelete.end.split(':').map(num => parseInt(num));
@@ -710,72 +807,96 @@ document.addEventListener("DOMContentLoaded", function () {
           // Calculate time in minutes for easier comparison
           const currentTimeInMinutes = currentHour * 60 + currentMinute;
           const startTimeInMinutes = startHour * 60 + startMinute;
-          const endTimeInMinutes = endHour * 60 + endMinute;
+          const endTimeInMinutes = endHour * 60 + endMinute; // Fixed the variable name
           
           // Check if current time is within the automation period
           if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes < endTimeInMinutes) {
               // This automation is currently active, so reset the device status
-              const devices = JSON.parse(localStorage.getItem("devices")) || [];
+              const devices = deviceAPI.getDevices();
               const deviceToUpdate = devices.find(d => d.id === automationToDelete.deviceId);
               
               if (deviceToUpdate) {
                   // Reset the device to the opposite status of what the automation set
                   deviceToUpdate.status = automationToDelete.status === 'OFF';
                   
-                  // Save the updated devices
-                  localStorage.setItem("devices", JSON.stringify(devices));
-                  console.log(`Device ${deviceToUpdate.name} status reset after automation deletion`);
+                  // Save the updated devices using the deviceAPI
+                  deviceAPI.saveDevices(devices);
                   
-                  // If we're on the dashboard, refresh the UI
-                  if (typeof renderProducts === "function") {
-                      renderProducts();
-                  }
+                  // Update device in backend
+                  deviceAPI.updateDevice(deviceToUpdate.id, { status: deviceToUpdate.status })
+                      .then(() => {
+                          console.log(`Device ${deviceToUpdate.name} status reset after automation deletion and synced with backend`);
+                          
+                          // If we're on the dashboard, refresh the UI
+                          if (typeof renderProducts === "function") {
+                              renderProducts();
+                          }
+                      })
+                      .catch(error => {
+                          console.error(`Failed to sync device status with backend:`, error);
+                          alert("Device status updated locally but failed to sync with backend.");
+                      });
               }
           }
       }
       
       // Add a fade-out animation
       const row = automationList.children[index];
-      row.classList.add("fade-out");
-      
-      // Remove after animation completes
-      setTimeout(() => {
+      if (row) {
+          row.classList.add("fade-out");
+          
+          // Remove after animation completes
+          setTimeout(() => {
+              automations.splice(index, 1);
+              localStorage.setItem("automations", JSON.stringify(automations));
+              
+              // Add call to sync automations with backend if there's an API for it
+              // This would look like: automationAPI.syncAutomationsToBackend(automations);
+              
+              loadAutomations();
+          }, 500); // Match with CSS animation duration
+      } else {
+          // If row not found, just remove the automation immediately
           automations.splice(index, 1);
           localStorage.setItem("automations", JSON.stringify(automations));
           loadAutomations();
-      }, 500); // Match with CSS animation duration
+      }
   }
-    loadAutomations();
-    
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const pageUrl = encodeURIComponent(window.location.href);
-        const pageTitle = encodeURIComponent("Check out my smart home automation!");
-    
-        // Share to Twitter
-        document.getElementById("share-twitter").addEventListener("click", function (e) {
-            e.preventDefault();
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}`;
-            window.open(twitterUrl, "_blank");
-        });
-    
-        // Share to Facebook
-        document.getElementById("share-facebook").addEventListener("click", function (e) {
-            e.preventDefault();
-            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
-            window.open(facebookUrl, "_blank");
-        });
-    
-        // Share to Instagram (Instagram does not allow direct URL sharing)
-        document.getElementById("share-instagram").addEventListener("click", function (e) {
-            e.preventDefault();
-            alert("Instagram does not support direct URL sharing. Share manually on your story!");
-        });
+  // Initialize automations
+  loadAutomations();
+}
 
-        
-    });
-    
+
+window.addEventListener("deviceStatusChanged", function(event) {
+  console.log("Device status changed by automation");
+  if (typeof renderProducts === "function") {
+      renderProducts();
+  }
 });
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const pageUrl = encodeURIComponent(window.location.href);
+    const pageTitle = encodeURIComponent("Check out my smart home automation!");
 
+    // Share to Twitter
+    document.getElementById("share-twitter").addEventListener("click", function (e) {
+        e.preventDefault();
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageUrl}`;
+        window.open(twitterUrl, "_blank");
+    });
+
+    // Share to Facebook
+    document.getElementById("share-facebook").addEventListener("click", function (e) {
+        e.preventDefault();
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+        window.open(facebookUrl, "_blank");
+    });
+
+    // Share to Instagram (Instagram does not allow direct URL sharing)
+    document.getElementById("share-instagram").addEventListener("click", function (e) {
+        e.preventDefault();
+        alert("Instagram does not support direct URL sharing. Share manually on your story!");
+    });
+});
