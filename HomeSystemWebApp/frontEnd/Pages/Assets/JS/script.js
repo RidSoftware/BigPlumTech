@@ -1,14 +1,29 @@
-import * as energyAPI from './energyAPI.js'; // Import the energy API
-import * as deviceAPI from './deviceAPI.js'; // Ensure device API is imported
+import * as energyAPI from './energyAPI.js';
+import * as deviceAPI from './deviceAPI.js';
 
 let user = JSON.parse(localStorage.getItem("user"));
 let userID = user ? user.userID : null;
-let devices = JSON.parse(localStorage.getItem("devices")); 
-let selectedDeviceID = devices.id;// Track the selected device
+let devices = JSON.parse(localStorage.getItem("devices")) || [];
+let selectedDeviceID = "all"; // Default to showing all devices
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async function() {
+    // Fetch all devices for the user if not already in localStorage
+    if (!devices.length && userID) {
+        try {
+            const response = await deviceAPI.pullDevices(userID);
+            if (response.success) {
+                devices = response.sentDevices;
+                localStorage.setItem("devices", JSON.stringify(devices));
+            }
+        } catch (error) {
+            console.error("Failed to fetch devices:", error);
+        }
+    }
+
+    // Create and populate the device selector dropdown
+    createDeviceSelector();
     
-    // Initialize chart with default device or no device
+    // Initialize chart with all devices by default
     await initializeChart(selectedDeviceID);
     
     // Update other UI elements
@@ -17,23 +32,74 @@ document.addEventListener("DOMContentLoaded", async function () {
     checkAutomationsOnDashboard();
 });
 
-async function initializeChart(deviceID) {
+function createDeviceSelector() {
+    // Create dropdown container
+    const selectorContainer = document.createElement("div");
+    selectorContainer.className = "device-selector-container";
+    selectorContainer.style.margin = "20px 0";
+    selectorContainer.style.textAlign = "center";
+    
+    // Create label
+    const label = document.createElement("label");
+    label.textContent = "Select Device: ";
+    label.setAttribute("for", "deviceSelector");
+    
+    // Create select element
+    const select = document.createElement("select");
+    select.id = "deviceSelector";
+    select.className = "device-selector";
+    select.style.padding = "8px";
+    select.style.borderRadius = "4px";
+    select.style.marginLeft = "10px";
+    
+    // Add "All Devices" option
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "All Devices";
+    select.appendChild(allOption);
+    
+    // Add individual device options
+    if (Array.isArray(devices)) {
+        devices.forEach(device => {
+            const option = document.createElement("option");
+            option.value = device.id;
+            option.textContent = device.name;
+            select.appendChild(option);
+        });
+    }
+    
+    // Event listener for device selection
+    select.addEventListener("change", async function() {
+        selectedDeviceID = this.value;
+        await initializeChart(selectedDeviceID);
+    });
+    
+    // Append elements to container
+    selectorContainer.appendChild(label);
+    selectorContainer.appendChild(select);
+    
+    // Find the chart container and insert the selector before it
+    const chartContainer = document.getElementById("myChart").parentElement;
+    chartContainer.parentElement.insertBefore(selectorContainer, chartContainer);
+}
+
+async function initializeChart(deviceSelection) {
     const ctx = document.getElementById("myChart").getContext("2d");
 
     // Get real energy data from the API
     let energyData = {};
     
     try {
-        if (deviceID) {
-            // Fetch the last 24 hours of energy data for specific device
-            energyData = await energyAPI.syncEnergy24hrDevice(deviceID);
-            console.log("Device energy data fetched:", energyData);
-        } else if (userID) {
-            // If no device selected but user exists, get aggregate data
+        if (deviceSelection === "all" && userID) {
+            // If "All Devices" is selected, get aggregate data
             energyData = await energyAPI.syncEnergy24hrUser(userID);
             console.log("User energy data fetched:", energyData);
+        } else if (deviceSelection && deviceSelection !== "all") {
+            // Fetch data for specific device
+            energyData = await energyAPI.syncEnergy24hrDevice(deviceSelection);
+            console.log("Device energy data fetched:", energyData);
         } else {
-            console.warn("No user or device ID available, using empty energy data");
+            console.warn("No valid selection or user ID available, using empty energy data");
         }
     } catch (error) {
         console.error("Error fetching energy data:", error);
@@ -44,11 +110,18 @@ async function initializeChart(deviceID) {
     const labels = hours.map(hour => `${hour.toString().padStart(2, '0')}:00`);
     
     // Map the energy data to the correct format based on API response
-    // The API returns data in the format { "0": value, "1": value, ... }
     const dataValues = hours.map(hour => {
         const hourKey = hour.toString();
-        return energyData && hourKey in energyData ? energyData[hourKey] : 0;
+        return energyData && energyData[hourKey] !== undefined ? energyData[hourKey] : 0;
     });
+
+    // Get device name for chart title
+    let deviceName = "All Devices";
+    if (deviceSelection !== "all") {
+        const selectedDevice = Array.isArray(devices) ? 
+            devices.find(d => d.id.toString() === deviceSelection.toString()) : null;
+        deviceName = selectedDevice ? selectedDevice.name : `Device ${deviceSelection}`;
+    }
 
     // Check if chart already exists and destroy it
     if (window.energyChart) {
@@ -60,7 +133,7 @@ async function initializeChart(deviceID) {
         data: {
             labels: labels,
             datasets: [{
-                label: deviceID ? "Device Energy Consumption (kWh)" : "Total Energy Consumption (kWh)",
+                label: `${deviceName} Energy Consumption (kWh)`,
                 data: dataValues,
                 borderColor: "rgba(75, 192, 192, 1)",
                 backgroundColor: "rgba(75, 192, 192, 0.2)",
@@ -78,7 +151,7 @@ async function initializeChart(deviceID) {
                     title: { display: true, text: "Time (Hours)" },
                     ticks: {
                         autoSkip: true,
-                        maxTicksLimit: 20
+                        maxTicksLimit: 12
                     }
                 },
                 y: {
@@ -87,6 +160,21 @@ async function initializeChart(deviceID) {
                 }
             },
             plugins: {
+                title: {
+                    display: true,
+                    text: '24-Hour Energy Usage',
+                    font: {
+                        size: 16
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed.y;
+                            return `${value.toFixed(2)} kWh`;
+                        }
+                    }
+                },
                 zoom: {
                     pan: {
                         enabled: true,
@@ -117,7 +205,6 @@ async function initializeChart(deviceID) {
 
     return window.energyChart;
 }
-
 // Update Energy Panel Based on Selected Device or User Data
 async function updateEnergyPanel() {
     const panel = document.getElementById('energy-panel');
@@ -207,6 +294,20 @@ async function refreshEnergyData() {
     await initializeChart(selectedDeviceID);
     updateEnergyPanel();
 }
+
+// Helper function to ensure we have the API endpoints we need
+// These should be implemented in your energyAPI.js file
+const checkAPIFunctions = () => {
+    if (!energyAPI.syncEnergy24hrUser) {
+        console.error("Missing API function: syncEnergy24hrUser");
+    }
+    if (!energyAPI.syncEnergy24hrDevice) {
+        console.error("Missing API function: syncEnergy24hrDevice");
+    }
+    if (!deviceAPI.pullDevices) {
+        console.error("Missing API function: pullDevices");
+    }
+};
 
 // Add refresh button functionality if it exists
 document.addEventListener("DOMContentLoaded", function() {

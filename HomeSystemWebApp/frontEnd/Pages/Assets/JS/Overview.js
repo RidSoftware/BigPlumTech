@@ -50,40 +50,37 @@ import {
     localStorage.setItem("devices", JSON.stringify(devices));
   }
   
-  // Initialize Energy Usage Chart with real data
   function initializeEnergyUsageChart(weeklyData) {
     const ctxUsage = document.getElementById('energyUsageChart').getContext('2d');
     
     // Parse data from the API response
     const labels = Object.keys(weeklyData).sort();
-    const data = labels.map(date => weeklyData[date]);
     
-    // Format labels to show day of week, ensuring Sunday is first
+    // Make sure the data is numeric
+    const data = labels.map(date => {
+        const value = weeklyData[date];
+        // Convert to number if string, or use 0 if invalid
+        return typeof value === 'number' ? value : (parseFloat(value) || 0);
+    });
+    
+    // Format labels to show day of week
     const formattedLabels = labels.map(date => {
         const d = new Date(date);
         return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
     });
     
-    // Ensure week starts with Sunday
-    // Create an array to store the sorted data
-    const sortedData = [];
-    const sortedLabels = [];
+    // Create arrays for the sorted data
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const sortedData = Array(7).fill(0); // Initialize with zeros
+    const sortedLabels = [...daysOfWeek]; // Use all days
     
-    // Find Sunday in our data if it exists
-    const sundayIndex = formattedLabels.indexOf('Sun');
-    
-    if (sundayIndex !== -1) {
-        // Rearrange data to start from Sunday
-        for(let i = 0; i < formattedLabels.length; i++) {
-            const newIndex = (i + sundayIndex) % formattedLabels.length;
-            sortedLabels.push(formattedLabels[newIndex]);
-            sortedData.push(data[newIndex]);
+    // Place data in the correct day slots
+    formattedLabels.forEach((day, index) => {
+        const dayIndex = daysOfWeek.indexOf(day);
+        if (dayIndex !== -1) {
+            sortedData[dayIndex] = data[index];
         }
-    } else {
-        // If no Sunday in data, use the original order
-        sortedLabels.push(...formattedLabels);
-        sortedData.push(...data);
-    }
+    });
     
     // Create gradient fill
     const gradientFill = ctxUsage.createLinearGradient(0, 0, 0, 400);
@@ -172,8 +169,16 @@ import {
                     cornerRadius: 6,
                     callbacks: {
                         label: function(context) {
-                            const value = typeof context.raw === 'number' ? context.raw.toFixed(1) : 'N/A';
-                            return `Usage: ${value} kWh`;
+                            const value = context.raw;
+                            if (value !== undefined && value !== null && !isNaN(value)) {
+                                if (value === 0 && !formattedLabels.includes(context.label)) {
+                                    return 'Usage: N/A kWh';
+                                } else {
+                                    return `Usage: ${value.toFixed(1)} kWh`;
+                                }
+                            } else {
+                                return 'Usage: N/A kWh';
+                            }
                         }
                     }
                 }
@@ -190,7 +195,7 @@ import {
             }
         }
     });
-  }
+}
   
   // Initialize Energy Generation Chart with real data
   function initializeEnergyGenerationChart(weeklyData) {
@@ -338,34 +343,32 @@ async function loadDeviceStatus() {
     }
     
     try {
-      // First, fetch the user's 24-hour energy data
+      // First, fetch the user's 24-hour energy data which includes all devices
       const allDeviceData = await syncEnergy24hrUser(user.userID);
       
       // Process each device
       for (const device of devices) {
         try {
           let usage24hr = "N/A";
+          let deviceData = null;
           
-          if (device.id && allDeviceData[device.id]) {
-            // Calculate total usage from hourly data - properly handle the device data structure
-            const deviceData = allDeviceData[device.id];
-            // Ensure we're summing numbers from the hourly values (Object.values gives us the values for each hour)
-            const values = Object.values(deviceData);
-            const totalUsage = values.reduce((sum, val) => {
-              return sum + (typeof val === 'number' ? val : Number(val) || 0);
-            }, 0);
-            
-            usage24hr = totalUsage.toFixed(2);
+          // Check if we have data for this device in the user's 24hr data
+          if (allDeviceData && device.id && allDeviceData[device.id]) {
+                // Calculate total usage from hourly data
+                deviceData = allDeviceData[device.id];
+                // Make sure we're only summing numbers
+                const totalUsage = Object.values(deviceData).reduce((sum, val) => {
+                // Convert to number if not already and add to sum
+                return sum + (typeof val === 'number' ? val : Number(val) || 0);
+                }, 0);
+                usage24hr = totalUsage.toFixed(2);
           } else if (device.id) {
             // If not found in user data, try to fetch directly for this device
-            const deviceData = await syncEnergy24hrDevice(device.id);
+            deviceData = await syncEnergy24hrDevice(device.id);
             if (deviceData && Object.keys(deviceData).length > 0) {
-              // Sum the hourly values directly from device API response
-              const values = Object.values(deviceData);
-              const totalUsage = values.reduce((sum, val) => {
+              const totalUsage = Object.values(deviceData).reduce((sum, val) => {
                 return sum + (typeof val === 'number' ? val : Number(val) || 0);
               }, 0);
-              
               usage24hr = totalUsage.toFixed(2);
             } else {
               // Fallback with estimated data
