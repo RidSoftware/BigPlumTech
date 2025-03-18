@@ -53,34 +53,28 @@ import {
   function initializeEnergyUsageChart(weeklyData) {
     const ctxUsage = document.getElementById('energyUsageChart').getContext('2d');
     
-    // Parse data from the API response
-    const labels = Object.keys(weeklyData).sort();
-    
-    // Make sure the data is numeric
-    const data = labels.map(date => {
-        const value = weeklyData[date];
-        // Convert to number if string, or use 0 if invalid
-        return typeof value === 'number' ? value : (parseFloat(value) || 0);
-    });
-    
-    // Format labels to show day of week
-    const formattedLabels = labels.map(date => {
-        const d = new Date(date);
-        return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
-    });
-    
-    // Create arrays for the sorted data
+    // Define the days of week in order (starting with Sunday)
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const sortedData = Array(7).fill(0); // Initialize with zeros
-    const sortedLabels = [...daysOfWeek]; // Use all days
     
-    // Place data in the correct day slots
-    formattedLabels.forEach((day, index) => {
-        const dayIndex = daysOfWeek.indexOf(day);
-        if (dayIndex !== -1) {
-            sortedData[dayIndex] = data[index];
-        }
-    });
+    // Initialize arrays for each day of the week with zeros
+    const sortedData = Array(7).fill(0);
+    
+    // Process the data from the API
+    if (weeklyData && Object.keys(weeklyData).length > 0) {
+        // For each date in our data
+        Object.entries(weeklyData).forEach(([dateStr, value]) => {
+            // Parse the date string to get day of week
+            const date = new Date(dateStr);
+            const dayIndex = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            
+            // Convert the value to a number (in case it's a string)
+            const numValue = typeof value === 'number' ? value : parseFloat(value) || 0;
+            
+            // Add to the corresponding day's total
+            // If multiple dates fall on the same day of week, we'll use the most recent one
+            sortedData[dayIndex] = numValue;
+        });
+    }
     
     // Create gradient fill
     const gradientFill = ctxUsage.createLinearGradient(0, 0, 0, 400);
@@ -90,7 +84,7 @@ import {
     new Chart(ctxUsage, {
         type: 'line',
         data: {
-            labels: sortedLabels,
+            labels: daysOfWeek,
             datasets: [{
                 label: 'Energy Usage (kWh)',
                 data: sortedData,
@@ -171,11 +165,7 @@ import {
                         label: function(context) {
                             const value = context.raw;
                             if (value !== undefined && value !== null && !isNaN(value)) {
-                                if (value === 0 && !formattedLabels.includes(context.label)) {
-                                    return 'Usage: N/A kWh';
-                                } else {
-                                    return `Usage: ${value.toFixed(1)} kWh`;
-                                }
+                                return `Usage: ${value.toFixed(1)} kWh`;
                             } else {
                                 return 'Usage: N/A kWh';
                             }
