@@ -1,3 +1,6 @@
+// Import the deviceAPI functions
+import { getDevices, saveDevices, updateDevice } from './deviceAPI.js';
+
 document.addEventListener("DOMContentLoaded", function () {
     const automationForm = document.getElementById("automation-form");
     const overlay = document.getElementById("confirmationOverlay");
@@ -7,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Load and display available devices
     function loadDevices() {
-        const devices = JSON.parse(localStorage.getItem("devices")) || [];
+        // Use getDevices() from deviceAPI instead of directly accessing localStorage
+        const devices = getDevices();
         const deviceType = deviceTypeSelect.value;
         
         // Filter devices by selected type
@@ -28,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
             deviceOption.dataset.id = device.id;
             deviceOption.dataset.name = device.name;
             deviceOption.dataset.type = device.type;
+            deviceOption.dataset.room = device.room; // Add room data for display
             deviceOption.textContent = `${device.name} (${device.room})`;
             
             deviceOption.addEventListener("click", function() {
@@ -38,10 +43,37 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 // Add selected class to clicked option
                 this.classList.add("selected");
+                
+                // Update the selection display (for better UX feedback)
+                updateDeviceSelectionDisplay(this.dataset.name, this.dataset.room);
             });
             
             deviceListContainer.appendChild(deviceOption);
         });
+    }
+    
+    // Add a function to update the device selection display
+    function updateDeviceSelectionDisplay(deviceName, deviceRoom) {
+        const selectionDisplay = document.querySelector(".device-selection-display") || 
+            createDeviceSelectionDisplay();
+        
+        selectionDisplay.textContent = `Selected: ${deviceName} (${deviceRoom})`;
+        selectionDisplay.style.display = "block";
+    }
+    
+    function createDeviceSelectionDisplay() {
+        const selectionDisplay = document.createElement("div");
+        selectionDisplay.className = "device-selection-display";
+        selectionDisplay.style.marginTop = "10px";
+        selectionDisplay.style.padding = "8px";
+        selectionDisplay.style.backgroundColor = "#e3f2fd";
+        selectionDisplay.style.borderRadius = "4px";
+        selectionDisplay.style.fontWeight = "bold";
+        
+        // Insert after the device list container
+        deviceListContainer.parentNode.insertBefore(selectionDisplay, deviceListContainer.nextSibling);
+        
+        return selectionDisplay;
     }
     
     // Update device list when device type changes
@@ -60,9 +92,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const deviceId = parseInt(selectedDevice.dataset.id);
         const deviceName = selectedDevice.dataset.name;
         const deviceType = selectedDevice.dataset.type;
+        const deviceRoom = selectedDevice.dataset.room;
         const start = document.getElementById("start-time").value;
         const end = document.getElementById("end-time").value;
         const status = document.getElementById("status").value;
+        
+        // Validate time inputs
+        if (!start || !end) {
+            alert("Please select start and end times for the automation");
+            return;
+        }
         
         // Create automation object
         const automation = {
@@ -70,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
             deviceId,
             deviceName,
             deviceType,
+            deviceRoom,
             start,
             end,
             status,
@@ -82,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         automations.push(automation);
         localStorage.setItem("automations", JSON.stringify(automations));
 
+
         // Show Overlay and Confirmation Message
         overlay.style.display = "block";
         confirmationMessage.style.display = "flex";
@@ -89,12 +130,25 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add Confirmation Message Content
         confirmationMessage.innerHTML = `
             <h2>Automation Setup Completed!</h2>
-            <p>Your automation for <strong>${deviceName} (${deviceType})</strong> has been saved.</p>
+            <p>Your automation for <strong>${deviceName} (${deviceRoom})</strong> has been saved.</p>
             <p>It will turn <strong>${status}</strong> at <strong>${formatTime(start)}</strong> and turn <strong>${status === 'ON' ? 'OFF' : 'ON'}</strong> at <strong>${formatTime(end)}</strong> daily.</p>
             <button class="dashboard-btn" onclick="window.location.href='Dashboard.html'">
                 Go to Dashboard →
             </button>
         `;
+
+        if (devicesUpdated) {
+            saveDevices(devices);
+            
+            // Dispatch a custom event that the dashboard can listen for
+            const event = new CustomEvent("deviceStatusChanged", { detail: { updatedDevices: devices } });
+            window.dispatchEvent(event);
+            
+            // Optional: Refresh the UI if we're on the dashboard
+            if (window.location.href.includes("Dashboard.html") && typeof renderProducts === "function") {
+                renderProducts();
+            }
+        }
     }
     
     // Format time for display (convert 24h to 12h format)
@@ -114,11 +168,12 @@ document.addEventListener("DOMContentLoaded", function () {
         checkAutomations();
     }
     
-    function checkAutomations() {
+    async function checkAutomations() {
         const automations = JSON.parse(localStorage.getItem("automations")) || [];
         if (automations.length === 0) return;
         
-        const devices = JSON.parse(localStorage.getItem("devices")) || [];
+        // Get devices using the deviceAPI
+        const devices = getDevices();
         const now = new Date();
         
         // Format time for comparison - now we get hours and minutes as numbers
@@ -127,56 +182,63 @@ document.addEventListener("DOMContentLoaded", function () {
         
         let devicesUpdated = false;
         
-        automations.forEach(automation => {
-            if (!automation.active) return;
+        for (const automation of automations) {
+            if (!automation.active) continue;
             
             // Parse start and end times to hours and minutes
             const [startHour, startMinute] = automation.start.split(':').map(num => parseInt(num));
             const [endHour, endMinute] = automation.end.split(':').map(num => parseInt(num));
             
+            const deviceIndex = devices.findIndex(d => d.id === automation.deviceId);
+            if (deviceIndex === -1) continue; // Device not found
+            
+            // Get the device
+            const device = devices[deviceIndex];
+            
             // Check if current time matches start time
             if (currentHour === startHour && currentMinute === startMinute) {
-                const device = devices.find(d => d.id === automation.deviceId);
-                if (!device) return; // Device not found
+                // Set new status based on automation setting
+                const newStatus = automation.status === 'ON';
                 
-                // Update device status based on automation setting (ON or OFF)
-                device.status = automation.status === 'ON';
+                // Update local device first
+                devices[deviceIndex].status = newStatus;
                 devicesUpdated = true;
                 
-                console.log(`Automation triggered: ${device.name} (${device.type}) turned ${automation.status} at ${currentHour}:${currentMinute}`);
-                
-                // Optional: Show a notification to the user (but tbh idk how do i implement this)
-                if ("Notification" in window && Notification.permission === "granted") {
-                    new Notification("Smart Home Automation", {
-                        body: `${device.name} has been turned ${automation.status}`,
-                        icon: "/icon.png" //if want to
-                    });
+                // Then update via API (backend)
+                try {
+                    await updateDevice(device.id, { status: newStatus });
+                    console.log(`Automation triggered: ${device.name} (${device.type}) turned ${automation.status} at ${currentHour}:${currentMinute}`);
+                } catch (error) {
+                    console.error(`Error updating device ${device.id}:`, error);
                 }
+                
+                // Show notification
+                showNotification(device.name, automation.status);
             } 
             else if (currentHour === endHour && currentMinute === endMinute) {
-                const device = devices.find(d => d.id === automation.deviceId);
-                if (!device) return; // Device not found
+                // Set new status based on opposite of automation setting
+                const newStatus = automation.status === 'OFF';
                 
-                // Update device status to opposite of start status
-                device.status = automation.status === 'OFF';
+                // Update local device first
+                devices[deviceIndex].status = newStatus;
                 devicesUpdated = true;
                 
-                console.log(`Automation triggered: ${device.name} (${device.type}) turned ${automation.status === 'ON' ? 'OFF' : 'ON'} at ${currentHour}:${currentMinute}`);
-                
-                // Optional: Show a notification to the user - same here
-                if ("Notification" in window && Notification.permission === "granted") {
-                    new Notification("Smart Home Automation", {
-                        body: `${device.name} has been turned ${automation.status === 'ON' ? 'OFF' : 'ON'}`,
-                        icon: "/path/to/icon.png" // Optional
-                    });
+                // Then update via API (backend)
+                try {
+                    await updateDevice(device.id, { status: newStatus });
+                    console.log(`Automation triggered: ${device.name} (${device.type}) turned ${automation.status === 'ON' ? 'OFF' : 'ON'} at ${currentHour}:${currentMinute}`);
+                } catch (error) {
+                    console.error(`Error updating device ${device.id}:`, error);
                 }
+                
+                // Show notification
+                showNotification(device.name, automation.status === 'ON' ? 'OFF' : 'ON');
             }
-        });
+        }
         
-        // Save updated devices if any changes were made
+        // If any devices were updated, save changes locally
         if (devicesUpdated) {
-            localStorage.setItem("devices", JSON.stringify(devices));
-            console.log("Devices updated due to automation rules");
+            saveDevices(devices);
             
             // Optional: Refresh the UI if we're on the dashboard
             if (window.location.href.includes("Dashboard.html") && typeof renderProducts === "function") {
@@ -185,10 +247,56 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
+    // Function to show notifications
+    function showNotification(deviceName, status) {
+        if ("Notification" in window && Notification.permission === "granted") {
+            new Notification("Smart Home Automation", {
+                body: `${deviceName} has been turned ${status}`,
+                icon: "/icon.png" // Update path as needed
+            });
+        }
+    }
+    
+    // Apply styling to device options container
+    function styleDeviceContainer() {
+        deviceListContainer.style.maxHeight = "200px";
+        deviceListContainer.style.overflowY = "auto";
+        deviceListContainer.style.border = "1px solid #ccc";
+        deviceListContainer.style.borderRadius = "4px";
+        deviceListContainer.style.padding = "8px";
+        deviceListContainer.style.marginTop = "5px";
+    }
+    
+    // Style for device options
+    const styleSheet = document.createElement("style");
+    styleSheet.innerHTML = `
+        .device-option {
+            padding: 8px;
+            margin: 4px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .device-option:hover {
+            background-color: #e3f2fd;
+        }
+        .device-option.selected {
+            background-color: #2196f3;
+            color: white;
+        }
+        .no-devices {
+            padding: 10px;
+            color: #666;
+            font-style: italic;
+        }
+    `;
+    document.head.appendChild(styleSheet);
+    
     // Create a global function to check automations that can be called from other pages
     window.checkAutomationsGlobal = checkAutomations;
     
     // Initialize
+    styleDeviceContainer();
     loadDevices();
     setupAutomationChecker();
     automationForm.addEventListener("submit", saveAutomation);

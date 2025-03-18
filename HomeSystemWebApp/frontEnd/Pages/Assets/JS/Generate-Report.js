@@ -1,31 +1,30 @@
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("downloadPdf").addEventListener("click", function () {
-      // Ensure jsPDF is available
-      if (!window.jspdf) {
-          console.error("jsPDF is not loaded");
-          return;
-      }
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("downloadPdf").addEventListener("click", function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF("p", "mm", "a4"); // A4 size in portrait mode
+    // Use the html() method to capture the reportContent
+    doc.html(document.getElementById("reportContent"), {
+      callback: function (doc) {
+        // Instead of using doc.save() directly,
+        // generate a Blob and create a temporary link to force download
+        const pdfBlob = doc.output('blob');
+        const blobUrl = URL.createObjectURL(pdfBlob);
 
-      // Get the content of the report
-      const reportContent = document.getElementById("reportContent");
+        // Create a temporary anchor element with download attribute
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'report.pdf';
+        document.body.appendChild(a);
+        a.click();
 
-      // Use html2canvas to render the section
-      html2canvas(reportContent, {
-          scale: 2, // Improves quality
-          useCORS: true,
-          logging: false
-      }).then(canvas => {
-          const imgData = canvas.toDataURL("image/png");
-          const imgWidth = 190; // Fit to A4 width
-          const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-          doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-          doc.save("Report.pdf");
-      }).catch(error => {
-          console.error("Error capturing report content:", error);
-      });
+        // Clean up: remove the anchor and revoke the Blob URL
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      },
+      x: 10,
+      y: 10,
+      html2canvas: { scale: 0.5 } // Adjust scale if needed for clarity
+    });
   });
 });
