@@ -10,7 +10,8 @@
   <script defer src="../Assets/JS/navbar-footer-loader.js"></script>
   <!-- Include Chart.js for charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script defer src="../Assets/JS/Overview.js"></script>
+  <script defer src="../Assets/JS/Overview.js" type="module"></script>
+  <script defer src="../Assets/JS/energyAPI.js" type="module"></script>
 </head>
 <body>
   <div id="navbar"></div>
@@ -43,7 +44,7 @@
     <section id="energy-generation">
       <h2>Energy Generation Metrics</h2>
       <div class="chart-description">
-        <p>This chart displays your household's daily energy consumption over the past week. Monitor usage patterns to identify potential energy-saving opportunities and track your conservation efforts.</p>
+        <p>This chart displays your household's daily energy generation over the past week. Track your renewable energy production to optimize your power generation systems.</p>
       </div>
       <div class="generation-charts">
         <canvas id="energyGenerationChart" width="400" height="200"></canvas>
@@ -57,22 +58,33 @@
         <div class="alerts-section">
           <h3>⚠️ Alerts <span id="alertsCount">(0)</span></h3>
           <ul class="alerts-list" id="alertsList"></ul>
-          
+          <!-- Critical Alerts Button, now inside alerts section -->
+          <div class="button-container">
+            <a href="CriticalReports.html" style="display: none">
+              <button id="criticalReportsButton">Critical Alerts</button>
+            </a>
+          </div>
         </div>
         <div class="notifications-section">
           <h3>🔔 Notifications <span id="notificationCount">(0)</span></h3>
           <ul class="notifications-list" id="notificationsList"></ul>
+          <!-- Notifications Button, now inside notifications section -->
+          <div class="button-container">
+            <a href="Notifications.html" style="display: none">
+              <button id="notificationsButton">Notifications</button>
+            </a>
+          </div>
         </div>
       </div>
     </section>
+    </section>
+
     
     <!-- Home Details Snapshot -->
     <section id="home-details">
       <h2>Home Details Snapshot</h2>
-      <div class="home-details">
-        <p><strong>Number of Residents:</strong> 4</p>
-        <p><strong>Home Manager:</strong> John Doe</p>
-        <p><strong>Admin Code:</strong> 12345</p>
+      <div class="home-details" id="home-details-content">
+        <!-- This will be populated dynamically -->
       </div>  
     </section>
   

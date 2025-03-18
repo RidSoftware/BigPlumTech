@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/DBPool'); 
 
-
-
 ///////// pull devices
 router.post('/api/pullDevices', async (req, res) => {
     let connection;
@@ -13,7 +11,6 @@ router.post('/api/pullDevices', async (req, res) => {
         if (!userID) {
             return res.status(400).json({ success: false, message: 'no user received' });
         }
-
 
         connection = await pool.getConnection();
         console.log('pullDevices Database connection acquired');
@@ -37,12 +34,6 @@ router.post('/api/pullDevices', async (req, res) => {
             [homeID]
         );
 
-        //query to pull all device details
-        const query = `
-            SELECT *
-            FROM alldevices
-            WHERE homeID = ?;
-        `;
         const queryFancy = `
             SELECT 
             DeviceID AS id, 
@@ -65,7 +56,7 @@ router.post('/api/pullDevices', async (req, res) => {
         console.log("SQL deviceResults:", deviceResults);
 
         if (deviceResults.length === 0) {
-            return res.status(401).json({ success: false, message: 'No devuce data found' });
+            return res.status(401).json({ success: false, message: 'No device data found' });
         }
 
         const formattedDeviceResults = deviceResults.map(device => ({
@@ -78,7 +69,7 @@ router.post('/api/pullDevices', async (req, res) => {
         return res.status(200).json({ 
             success: true, 
             message: 'datapull success', 
-            sentDevices: formattedDeviceResults //i was double parsing farmatted results
+            sentDevices: formattedDeviceResults
         });
 
     } catch (error) {
@@ -99,10 +90,10 @@ router.put('/api/updateDevice', async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: 'device ID not recieved'
-            })
+            });
         }
 
-        //have to dynamically create query bsed on what is sent in the put
+        //have to dynamically create query based on what is sent in the put
         let updateFields = [];
         let values = [];
 
@@ -122,26 +113,24 @@ router.put('/api/updateDevice', async (req, res) => {
             updateFields.push("Status = ?");
             values.push(status ? 'On' : 'Off');
         }
-        //i fnothing given other than id then error
+        //if nothing given other than id then error
         if (updateFields.length === 0) {
             return res.status(400).json({ success: false, message: 'No fields provided for update' });
         }
         //if valid query then add id
         values.push(id);
 
-
         connection = await pool.getConnection();
         console.log(`Updating device ${id}`);
 
-        //im proud of this one goddamn
         const dynamicQuery = `
             UPDATE alldevices
             SET ${updateFields.join(", ")}
             WHERE DeviceID = ?
         `;
 
-        //dunno how to debug if this execute fails
-        await connection.execute(query, values);
+        // Fixed: using dynamicQuery instead of query
+        await connection.execute(dynamicQuery, values);
         connection.release();
 
         return res.status(200).json({ 
@@ -156,17 +145,15 @@ router.put('/api/updateDevice', async (req, res) => {
         if (connection) connection.release();
     }
 });
+
 ////////////////////// add device
-router.post('api/addDevice', async (req, res) => {
+router.post('/api/addDevice', async (req, res) => {  // Fixed: Added leading slash
     let connection;
     try {
         const {name, room, type, status, homeID} = req.body;
 
-        if (status) {
-            status = 'On'
-        } else {
-            status = 'Off'
-        }
+        // Fixed: Don't modify the const parameter
+        const statusValue = status ? 'On' : 'Off';
 
         if (!name || !room || !type || !homeID) {
             return res.status(400).json({ 
@@ -176,28 +163,42 @@ router.post('api/addDevice', async (req, res) => {
         }
 
         connection = await pool.getConnection();
-        console.log('inserting new deivce');
+        console.log('inserting new device');
 
         const query = `
             INSERT INTO alldevices(DeviceName, LocationRoom, DeviceType, Status, HomeID)
             VALUES (?, ?, ?, ?, ?);
         `;
-        await connection.execute(query, [name, room, type, status, homeID]);
+
+        const [result] = await connection.execute(query, [name, room, type, statusValue, homeID]);
+        const deviceId = result.insertId;
 
         connection.release();
 
+        // Return the created device with its ID for frontend use
         return res.status(201).json({
             success: true,
-            message: 'device added'
-        })
+            message: 'device added',
+            device: {
+                id: deviceId,
+                name,
+                room,
+                type,
+                status: status ? true : false,
+                info: 'blank',
+                homeID
+            }
+        });
     } catch (error) {
-        console.error('error in api/addDevice: ', error);
+        console.error('error in /api/addDevice: ', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
     } finally {
         if (connection) connection.release();
     }
 });
+
 ////////////// delete device
-router.post('api/deleteDevice', async (req, res) => {
+router.delete('/api/deleteDevice', async (req, res) => {  // Fixed: Changed from POST to DELETE
     let connection;
     try {
         const {id} = req.body;
@@ -210,7 +211,7 @@ router.post('api/deleteDevice', async (req, res) => {
         }
 
         connection = await pool.getConnection();
-        console.log(`deleting devide, id: ${id}`);
+        console.log(`deleting device, id: ${id}`);
 
         const query = `
             DELETE FROM alldevices 
@@ -223,14 +224,14 @@ router.post('api/deleteDevice', async (req, res) => {
         return res.status(200).json({
             success: true,
             message: 'successful delete'
-        })
+        });
 
     } catch (error) {
-        console.error('error in api/deleteDevice: ', error);
+        console.error('error in /api/deleteDevice: ', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
     } finally {
         if (connection) connection.release();
     }
-
 });
 
 module.exports = router;

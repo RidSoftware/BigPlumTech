@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automation Control</title>
   <link rel="stylesheet" href="../Assets/CSS/Automation.css">
-  <script src="../Assets/JS/automation.js" defer></script>
+  <script src="../Assets/JS/automation.js" defer type="module"></script>
+  <script src="../Assets/JS/deviceAPI.js" defer type="module"></script>
   <script src="../Assets/JS/navbar-footer-loader.js" defer></script>
 </head>
 <body>
@@ -23,9 +24,12 @@
         <label for="device">Device Type:</label>
         <select id="device">
           <option value="Light">Light</option>
-          <option value="Fan">Fan</option>
-          <option value="Air Conditioning">Air Conditioning</option>
+          <option value="Curtain">Curtain</option>
+          <option value="Main Door">Main Door</option>
           <option value="Robot">Robot</option>
+          <option value="Air Conditioning">Air Conditioning</option>
+          <option value="Washing Machine">Washing Machine</option>
+          <option value="Dryer">Dryer</option>
         </select>
         
         <!-- Device Selector -->
