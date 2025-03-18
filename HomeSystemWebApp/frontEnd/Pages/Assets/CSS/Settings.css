@@ -134,3 +134,53 @@ html, body {
   background: #007BFF;
   color: #fff;
 }
+
+@media (max-width: 768px) {
+
+  /* Adjust Settings Container for Small Screens */
+  .settings-container {
+      width: 90% !important;
+      max-width: 100% !important;
+      padding: 20px !important;
+      text-align: center !important;
+  }
+
+  /* Adjust Heading Size */
+  .settings-container h2 {
+      font-size: 1.6rem !important;
+  }
+
+  /* Ensure Form Fields Fit Properly */
+  .form-group {
+      text-align: left !important;
+  }
+
+  .form-group input {
+      font-size: 14px !important;
+      padding: 8px !important;
+      width: 100% !important;
+  }
+
+  /* Adjust Buttons */
+  .btn, .continue-btn {
+      width: 90% !important;
+      max-width: 280px !important;
+      font-size: 14px !important;
+      padding: 10px !important;
+      margin: 10px auto !important;
+  }
+
+  /* Ensure Confirmation Message is Fully Centered */
+  #confirmationMessage {
+      width: 90% !important;
+      max-width: 350px !important;
+      padding: 18px !important;
+  }
+
+  /* Footer - Add More Spacing */
+  #footer {
+      margin-top: 165px !important;
+      padding: 30px !important;
+      font-size: 14px !important;
+  }
+}

@@ -165,3 +165,55 @@ padding: 10px;
   bottom: 0;
   margin-top: auto; 
 }
+
+@media (max-width: 768px) {
+
+  /* Ensure the container has proper spacing */
+  .container {
+      width: 95% !important;
+      max-width: 100% !important;
+      padding: 15px !important;
+      text-align: center !important;
+  }
+
+  /* Adjust Heading Size */
+  h1, h2 {
+      font-size: 1.6rem !important;
+  }
+
+  /* Form Fields - Reduce Size */
+  input, select, button {
+      font-size: 14px !important;
+      padding: 8px !important;
+  }
+
+  /* Ensure Device Selector Looks Clean */
+  .device-selector {
+      padding: 10px !important;
+      margin-bottom: 10px !important;
+  }
+
+  .device-list-container {
+      max-height: 150px !important;
+      padding: 8px !important;
+  }
+
+  .device-option {
+      font-size: 14px !important;
+      padding: 6px !important;
+  }
+
+  /* Buttons - Reduce Width */
+  button, .dashboard-btn {
+      width: 90% !important;
+      max-width: 280px !important;
+      font-size: 14px !important;
+  }
+
+  /* Footer - Add Extra Spacing */
+  #footer {
+      margin-top: 50px !important;
+      padding: 25px !important;
+      font-size: 14px !important;
+  }
+}
