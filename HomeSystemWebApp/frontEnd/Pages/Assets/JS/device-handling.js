@@ -349,15 +349,15 @@ addProductForm.addEventListener('submit', async (e) => {
           const newDeviceData = {
               name: name,
               room: room,
-              info: info, // Include info in the initial data sent to backend
+              info: info,
               type: type,
               status: status,
-              homeID: parseInt(homeID) // Ensure homeID is an integer
+              homeID: parseInt(homeID)
           };
           
           console.log("Sending new device data:", newDeviceData);
           
-          // Insert to backend
+          // Insert to backend and get the returned device with ID
           const addedDevice = await insertDevice(newDeviceData);
           
           if (!addedDevice || !addedDevice.id) {
@@ -366,7 +366,10 @@ addProductForm.addEventListener('submit', async (e) => {
           
           console.log("Device added to database with ID:", addedDevice.id);
           
-          // Create a complete device object for local storage
+          // First, get the latest devices from localStorage
+          let currentDevices = getDevices();
+          
+          // Create a complete device object
           const completeDevice = {
               ...addedDevice,
               info: info // Ensure info is included
@@ -377,11 +380,14 @@ addProductForm.addEventListener('submit', async (e) => {
               completeDevice.acTemp = acTemp;
           }
           
-          // Update local devices array with the new device
-          devices.push(completeDevice);
+          // Add the new device to our devices array
+          currentDevices.push(completeDevice);
           
           // Save updated devices to local storage
-          saveDevices(devices);
+          saveDevices(currentDevices);
+          
+          // Update our local devices variable
+          devices = currentDevices;
           
           // Reset form
           addProductForm.reset();
@@ -419,7 +425,6 @@ addProductForm.addEventListener('submit', async (e) => {
       iv.innerHTML = `<div id="infoValid" style="color:red">Invalid Info</div>`;
   }
 });
-
   // ----- AC ADD SLIDER EVENTS -----
   deviceTypeEl.addEventListener('change', () => {
     if (deviceTypeEl.value === 'Air Conditioning') {
