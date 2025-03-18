@@ -21,13 +21,10 @@ body {
 /* Page Layout */
 .page-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 85%;
-    max-width: 1100px;
-    margin: auto;
-    flex-grow: 1;
-    padding: 15px 0;
+    justify-content: center; 
+    align-items: center;     
+    min-height: calc(100vh - 50px); 
+    width: 100vw;
 }
 
 /* Promo Section*/
@@ -70,13 +67,13 @@ body {
 
 /* Registration & Login Containers */
 .container-registration, .container-login {
-    flex: 1;
-    max-width: 45%;
     background: white;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 400px; 
+    width: 100%;
 }
 
 /* Form Adjustments */
@@ -318,6 +315,89 @@ body {
     .return-href {
         right: 20px; /* Move closer for small screens */
         bottom: 50px; /* Adjust for small screens */
+        font-size: 14px;
+    }
+}
+@media (max-width: 768px) {
+    
+    /* Ensuring sections don't touch the screen edges */
+    .page-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 95%;
+    }
+
+    /* Adjusting registration container */
+    .container-registration {
+        width: 90%;
+        max-width: 400px;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Ensure form inputs take up full width */
+    .container-registration input,
+    .container-registration select {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    /* Password input adjustments */
+    .password-container input {
+        width: 100%;
+    }
+
+    .password-container i {
+        right: 15px;
+    }
+
+    /* Adjusting promo text */
+    .promo-text {
+        width: 90%;
+        max-width: 400px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .promo-text h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .promo-text ul {
+        padding: 0;
+        margin-top: 10px;
+        text-align: left; /* Align bullet points left for better readability */
+    }
+
+    .promo-text ul li {
+        font-size: 14px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* Fixing the return button */
+    .return-href {
+        position: static;
+        display: block;
+        margin-top: 15px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    /* Buttons should not be too large on mobile */
+    .submit-button {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    /* Footer adjustments */
+    #footer {
+        padding: 20px 10px;
         font-size: 14px;
     }
 }

@@ -159,8 +159,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener("navbarLoaded", function () {
         const navLinks = document.getElementById("nav-links");
+        const mobileNavLinks = document.getElementById("mobile-nav-links");
         const registerBtn = document.getElementById("register-btn");
         const loginBtn = document.getElementById("login-btn");
+        const mobileRegisterBtn = document.getElementById("mobile-register-btn");
+        const mobileLoginBtn = document.getElementById("mobile-login-btn");
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        const mobileNavContainer = document.getElementById("mobile-nav-container");
+        const mobileCloseBtn = document.getElementById("mobile-close-btn");
     
         if (!navLinks) {
             console.error("ERROR: 'nav-links' element not found!");
@@ -181,9 +187,11 @@ document.addEventListener("DOMContentLoaded", function () {
             // Hide Register & Login Buttons
             if (registerBtn) registerBtn.style.display = "none";
             if (loginBtn) loginBtn.style.display = "none";
+            if (mobileRegisterBtn) mobileRegisterBtn.style.display = "none";
+            if (mobileLoginBtn) mobileLoginBtn.style.display = "none";
     
             // Update Navbar Links for Logged-in Users
-            navLinks.innerHTML = `
+            const navContent = `
                 <li><a href="Dashboard.html" class="${currentPage === 'Dashboard.html' ? 'active' : ''}"><i class="fa fa-th-large"></i> Dashboard</a></li>
                 <li><a href="Overview.html" class="${currentPage === 'Overview.html' ? 'active' : ''}"><i class="fa fa-bar-chart"></i> Overview</a></li>
                 <li><a href="Analytic.html" class="${currentPage === 'Analytic.html' ? 'active' : ''}"><i class="fa fa-line-chart"></i> Analytic</a></li>
@@ -193,45 +201,77 @@ document.addEventListener("DOMContentLoaded", function () {
                     : ''
                 }
             `;
+            
+            navLinks.innerHTML = navContent;
+            if (mobileNavLinks) mobileNavLinks.innerHTML = navContent;
         } else {
             console.log("No user logged in. Keeping default navbar.");
     
             // Show Register & Login Buttons
             if (registerBtn) registerBtn.style.display = "inline-block";
             if (loginBtn) loginBtn.style.display = "inline-block";
+            if (mobileRegisterBtn) mobileRegisterBtn.style.display = "inline-block";
+            if (mobileLoginBtn) mobileLoginBtn.style.display = "inline-block";
     
             // Default Navbar Links
-            navLinks.innerHTML = `
+            const navContent = `
                 <li><a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}"><i class="fa fa-home"></i> Home</a></li>
                 <li><a href="About.html" class="${currentPage === 'About.html' ? 'active' : ''}"><i class="fa fa-info-circle"></i> About</a></li>
                 <li><a href="Contact.html" class="${currentPage === 'Contact.html' ? 'active' : ''}"><i class="fa fa-phone"></i> Contact</a></li>
             `;
+            
+            navLinks.innerHTML = navContent;
+            if (mobileNavLinks) mobileNavLinks.innerHTML = navContent;
+        }
+        
+        // Hamburger menu functionality
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener("click", function() {
+                hamburgerMenu.classList.toggle("active");
+                mobileNavContainer.classList.toggle("active");
+            });
+        }
+        
+        // Mobile menu close button
+        if (mobileCloseBtn) {
+            mobileCloseBtn.addEventListener("click", function() {
+                hamburgerMenu.classList.remove("active");
+                mobileNavContainer.classList.remove("active");
+            });
         }
     
         initializeSidebar();
     });
 
-    // Function to handle logo redirection
-    document.addEventListener("navbarLoaded", function () {
-        // Select the logo anchor tag
-        const logo = document.getElementById("logo-id"); 
-        const user = JSON.parse(localStorage.getItem("user")) || {}; 
-
-        console.log("User Data:", user); // Debugging check
-
-        // Ensure the logo element exists
-        if (logo) {
+// Function to handle logo redirection
+document.addEventListener("navbarLoaded", function () {
+    // Select the logo elements
+    const mainLogo = document.querySelector(".logo");
+    const mobileLogo = document.querySelector(".mobile-logo");
+    
+    // Add click event listeners to redirect to homepage or dashboard based on login status
+    if (mainLogo) {
+        mainLogo.addEventListener("click", function() {
+            const user = JSON.parse(localStorage.getItem("user")) || [];
             if (user.isLoggedIn) {
-                console.log("User is logged in, setting href to Dashboard.html");
-                logo.href = "Dashboard.html";
+                window.location.href = "Dashboard.html";
             } else {
-                console.log("User is not logged in, setting href to index.html");
-                logo.href = "index.html";
+                window.location.href = "index.html";
             }
+        });
+    }
+    
+    if (mobileLogo) {
+        mobileLogo.addEventListener("click", function() {
+            const user = JSON.parse(localStorage.getItem("user")) || [];
+            if (user.isLoggedIn) {
+                window.location.href = "Dashboard.html";
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+    }
+});
 
-            console.log("Updated Logo Href:", logo.href); // Debugging check
-        } else {
-            console.error("Logo element not found!");
-        }
-    });
+// End of DOMContentLoaded event listener
 });

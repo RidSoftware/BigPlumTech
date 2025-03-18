@@ -300,3 +300,96 @@ input:checked + .slider:before {
     font-size: 1.4rem;
   }
 }
+
+@media (max-width: 768px) {
+
+  /* Ensure the main container has proper spacing */
+  .overview-container {
+      width: 95% !important;
+      padding: 15px !important;
+      text-align: center !important;
+  }
+
+  /* Adjust Section Spacing to Look More Like Cards */
+  .overview-container section {
+      padding: 20px !important;
+      margin-bottom: 25px !important;
+  }
+
+  /* Reduce Heading Size for Mobile */
+  .overview-container h2 {
+      font-size: 1.6rem !important;
+  }
+
+  /* Ensure Charts Resize Properly */
+  .summary-charts, .generation-charts {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      height: auto !important;
+      padding: 15px !important;
+      overflow-x: auto !important;
+  }
+
+  /* Make Chart Canvas Fit Inside Container */
+  #energyUsageChart, #energyGenerationChart {
+      width: 100% !important;
+      height: 320px !important;
+  }
+
+  /* Device Grid - Stack Items for Better Readability */
+  .device-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 15px !important;
+      align-items: center !important;
+  }
+
+  .device-card {
+      width: 90% !important;
+      padding: 18px !important;
+  }
+
+  /* Notifications & Alerts - Stack and Center */
+  .notification-container {
+      flex-direction: column !important;
+      align-items: center !important;
+  }
+
+  .alerts-section, .notifications-section {
+      width: 90% !important;
+      padding: 15px !important;
+  }
+
+  /* Quick Navigation Buttons - Adjust Size */
+  .nav-links {
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 10px !important;
+  }
+
+  .nav-links button {
+      width: 90% !important;
+      font-size: 14px !important;
+      padding: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further Reduce Title Sizes */
+  .overview-container h2 {
+      font-size: 1.4rem !important;
+  }
+
+  /* Make Charts Smaller */
+  #energyUsageChart, #energyGenerationChart {
+      height: 280px !important;
+  }
+
+  /* Adjust Card Padding */
+  .device-card {
+      padding: 15px !important;
+  }
+}
