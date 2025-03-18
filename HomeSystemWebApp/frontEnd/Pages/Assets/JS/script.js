@@ -5,6 +5,23 @@ document.addEventListener("DOMContentLoaded", function () {
     checkAutomationsOnDashboard();
 });
 
+const editModal = document.getElementById('editModal');
+  const closeEditModalBtn = document.getElementById('closeEditModal');
+  const editDeviceForm = document.getElementById('editDeviceForm');
+  const overlay = document.getElementById('confirmationOverlay');
+
+  // Edit form fields
+
+  const editNameEl = document.getElementById('editName');
+  const editRoomEl = document.getElementById('editRoom');
+  const editInfoEl = document.getElementById('editInfo');
+  const editTypeEl = document.getElementById('editType');
+  const acEditSliderGroup = document.getElementById('acEditSliderGroup');
+  const acEditTempEl = document.getElementById('acEditTemp');
+  const acEditTempValueEl = document.getElementById('acEditTempValue');
+
+  let editingDeviceId = null;
+
 // Implement the automation check function directly in script.js
 function checkAutomationsOnDashboard() {
   const automations = JSON.parse(localStorage.getItem("automations")) || [];
@@ -487,6 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (target.classList.contains("edit-btn")) {
             if (userType === "homeManager") {
               openEditModal(deviceId);
+              
             }
           }
           // Delete
@@ -534,9 +552,46 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       
+            // ----- EDIT FORM SUBMIT -----
+  editDeviceForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    devices = JSON.parse(localStorage.getItem("devices")) || [];
+    const updatedName = editNameEl.value;
+    const updatedRoom = editRoomEl.value;
+    const updatedInfo = editInfoEl.value;
+    const updatedType = editTypeEl.value;
+    const updatedTemp = acEditTempEl.value; // only relevant if AC
+
+    devices = devices.map(d => {
+      if (d.id === editingDeviceId) {
+        const updatedDevice = {
+          ...d,
+          name: updatedName,
+          room: updatedRoom,
+          info: updatedInfo,
+          type: updatedType
+        };
+        // If AC, store temp
+        if (updatedType === 'Air Conditioning') {
+          updatedDevice.acTemp = parseInt(updatedTemp);
+        } else {
+          delete updatedDevice.acTemp;
+        }
+        return updatedDevice;
+      }
+      return d;
+    });
+    
+    saveDevices();
+    renderProducts();
+    closeEditModal();
+  });
         // (Optional) If you have an edit modal, define openEditModal & closeEditModal
         // For simplicity, let's just do a prompt-based edit, or skip if you want a modal
-        function openEditModal(deviceId) {
+        function openEditModal(id) {
+          
+          /*
           const device = devices.find(d => d.id === deviceId);
           if (!device) return;
           const newName = prompt("New device name:", device.name) || device.name;
@@ -550,13 +605,53 @@ document.addEventListener("DOMContentLoaded", function () {
           });
           saveDevices();
           renderProducts();
+          */
+          editingDeviceId = id;
+          
+    const device = devices.find(d => d.id === id);
+    if (!device) return;
+
+    editNameEl.value = device.name;
+    editRoomEl.value = device.room;
+    editInfoEl.value = device.info || '';
+    editTypeEl.value = device.type;
+
+    // If AC, show slider group
+    if (device.type === 'Air Conditioning') {
+      acEditSliderGroup.classList.remove('hidden');
+      acEditTempEl.value = device.acTemp ?? 24;
+      acEditTempValueEl.textContent = `${acEditTempEl.value}°C`;
+    } else {
+      acEditSliderGroup.classList.add('hidden');
+    }
+
+    // Show modal & overlay
+    editModal.classList.remove('hidden');
+    editModal.style.display = 'flex';
+    overlay.style.display = 'block';
+    
         }
       
         // Initialize
         initCategoryNav();
         renderProducts();
+        
       });
+
+      function saveDevices() {
+        localStorage.setItem('devices', JSON.stringify(devices));
+      }
       
+
+      function closeEditModal() {
+        editModal.classList.add('hidden');
+        editModal.style.display = 'none';
+        overlay.style.display = 'none';
+        editingDeviceId = null;
+      }
+      closeEditModalBtn.addEventListener('click', closeEditModal);
+      
+  
   
   function filterProducts(category) {
     let products = JSON.parse(localStorage.getItem('devices')) || [];

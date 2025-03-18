@@ -71,6 +71,58 @@
       <div id="productsContainer"></div>
     </section>
 
+     <!-- Edit Device Modal -->
+  <div id="editModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" id="closeEditModal">&times;</span>
+      <h2>Edit Device</h2>
+      <form id="editDeviceForm">
+        <div class="form-group">
+          <label for="editName">Name:</label>
+          <input type="text" id="editName" required />
+        </div>
+
+        <div class="form-group">
+          <label for="editRoom">Room:</label>
+          <select id="editRoom" required>
+            <option value="Living Room">Living Room</option>
+            <option value="Kitchen">Kitchen</option>
+            <option value="Bedroom">Bedroom</option>
+            <option value="All">All</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="editInfo">Info (optional):</label>
+          <input type="text" id="editInfo" placeholder="Additional info..." />
+        </div>
+
+        <div class="form-group">
+          <label for="editType">Device Type:</label>
+          <select id="editType" required>
+            <option value="Light">Light</option>
+            <option value="Curtain">Curtain</option>
+            <option value="Main Door">Main Door</option>
+            <option value="Robot">Robot</option>
+            <option value="Air Conditioning">Air Conditioning</option>
+          </select>
+        </div>
+
+        <!-- AC Slider for Edit (only show if device type is AC) -->
+        <div class="form-group hidden" id="acEditSliderGroup">
+          <label for="acEditTemp">Temperature:</label>
+          <input type="range" id="acEditTemp" min="16" max="30" value="24" />
+          <span id="acEditTempValue">24°C</span>
+        </div>
+
+        <button type="submit" class="primary-button">Save Changes</button>
+         
+      </form>
+    </div>
+  </div>
+
+  <!-- Dark Overlay (for modal) -->
+  <div id="confirmationOverlay" class="confirmation-overlay"></div>
     <!-- (Other sections like Automation, Social Share, etc.) -->
     <section>
       <h2>Smart Automation Status</h2>
@@ -95,11 +147,11 @@
       <!-- Share to Social Media Section -->
       <section class="share-section">
         <h2>Share Your Smart Home Experience</h2>
-        <p>Tell your friends about your smart home automation!</p>
-        <div class="social-share">
-          <a id="share-twitter" href="#" class="share-btn twitter"><i class="fa fa-twitter"></i> Twitter</a>
-          <a id="share-facebook" href="#" class="share-btn facebook"><i class="fa fa-facebook"></i> Facebook</a>
-          <a id="share-instagram" href="#" class="share-btn instagram"><i class="fa fa-instagram"></i> Instagram</a>
+        <p>Tell your friends about your smart home automation!!!</p>
+        <div class="social-share"> <!--bluelogo.png-->
+          <a id="share-twitter" href="https://x.com/intent/tweet?text=I've%20just%20saved%20%C2%A35%20on%20my%20bills%20today%20with%20Big%20Plum%20Tech!!%20%0AMake%20your%20home%20a%20smart%20home%20and%20save%20TODAY%20at:%0A@bigplumtech%20" class="share-btn twitter"><i class="fa fa-twitter"></i> Twitter</a>
+          <a id="share-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbigplumtech.com&quote=I%27ve%20just%20saved%20%C2%A35%20on%20my%20bills%20today%20with%20BigPlumTech!!" class="share-btn facebook"><i class="fa fa-facebook"></i> Facebook</a>
+          <a id="share-instagram" href="https://www.instagram.com/" class="share-btn instagram"><i class="fa fa-instagram"></i> Instagram</a>
         </div>
       </section>
     </section>

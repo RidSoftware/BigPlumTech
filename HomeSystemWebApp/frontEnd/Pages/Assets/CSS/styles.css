@@ -5,6 +5,39 @@
     box-sizing: border-box;
 }
 
+.edit-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+.close-btn {
+    position: absolute;
+    top: 300px;
+    right: -240px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 600px;
+    width: 100%;
+    height: 78%;
+    display: none; /* hidden by default */
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+  }
+  .modal-content {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
 .content {
     flex: 1; 
 }
