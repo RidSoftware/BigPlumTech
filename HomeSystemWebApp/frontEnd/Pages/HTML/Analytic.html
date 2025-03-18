@@ -7,8 +7,9 @@
   <!-- Include Chart.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../Assets/JS/navbar-footer-loader.js"></script>
-  <script src="../Assets/JS/analytic.js" type="module"></script>
-  <script src="../Assets/JS/energyAPI.js" type="module"></script>
+  <!-- Change this to type="module" to support ES6 imports -->
+  <script  src="../Assets/JS/analytic.js" type="module"></script>
+  <script  src="../Assets/JS/energyAPI.js" type="module"></script>
 </head>
 <body>
   <div id="navbar"></div>
@@ -22,7 +23,7 @@
         <br>
         <h1>Smart Home Analytics & Insights</h1>
         <p>Deep-dive into weekly energy consumption, energy usage overview and device control.</p>
-        <p>Visualize key metrics to enhance home efficiency and reduce costs.</p>   
+        <p>Visualise key metrics to enhance home efficiency and reduce costs.</p>   
         <br>     
       </div>
     </div>
@@ -71,23 +72,29 @@
   </div>
 
   <br><br>
-  <h1>Analytic Graph</h1>
-  <p>This graph represents the weekly and monthly usage of the home. This graphs will compare the current week or month and last month or week's energy consumption. Use the switch button to switch graph statistic!</p>  
+  <h1></h1>
+  <p></p>  
 
-    <!-- Energy Consumption Chart Section -->
-    <section class="chart-section">
-      <div class="energy-stats-container">
-        <h1 id="chartTitle">Weekly Energy Consumption Statistics</h1>
-        <div id="chart-wrapper">
+<!-- Energy Consumption Chart Section -->
+<section class="chart-section">
+  <h2>Analytic Graph</h2>
+  
+  <!-- Description inside the container -->
+  <div class="chart-description">
+      <p>This graph represents the weekly and monthly usage of the home. This graph compares the current week or month and last month's or week's energy consumption. Use the switch button to switch graph statistics!</p>
+  </div>
+
+  <div class="energy-stats-container">
+      <h1 id="chartTitle">Weekly Energy Consumption Statistics</h1>
+      <div id="chart-wrapper">
           <canvas id="energyChart"></canvas>
-        </div>
-        <button id="toggleButton" class="toggle-btn">Switch to Monthly</button>     
-        <p>   
-        <p id="chartFooter">
-          This week’s energy use is 5% higher than last week – turn on power saving mode!
-        </p>
       </div>
-    </section>
+      <button id="toggleButton" class="toggle-btn">Switch to Monthly</button>     
+      <p id="chartFooter">
+          This week’s energy use is 5% higher than last week – turn on power saving mode!
+      </p>
+  </div>
+</section>
 
   </div> 
 

@@ -318,105 +318,107 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // ----- ADD PRODUCT FORM SUBMIT -----
-  addProductForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Reset validation error states
-    document.getElementById("nameValid").innerHTML = ``;
-    document.getElementById("infoValid").innerHTML = ``;
-    document.getElementById("deviceName").style.outline = "#555";
-    document.getElementById("deviceInfo").style.outline = "#555";
+addProductForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  // Reset validation error states
+  document.getElementById("nameValid").innerHTML = ``;
+  document.getElementById("infoValid").innerHTML = ``;
+  document.getElementById("deviceName").style.outline = "";
+  document.getElementById("deviceInfo").style.outline = "";
 
-    const name = deviceNameEl.value;
-    const room = deviceRoomEl.value;
-    const info = deviceInfoEl.value || "No additional info";
-    const type = deviceTypeEl.value;
-    const status = false; // Default to Off for new devices
-    const acTemp = parseInt(acAddTempEl.value); // only relevant if AC
+  const name = deviceNameEl.value.trim();
+  const room = deviceRoomEl.value;
+  const info = deviceInfoEl.value.trim() || "No additional info";
+  const type = deviceTypeEl.value;
+  const status = false; // Default to Off for new devices
+  const acTemp = parseInt(acAddTempEl.value); // only relevant if AC
 
-    const nv = document.getElementById("nameValid");
-    const iv = document.getElementById("infoValid");
+  const nv = document.getElementById("nameValid");
+  const iv = document.getElementById("infoValid");
 
-    // Validate input
-    if(valid(name) == 1 && valid(info) == 1) {
+  // Validate input
+  if(valid(name) == 1 && valid(info) == 1) {
       try {
-        // Make sure we have homeID
-        if (!homeID) {
-          throw new Error("No homeID found in user data. Cannot add device.");
-        }
-        
-        // Create new device object to send to API
-        const newDeviceData = {
-          name: name,
-          room: room,
-          type: type,
-          status: status,
-          homeID: homeID
-        };
-        
-        console.log("Sending new device data:", newDeviceData);
-        
-        // Insert to backend
-        const addedDevice = await insertDevice(newDeviceData);
-        
-        if (!addedDevice) {
-          throw new Error("Failed to add device - no response from server");
-        }
-        
-        console.log("Device added to database:", addedDevice);
-        
-        // Create a complete device object for local storage
-        // This combines the returned device data with any additional fields we want to track locally
-        const completeDevice = {
-          ...addedDevice,
-          info: info
-        };
-        
-        // Add temperature if it's an AC
-        if (type === 'Air Conditioning') {
-          completeDevice.acTemp = acTemp;
-        }
-        
-        // Update local devices array with the new device
-        devices.push(completeDevice);
-        
-        // Save updated devices to local storage
-        saveDevices(devices);
-        
-        // Reset form
-        addProductForm.reset();
-        
-        // Hide AC slider group
-        acAddSliderGroup.classList.add('hidden');
-        
-        // Refresh device display
-        renderDevices();
-        
-        console.log("Device added successfully");
+          // Make sure we have homeID
+          if (!homeID) {
+              throw new Error("No homeID found in user data. Cannot add device.");
+          }
+          
+          // Create new device object to send to API
+          const newDeviceData = {
+              name: name,
+              room: room,
+              info: info, // Include info in the initial data sent to backend
+              type: type,
+              status: status,
+              homeID: parseInt(homeID) // Ensure homeID is an integer
+          };
+          
+          console.log("Sending new device data:", newDeviceData);
+          
+          // Insert to backend
+          const addedDevice = await insertDevice(newDeviceData);
+          
+          if (!addedDevice || !addedDevice.id) {
+              throw new Error("Failed to add device - invalid response from server");
+          }
+          
+          console.log("Device added to database with ID:", addedDevice.id);
+          
+          // Create a complete device object for local storage
+          const completeDevice = {
+              ...addedDevice,
+              info: info // Ensure info is included
+          };
+          
+          // Add temperature if it's an AC
+          if (type === 'Air Conditioning') {
+              completeDevice.acTemp = acTemp;
+          }
+          
+          // Update local devices array with the new device
+          devices.push(completeDevice);
+          
+          // Save updated devices to local storage
+          saveDevices(devices);
+          
+          // Reset form
+          addProductForm.reset();
+          
+          // Hide AC slider group
+          acAddSliderGroup.classList.add('hidden');
+          
+          // Refresh device display
+          renderDevices();
+          
+          // Show success message
+          alert("Device added successfully!");
+          
       } catch (error) {
-        console.error("Error adding device:", error);
-        alert(`Failed to add device: ${error.message}`);
+          console.error("Error adding device:", error);
+          alert(`Failed to add device: ${error.message}`);
       }
-    } else if(valid(name) == 0 && valid(info) == 1) {
+  } else if(valid(name) == 0 && valid(info) == 1) {
       // Invalid name
       document.getElementById("deviceName").style.outline = "3px solid red";
       nv.style.color = "red";
-      nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
-    } else if(valid(info) == 0 && valid(name) == 1) {
+      nv.innerHTML = `<div id="nameValid" style="color:red">Invalid Name</div>`;
+  } else if(valid(info) == 0 && valid(name) == 1) {
       // Invalid info
       document.getElementById("deviceInfo").style.outline = "3px solid red";
       iv.style.color = "red";
-      iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
-    } else {
+      iv.innerHTML = `<div id="infoValid" style="color:red">Invalid Info</div>`;
+  } else {
       // Both invalid
       document.getElementById("deviceName").style.outline = "3px solid red";
       document.getElementById("deviceInfo").style.outline = "3px solid red";
       nv.style.color = "red";
-      nv.innerHTML = `<div = "nameValid" color = "red"> Invalid Name </div>`;
+      nv.innerHTML = `<div id="nameValid" style="color:red">Invalid Name</div>`;
       iv.style.color = "red";
-      iv.innerHTML = `<div = "infoValid" color = "red"> Invalid Info </div>`;
-    }
-  });
+      iv.innerHTML = `<div id="infoValid" style="color:red">Invalid Info</div>`;
+  }
+});
 
   // ----- AC ADD SLIDER EVENTS -----
   deviceTypeEl.addEventListener('change', () => {
