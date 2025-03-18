@@ -22,14 +22,17 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Create and populate the device selector dropdown
     createDeviceSelector();
-    
+
     // Initialize chart with all devices by default
     await initializeChart(selectedDeviceID);
-    
+
     // Update other UI elements
     updateEnergyPanel();
     makePanelDraggable();
     checkAutomationsOnDashboard();
+
+    // Check and apply current automations
+    checkAndApplyCurrentAutomations();
 });
 
 function createDeviceSelector() {
@@ -294,19 +297,75 @@ async function refreshEnergyData() {
     updateEnergyPanel();
 }
 
-// Helper function to ensure we have the API endpoints we need
-// These should be implemented in your energyAPI.js file
-const checkAPIFunctions = () => {
-    if (!energyAPI.syncEnergy24hrUser) {
-        console.error("Missing API function: syncEnergy24hrUser");
+// Add this function to your script.js file
+function checkAndApplyCurrentAutomations() {
+    const automations = JSON.parse(localStorage.getItem("automations")) || [];
+    if (automations.length === 0) return;
+    
+    // Get current time
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    
+    // Get all devices
+    let devices = deviceAPI.getDevices();
+    let devicesUpdated = false;
+    
+    // Check each automation
+    automations.forEach(automation => {
+      if (!automation.start || !automation.end || !automation.deviceId) return;
+      
+      // Parse automation times
+      const [startHour, startMinute] = automation.start.split(':').map(num => parseInt(num));
+      const [endHour, endMinute] = automation.end.split(':').map(num => parseInt(num));
+      
+      // Convert to minutes for easier comparison
+      const startTimeInMinutes = startHour * 60 + startMinute;
+      const endTimeInMinutes = endHour * 60 + endMinute;
+      
+      // Find the device
+      const deviceToUpdate = devices.find(d => d.id === automation.deviceId);
+      if (!deviceToUpdate) return;
+      
+      // Check if current time is within automation period
+      const isWithinTimeRange = currentTimeInMinutes >= startTimeInMinutes && 
+                               currentTimeInMinutes < endTimeInMinutes;
+      
+      if (isWithinTimeRange) {
+        // Set device status based on automation setting
+        const targetStatus = automation.status === 'ON';
+        
+        // Only update if status needs to change
+        if (deviceToUpdate.status !== targetStatus) {
+          console.log(`Applying automation for ${deviceToUpdate.name}: setting to ${automation.status}`);
+          deviceToUpdate.status = targetStatus;
+          devicesUpdated = true;
+        }
+      }
+    });
+    
+    // If any devices were updated, save changes and sync with backend
+    if (devicesUpdated) {
+      // Save to localStorage
+      deviceAPI.saveDevices(devices);
+      
+      // Update UI if we're on the dashboard
+      if (typeof renderProducts === "function") {
+        renderProducts();
+      }
+      
+      // Sync with backend (one by one to avoid race conditions)
+      const syncPromises = devices
+        .filter(d => devicesUpdated)
+        .map(device => deviceAPI.updateDevice(device.id, { status: device.status })
+          .catch(error => console.error(`Failed to sync device ${device.id} with backend:`, error)));
+      
+      Promise.all(syncPromises)
+        .then(() => console.log("All automated device changes synced with backend"))
+        .catch(error => console.error("Error syncing automated changes:", error));
     }
-    if (!energyAPI.syncEnergy24hrDevice) {
-        console.error("Missing API function: syncEnergy24hrDevice");
-    }
-    if (!deviceAPI.pullDevices) {
-        console.error("Missing API function: pullDevices");
-    }
-};
+  }
 
 // Add refresh button functionality if it exists
 document.addEventListener("DOMContentLoaded", function() {
