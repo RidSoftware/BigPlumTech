@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     contactForm.addEventListener("submit", async function (event) {
-        event.preventDefault(); // ✅ Prevents form from refreshing the page
+        event.preventDefault(); 
 
         const name = document.getElementById("name").value.trim();
         const email = document.getElementById("email").value.trim();
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await contact(formData); // Calls emailAPI.js function
             if (response) {
                 alert(response.message);
-                contactForm.reset();
+                // contactForm.reset();
             } else {
                 alert("Unexpected error. Please try again.");
             }
