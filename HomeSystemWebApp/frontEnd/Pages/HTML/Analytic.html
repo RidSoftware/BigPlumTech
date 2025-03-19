@@ -18,13 +18,12 @@
   <div class="dashboard-container">
 
     <!-- Header Section -->
-    <div class="header-left">
-      <div class="header-text">
-        <br>
+    <div class="header-card">
+      <div class="header-content">
         <h1>Smart Home Analytics & Insights</h1>
-        <p>Deep-dive into weekly energy consumption, energy usage overview and device control.</p>
-        <p>Visualise key metrics to enhance home efficiency and reduce costs.</p>   
-        <br>     
+        <div class="blue-underline"></div>
+        <p>Gain a deep-dive understanding of your weekly energy consumption with detailed overviews and precise device control.</p>
+        <p>Visualise key metrics to optimise home efficiency, reduce energy costs, and make smarter, data-driven decisions.</p>
       </div>
     </div>
 
@@ -67,13 +66,30 @@
       <p>AI-powered recommendations based on real-time energy pricing.</p>
       <div class="timeline">
           <div id="best-time" class="time-slot">Loading...</div>
-        </div>
-    </div>
+      </div>
   </div>
 
-  <br><br>
-  <h1></h1>
-  <p></p>  
+  <!-- Carbon Intensity Card -->
+  <div class="energy-card carbon-card">
+      <div class="energy-card-header">
+          <h2>🌍 Carbon Intensity</h2>
+      </div>
+      <div class="energy-card-usage">
+          <h3 id="carbonIntensity">Loading...</h3>
+          <p>Current carbon intensity level (gCO2/kWh).</p>
+      </div>
+      <hr>
+      <div class="energy-card-stats">
+          <div class="stat">
+              <span class="stat-icon">📉</span>
+              <div class="stat-info">
+                  <span id="carbonAdvice">Fetching...</span>
+                  <p>Advice</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
 
 <!-- Energy Consumption Chart Section -->
 <section class="chart-section">
@@ -81,7 +97,7 @@
   
   <!-- Description inside the container -->
   <div class="chart-description">
-      <p>This graph represents the weekly and monthly usage of the home. This graph compares the current week or month and last month's or week's energy consumption. Use the switch button to switch graph statistics!</p>
+      <p>This graph represents the weekly and monthly usage of the home. Comparing the current week or month and last month's or week's energy consumption. Use the switch button to switch graph statistics!</p>
   </div>
 
   <div class="energy-stats-container">

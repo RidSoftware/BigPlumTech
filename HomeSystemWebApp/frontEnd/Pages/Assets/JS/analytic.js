@@ -52,7 +52,7 @@ window.updateCurrentEnergyStats = function(energyData24hr) {
   console.log("Retrieved Energy Cost:", energyCost);
  
   // Calculate total daily usage
-  const totalUsage = Object.values(energyData24hr).reduce((sum, value) => sum + value, 0);
+  const totalUsage = Object.values(energyData24hr).reduce((sum, value) => sum + parseFloat(value), 0);
   console.log("Total Usage for 24hrs:", totalUsage);
  
   // **Ensure UI updates correctly**
