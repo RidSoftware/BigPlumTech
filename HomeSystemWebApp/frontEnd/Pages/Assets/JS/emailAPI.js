@@ -1,9 +1,10 @@
 export const contact = async (formData) => {
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData.name, formData.email, formData.message),
       });
       const result = await response.json();
         console.log("contact api result:", result);
