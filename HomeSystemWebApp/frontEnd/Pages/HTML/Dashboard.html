@@ -25,24 +25,33 @@
 
   <!-- Content Wrapper -->
   <div class="content-wrapper">
-    <!-- Main Header -->
-    <div class="header-left">
-      <div class="header-text">
-        <h1 id="profile-name"></h1>
-        <p id="dashboardintro-text"><!-- Dynamic text from script.js --></p>
-      </div>
+  <!-- Welcome Message Section -->
+  <div class="header-card">
+    <div class="header-content">
+        <h1 id="profile-name">Loading...</h1>
+        <div class="blue-underline"></div>
+        <p id="dashboardintro-text">Welcome to your home page, your central hub for accessing everything you need.</p>
+        <p id="dashboardintro-text">Please ensure the proper integrity and secure handling of all user devices to maintain a seamless and reliable experience.</p>
     </div>
+  </div>
 
     <!-- Energy Usage Graph Section (if needed) -->
-    <section>
+    <section class="chart-section">
       <h2>Current Daily Energy Usage Overview</h2>
-      <p>This is the energy usage overview by day. Use mouse scroll to expand and compress the graph.</p>
-      <p>If you want to see your weekly and monthly overview go to 
-        <a href="Overview.html" style="text-decoration: none;">Overview</a> page!</p>
-      <div class="chart-container">
-        <canvas id="myChart"></canvas>
+    
+      <!-- Description inside the container -->
+      <div class="chart-description">
+          <p>This is your daily energy usage overview. Scroll or pinch to expand or compress the graph for a detailed view.</p> 
+          <p>For weekly and monthly insights, visit the
+            <a href="Overview.html" style="text-decoration: none;">Overview</a> page!</p>
       </div>
-      <button id="resetZoom">Reset Zoom</button>
+    
+      <div class="energy-stats-container">
+          <div id="chart-wrapper">
+              <canvas id="myChart"></canvas>
+          </div>
+          <button id="resetZoom" class="toggle-btn">Reset Zoom</button>     
+      </div>
     </section>
 
     <!-- Energy Level Reminder Panel (optional) -->
@@ -64,18 +73,32 @@
     </div>
 
     <!-- Smart Products Section -->
-    <section>
+    <section class="products-container">
       <h2>Smart Products</h2>
+      
+      <!-- Description Box (optional but matches other sections) -->
+      <div class="products-description">
+        <p>Easily manage all your smart devices from a single, convenient location. Filter by room or view all connected products for complete control at your fingertips.</p>
+      </div>
+      
       <!-- Category Navigation -->
       <nav id="categoryNav"></nav>
+      
       <!-- Product Cards Container -->
       <div id="productsContainer"></div>
     </section>
 
     <!-- (Other sections like Automation, Social Share, etc.) -->
-    <section>
+    <section class="automation-container">
       <h2>Smart Automation Status</h2>
+    
+      <!-- Description Box -->
+      <div class="automation-description">
+        <p>Automate your home devices with scheduled actions for ultimate convenience. Enable, disable, or fine-tune settings to maximise efficiency and simplify your daily routine.</p>
+      </div>
+    
       <p id="automation-text"></p>
+    
       <table id="automation-table" class="automation-table">
         <thead>
           <tr>
@@ -84,14 +107,17 @@
             <th>Start Time</th>
             <th>End Time</th>
             <th>Setup By</th>
-            <th>Admin control (deletion)</th>
+            <th>Admin Control</th>
           </tr>
         </thead>
         <tbody id="automation-list"></tbody>
       </table>
+    
       <div id="add-device-automation" style="display: none;">
         <a href="Automation.html" class="add-automation-btn">Add Device Automation</a>
       </div>
+    </section>
+  </div>
 
       <!-- Share to Social Media Section -->
       <section class="share-section">
@@ -103,8 +129,6 @@
           <a id="share-instagram" href="#" class="share-btn instagram"><i class="fa fa-instagram"></i> Instagram</a>
         </div>
       </section>
-    </section>
-  </div>
 
   <!-- Footer (possibly loaded by navbar-footer-loader.js) -->
   <div id="footer"></div>
