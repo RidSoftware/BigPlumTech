@@ -147,7 +147,6 @@ router.post('/api/login', async (req, res) => {
 
 
 
-
 ////////////////test pull user info
 router.get('/users', (req, res) => {
     db.query('SELECT * FROM userdetails', (err, results) => {
