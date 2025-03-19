@@ -1,41 +1,41 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
-require('dotenv').config();
+import { contact } from './emailAPI.js';
 
-const app = express();
-app.use(bodyParser.json());
+document.addEventListener("DOMContentLoaded", function () {
+  const contactForm = document.getElementById("contactForm");
 
-app.post('/send-email', async (req, res) => {
-  const { name, email, message } = req.body;
+  contactForm.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-  // Set up the transporter using secure SMTP credentials stored in environment variables
-  let transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT, // e.g., 465 for SSL or 587 for TLS
-    secure: process.env.SMTP_SECURE === 'true', // true for SSL, false for TLS
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (!name || !email || !message) {
+          alert("Please fill in all fields.");
+          return;
+      }
+
+      const formData = {
+          name: name,
+          email: email,
+          message: message
+      };
+
+      fetch("/api/contact", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+          alert(data.message);
+          contactForm.reset();
+      })
+      .catch(error => {
+          console.error("Error:", error);
+          alert("There was an error sending your message. Please try again later.");
+      });
   });
-
-  try {
-    let info = await transporter.sendMail({
-      from: `"${name}" <${email}>`,
-      to: 'support@bigplumtech.com', //test email
-      subject: 'Contact Form Submission',
-      text: message,
-      html: `<p>${message}</p>`
-    });
-    res.status(200).json({ message: "Email sent successfully!", info });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "There was an error sending the email." });
-  }
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
