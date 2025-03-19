@@ -6,6 +6,8 @@ const path = require('path');
 const app = express();
 const port = 8080;
 
+const bodyParser = require("body-parser");
+require("dotenv").config(); // Load environment variables
 
 app.use(cors()); 
 app.use(express.json()); 

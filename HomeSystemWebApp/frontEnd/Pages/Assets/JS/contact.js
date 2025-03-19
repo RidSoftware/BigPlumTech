@@ -3,7 +3,7 @@ import { contact } from './emailAPI.js';
 document.addEventListener("DOMContentLoaded", function () {
   const contactForm = document.getElementById("contactForm");
 
-  contactForm.addEventListener("submit", function (event) {
+  contactForm.addEventListener("submit", async function (event) {
       event.preventDefault();
 
       const name = document.getElementById("name").value.trim();
@@ -21,21 +21,18 @@ document.addEventListener("DOMContentLoaded", function () {
           message: message
       };
 
-      fetch("/api/contact", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-      })
-      .then(response => response.json())
-      .then(data => {
-          alert(data.message);
-          contactForm.reset();
-      })
-      .catch(error => {
-          console.error("Error:", error);
-          alert("There was an error sending your message. Please try again later.");
-      });
-  });
+      //conact from emailAPI
+      try {
+        const response = await contact(formData); // No need for .json() here
+        if (response) {
+            alert(response.message);
+            contactForm.reset();
+        } else {
+            alert("Unexpected error. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("There was an error sending your message. Please try again later.");
+    }
+});
 });
