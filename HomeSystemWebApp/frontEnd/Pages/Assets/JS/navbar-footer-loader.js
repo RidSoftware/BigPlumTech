@@ -65,10 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="sidebar-user">
                         <h3>Welcome, ${user.firstname}</h3>
 
-                        ${profileSrc.trim() !== "" 
-                            ? `<img id="profile-img" src="${profileSrc}" alt="Profile Picture" class="profile-img" />` 
-                            : `<i id="profile-icon" class="fa fa-user-circle" style="font-size: 90px;"></i>`}
-                         
                         <div class="user-role">
                             <p>Role: ${user.userType === "homeManager" ? "Admin" : "User"}</p>
                         </div>
