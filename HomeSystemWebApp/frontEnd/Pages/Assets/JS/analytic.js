@@ -40,33 +40,65 @@ function updateTime() {
 
 window.updateCurrentEnergyStats = function(energyData24hr) {
   console.log("updateCurrentEnergyStats function is running...");
- 
-  // Ensure energyCost exists in local storage
+
+  //  check sif energyCost exists in local storage
   if (!localStorage.getItem('energyCost')) {
     localStorage.setItem('energyCost', 1);
     console.log("energyCost was missing; set to default 1");
   }
- 
-  // Retrieve energy cost
-  let energyCost = parseFloat(localStorage.getItem('energyCost')) || 1;
-  console.log("Retrieved Energy Cost:", energyCost);
- 
-  // Calculate total daily usage
+
+  // Retrieve energy cost and calculate total daily usage
+  let energyCost = parseFloat(localStorage.getItem('energyCost'));
   const totalUsage = Object.values(energyData24hr).reduce((sum, value) => sum + parseFloat(value), 0);
   console.log("Total Usage for 24hrs:", totalUsage);
- 
-  // **Ensure UI updates correctly**
+
+  /// last recorded value from energyData24hr as the current power
+    const lastHr = Object.keys(energyData24hr).sort().pop();
+    const currentPower = energyData24hr[lastHr];
+
+
+  if (!localStorage.getItem('carbonIntensity')) {
+    console.log("carbonIntensity not in local storage");
+  }
+  const carbonIntensity = localStorage.getItem('carbonIntensity');
+
+  // energy stuff elements after a short delay because its weird
   setTimeout(() => {
+    // Update currentPower display
+    const currentPowerElement = document.getElementById('currentPower');
+    if (currentPowerElement) {
+      currentPowerElement.textContent = `${currentPower} kW`;
+    } else {
+      console.error("currentPower element not found in the DOM!");
+    }
+    
+    // Update dailyUsage display
+    const dailyUsageElement = document.getElementById('dailyUsage');
+    if (dailyUsageElement) {
+      dailyUsageElement.textContent = `${dailyUsageValue} kWh`;
+    } else {
+      console.error("dailyUsage element not found in the DOM!");
+    }
+    
+    // estimatedCost display using the energy cost multiplier
     const costElement = document.getElementById('estimatedCost');
     if (costElement) {
       const estimatedCost = totalUsage * energyCost;
-      console.log("New Estimated Cost:", estimatedCost);
       costElement.textContent = `£${estimatedCost.toFixed(2)}`;
     } else {
-      console.error("Estimated cost element not found in the DOM!");
+      console.error("estimatedCost element not found in the DOM!");
+    }
+    
+    // carbonIntensity display
+    const carbonIntensityElement = document.getElementById('carbonIntensity');
+    if (carbonIntensityElement) {
+      carbonIntensityElement.textContent = `${carbonIntensity} gCO2/kWh`;
+    } else {
+      console.error("carbonIntensity element not found in the DOM!");
     }
   }, 500);
 };
+
 
 /**
  * Determines and displays the best time to use appliances based on energy usage
