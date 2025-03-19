@@ -17,6 +17,27 @@ router.post("/api/register", async (req, res) => {
         });
     }
 
+    if (!firstname || !/^[A-Za-z-]+$/.test(input)) {
+        return res.status(400).json({ 
+            success: false,
+            message: 'first name contains invalid symbols or spaces'
+        });
+    }
+
+    if (!lastname || !/^[A-Za-z-]+$/.test(input)) {
+        return res.status(400).json({ 
+            success: false,
+            message: 'first name contains invalid symbols or spaces'
+        });
+    }
+
+    if (!email || !/^[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]{2,}$/.test(input)) {
+        return res.status(400).json({ 
+            success: false,
+            message: 'The email inputted was invalid'
+        });
+    }
+
     const admin = userType === "homeManager" ? 'Y' : 'N';
 
     const q = 'INSERT INTO userdetails (firstname, surname, email, password, admin, homeid) VALUES (?, ?, ?, ?, ?, ?)'
