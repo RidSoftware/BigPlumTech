@@ -13,7 +13,7 @@ router.post('/api/pullDevices', async (req, res) => {
         }
 
         connection = await pool.getConnection();
-        console.log('pullDevices Database connection acquired');
+        // console.log('pullDevices Database connection acquired');
 
         // Get the HomeID for the user
         const [homeIDResults] = await connection.execute(
