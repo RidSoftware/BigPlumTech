@@ -317,6 +317,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  document.addEventListener("DOMContentLoaded", () => {
+    const addProductForm = document.getElementById("addProductForm");
+    const confirmationOverlay = document.getElementById("confirmationOverlay");
+    const confirmationMessage = document.getElementById("confirmationMessage");
+    const continueButton = document.getElementById("continueButton");
+  
+    addProductForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+  
+      // Simulating device addition logic
+      setTimeout(() => {
+        showConfirmation();
+      }, 500); // Simulating delay for better UX
+    });
+  
+    function showConfirmation() {
+      confirmationOverlay.classList.remove("hidden");
+      confirmationMessage.classList.remove("hidden");
+    }
+  
+    continueButton.addEventListener("click", () => {
+      confirmationOverlay.classList.add("hidden");
+      confirmationMessage.classList.add("hidden");
+      addProductForm.reset();
+    });
+  });
+  
+
   // ----- ADD PRODUCT FORM SUBMIT -----
 addProductForm.addEventListener('submit', async (e) => {
   e.preventDefault();

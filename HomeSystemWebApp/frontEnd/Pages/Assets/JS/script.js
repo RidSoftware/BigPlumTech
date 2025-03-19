@@ -1,5 +1,6 @@
 import * as energyAPI from './energyAPI.js';
 import * as deviceAPI from './deviceAPI.js';
+import { getUsers } from './userAPI.js';
 
 let user = JSON.parse(localStorage.getItem("user"));
 let userID = user ? user.userID : null;
@@ -215,7 +216,7 @@ async function updateEnergyPanel() {
     const energyValue = document.getElementById('energy-value');
     const reportButton = document.getElementById('report-button');
 
-    let energyLevel = 50; // Default value
+    let energyLevel = Math.floor(Math.random() * 101); // Random value between 0-100
 
     try {
         let energyData = {};
@@ -270,7 +271,6 @@ async function updateEnergyPanel() {
         reportButton.classList.remove("hidden");
     }
 }
-
 // Make Energy Panel Draggable - keeping the existing function
 function makePanelDraggable() {
   const panel = document.getElementById("energy-panel");
@@ -1032,10 +1032,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
         window.open(facebookUrl, "_blank");
     });
-
-    // Share to Instagram (Instagram does not allow direct URL sharing)
-    document.getElementById("share-instagram").addEventListener("click", function (e) {
-        e.preventDefault();
-        alert("Instagram does not support direct URL sharing. Share manually on your story!");
-    });
+    
 });
+

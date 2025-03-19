@@ -5,6 +5,8 @@ import {
     syncEnergy24hrDevice,
     energyGrid
   } from './energyAPI.js';
+
+import {getUsers} from './userAPI.js';
   
   document.addEventListener('DOMContentLoaded', async function() {
     // Get current user
@@ -460,85 +462,241 @@ async function loadDeviceStatus() {
     notificationCount.innerText = `(${notifications.length})`;
   }
   
-  // Load Home Details based on user type
-  function loadHomeDetails() {
+  async function loadHomeDetails() {
     const homeDetailsContainer = document.getElementById("home-details-content");
+    let currentUser = JSON.parse(localStorage.getItem("user")) || null;
     
-    let user = JSON.parse(localStorage.getItem("user")) || null;
-    
-    if (!user) {
+    if (!currentUser) {
         console.log("User not found");
         return;
     }
+
+    try {
+        // Fetch all users directly using the getUsers API
+        const allUsers = await getUsers();
+        console.log("All users:", allUsers);
+        console.log("Current user:", currentUser);
     
-    // Get all home users (for demo purposes, use mock data if needed)
-    let allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
-    let homeUsers = allUsers.filter(u => u.homeID === user.homeID);
-    let homeManager = homeUsers.find(u => u.userType === "homeManager");
-    
-    if (user.userType === "homeManager") {
-        // Display for Home Manager
-        const totalHomeUsers = homeUsers.filter(u => u.userType === "homeUser").length;
+        // Check what property names actually exist in the data
+        if (allUsers && allUsers.length > 0) {
+            console.log("Sample user properties:", Object.keys(allUsers[0]));
+        }
+
+        // More robust property access with fallbacks
+        const getCurrentProperty = (obj, propNames) => {
+            for (const prop of propNames) {
+                if (obj[prop] !== undefined) return obj[prop];
+            }
+            return null;
+        };
+
+        const currentHomeID = getCurrentProperty(currentUser, ['HomeID', 'homeID', 'homeid', 'home_id']);
+        console.log("Current HomeID:", currentHomeID);
         
-        homeDetailsContainer.innerHTML = `
-            <p><strong>Home ID:</strong> ${user.homeID}</p>
-            <p><strong>Number of Residents:</strong> <span id="resident-count" class="clickable">${totalHomeUsers}</span></p>
-            <p><strong>Home Manager:</strong> ${user.firstName || user.firstname} ${user.lastName || user.Surname}</p>
-            <p><strong>Your Role:</strong> Home Manager</p>
-            <div id="user-details" class="user-details-panel" style="display: none;">
-                <h4>Home Users</h4>
-                <ul id="home-users-list"></ul>
-            </div>
-        `;
+        // Filter users by homeID matching the current user (handle multiple property name possibilities)
+        const homeUsers = allUsers.filter(user => {
+            const userHomeID = getCurrentProperty(user, ['HomeID', 'homeID', 'homeid', 'home_id']);
+            return userHomeID == currentHomeID; // Use loose equality to handle type mismatch
+        });
+
         
-        // Add click event for user count
-        document.getElementById("resident-count").addEventListener("click", function() {
-            const userDetailsPanel = document.getElementById("user-details");
+        console.log("Filtered home users:", homeUsers);
+        const adminUsers = homeUsers.filter(user => 
+            getCurrentProperty(user, ['Admin', 'admin', 'isAdmin']) === "Y");
+        const regularUsers = homeUsers.filter(user => 
+            getCurrentProperty(user, ['Admin', 'admin', 'isAdmin']) === "N");
+
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (user.userType === "homeManager") {
+            // Display for Admin users - show all regular users
+            homeDetailsContainer.innerHTML = `
+                <h3>Home Details Snapshot</h3>
+                <div class="home-details-panel">
+                    <p><strong>Home ID:</strong> ${currentHomeID}</p>
+                    <p><strong>Number of Residents:</strong> <span id="resident-count" class="clickable">${regularUsers.length}</span></p>
+                    <p><strong>Admin:</strong> ${getCurrentProperty(currentUser, ['FirstName', 'firstname', 'first_name'])} ${getCurrentProperty(currentUser, ['Surname', 'surname', 'lastName', 'lastname'])}</p>
+                    <p><strong>Your Role:</strong> Admin</p>
+                    <div id="user-details" class="user-details-panel">
+                        <h4>Home Users</h4>
+                        <ul id="home-users-list"></ul>
+                    </div>
+                </div>
+            `;
+
+            // Populate user list
             const homeUsersList = document.getElementById("home-users-list");
-            
-            // Toggle display
-            if (userDetailsPanel.style.display === "none") {
-                userDetailsPanel.style.display = "block";
-                
-                // Populate user list
-                homeUsersList.innerHTML = "";
-                const regularHomeUsers = homeUsers.filter(u => u.userType !== "homeManager");
-                
-                regularHomeUsers.forEach(user => {
-                    // Get device count for this user (mock if needed)
-                    let userDevices = [];
-                    try {
-                        if (user.email) {
-                            const allDevices = JSON.parse(localStorage.getItem("smartDevices")) || {};
-                            userDevices = allDevices[user.email] || [];
-                        }
-                    } catch (e) {
-                        console.error("Error getting user devices:", e);
-                    }
-                    
-                    // Get automation count (mock for now)
-                    const automationCount = Math.floor(Math.random() * 5);
-                    
+            homeUsersList.innerHTML = "";
+
+            if (regularUsers.length === 0) {
+                homeUsersList.innerHTML = "<li>No regular users found</li>";
+
+            } else {
+                regularUsers.forEach(user => {
+                    const firstName = getCurrentProperty(user, ['FirstName', 'firstname', 'first_name']) || 'Unknown';
+                    const lastName = getCurrentProperty(user, ['Surname', 'surname', 'lastName', 'lastname']) || 'User';
+                    const email = getCurrentProperty(user, ['Email', 'email']) || 'No email';
                     const li = document.createElement("li");
+
                     li.innerHTML = `
-                        <strong>${user.firstName || user.firstname} ${user.lastName || user.Surname}</strong> (${user.email})<br>
-                        Devices: ${userDevices.length} | Automations: ${automationCount}
+                        <strong>${firstName} ${lastName}</strong> (${email})
                     `;
                     homeUsersList.appendChild(li);
                 });
-            } else {
-                userDetailsPanel.style.display = "none";
             }
-        });
-        
-    } else {
-        // Display for Home User
+
+            
+
+        } else {
+            // Display for regular users - show all admins
+            homeDetailsContainer.innerHTML = `
+                <h3>Home Details Snapshot</h3>
+                <div class="home-details-panel">
+                    <p><strong>Home ID:</strong> ${currentHomeID}</p>
+                    <p><strong>Home Admins:</strong> <span id="admin-count" class="clickable">${adminUsers.length}</span></p>
+                    <p><strong>Your Role:</strong> Regular User</p>
+                    <div id="admin-details" class="user-details-panel">
+                        <h4>Home Admins</h4>
+                        <ul id="home-admins-list"></ul>
+                    </div>
+                </div>
+            `;  
+
+            // Populate admin list
+            const homeAdminsList = document.getElementById("home-admins-list");
+            homeAdminsList.innerHTML = "";
+            if (adminUsers.length === 0) {
+                homeAdminsList.innerHTML = "<li>No admin users found</li>";
+            } else {
+                adminUsers.forEach(admin => {
+                    const firstName = getCurrentProperty(admin, ['FirstName', 'firstname', 'first_name']) || 'Unknown';
+                    const lastName = getCurrentProperty(admin, ['Surname', 'surname', 'lastName', 'lastname']) || 'Admin';
+                    const email = getCurrentProperty(admin, ['Email', 'email']) || 'No email';
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        <strong>${firstName} ${lastName}</strong> (${email})
+                    `;
+                    homeAdminsList.appendChild(li);
+                });
+            }
+        }
+
+        // Add CSS for the home details panel
+        addHomeDetailsStyles();
+
+    } catch (error) {
+
+        console.error("Error loading home details:", error);
+
         homeDetailsContainer.innerHTML = `
-            <p><strong>Home ID:</strong> ${user.homeID}</p>
-            <p><strong>Home Manager:</strong> ${homeManager ? 
-                `${homeManager.firstName || homeManager.firstname} ${homeManager.lastName || homeManager.Surname}` : 
-                'Not assigned'}</p>
-            <p><strong>Your Role:</strong> Home User</p>
+
+            <div class="error-message">
+
+                <p>Error loading home details: ${error.message}</p>
+
+                <button onclick="loadHomeDetails()">Retry</button>
+
+            </div>
+
         `;
+
     }
-  }
+
+}
+
+
+// Add CSS styles for the home details panel
+function addHomeDetailsStyles() {
+    // Check if styles already exist
+    if (document.getElementById('home-details-styles')) {
+        return;
+    }
+    
+    const style = document.createElement('style');
+    style.id = 'home-details-styles';
+    style.textContent = `
+        .home-details-panel {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .home-details-panel h3 {
+            margin-top: 0;
+            color: #0066cc;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .user-details-panel {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .user-details-panel h4 {
+            margin-top: 0;
+            color: #555;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .user-details-panel ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .user-details-panel li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .user-details-panel li:last-child {
+            border-bottom: none;
+        }
+        
+        .clickable {
+            cursor: pointer;
+            color: #0066cc;
+            text-decoration: underline;
+        }
+        
+        .clickable:hover {
+            color: #004080;
+        }
+        
+        .error-message {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 10px 15px;
+        }
+        
+        .error-message button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .error-message button:hover {
+            background-color: #c82333;
+        }
+    `;
+    document.head.appendChild(style);
+}
