@@ -3,12 +3,13 @@ import {
     syncEnergy7daysUser, 
     syncEnergy24hrUser,
     syncEnergy24hrDevice,
+    energyGrid
   } from './energyAPI.js';
   
   document.addEventListener('DOMContentLoaded', async function() {
     // Get current user
     const user = JSON.parse(localStorage.getItem("user")) || null;
-    
+    energyGrid();
     if (!user) {
         console.error("No current user found");
         return;
@@ -380,6 +381,7 @@ async function loadDeviceStatus() {
             <p>Status: <span class="device-status ${device.status ? "active" : "inactive"}">${device.status ? "On" : "Off"}</span></p>
             <p>Room: ${device.room || "Not assigned"}</p>
             <p>Past 24hr Usage: <strong>${device.usage24hr}</strong> kWh</p>
+            <p>Past 24hr Cost: <strong>${(device.usage24hr)*(localStorage.getItem("carbonIntensity"))}</strong> kWh</p>
           `;
           
           deviceContainer.appendChild(deviceCard);
