@@ -1,58 +1,85 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Retrieve users from localStorage
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+// Import the updateUser function from userAPI.js
+import { updateUser } from "./userAPI.js";
 
-    
-    // Get references to form inputs
-    const firstnameInput = document.getElementById("firstname");
-    const lastnameInput = document.getElementById("lastname");
-    const emailInput = document.getElementById("email");
-    
-    // Get references to confirmation elements
-    const overlay = document.getElementById("confirmationOverlay");
-    const confirmationMessage = document.getElementById("confirmationMessage");
-    
-    // Hide confirmation elements initially
-    confirmationMessage.style.display = "none";
-    overlay.style.display = "none";
-    
-    // If user is found, pre-fill the form
-    if (users) {
-      firstnameInput.value = users.firstname || "";
-      lastnameInput.value = users.Surname || ""; // Changed from Surname to lastname for consistency
-      emailInput.value = users.Email || "";
-    } 
-    
-    // Handle form submission to update user settings
-    document.getElementById("settingsForm").addEventListener("submit", function (event) {
-      event.preventDefault();
-      
-      // Update user details
-      users.firstname = firstnameInput.value.trim();
-      users.Surname = lastnameInput.value.trim(); 
-      const newEmail = emailInput.value.trim();
-      
-      // Update email and the Email key in localStorage if changed
-      if (users.Email !== newEmail) {
-        users.Email = newEmail;
-        localStorage.setItem("Email", newEmail);
+document.addEventListener("DOMContentLoaded", async function () {
+  // Get user data from localStorage
+  const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+
+  // Get references to form inputs
+  const firstnameInput = document.getElementById("firstname");
+  const lastnameInput = document.getElementById("lastname");
+  const emailInput = document.getElementById("email");
+
+  // Get references to confirmation elements
+  const overlay = document.getElementById("confirmationOverlay");
+  const confirmationMessage = document.getElementById("confirmationMessage");
+
+  // Hide confirmation elements initially
+  confirmationMessage.style.display = "none";
+  overlay.style.display = "none";
+
+  // Ensure proper data pre-filling
+  firstnameInput.value = storedUser.firstname || "";
+  lastnameInput.value = storedUser.Surname || "";
+  emailInput.value = storedUser.Email || "";
+
+  // Handle form submission to update user settings
+  document.getElementById("settingsForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    // Create updated user object
+    const updatedUser = {
+      userID: storedUser.userID, // Ensure userID is included
+      firstname: firstnameInput.value.trim(),
+      surname: lastnameInput.value.trim(),
+      email: emailInput.value.trim()
+    };
+
+    try {
+      // Call the updateUser API
+      const result = await updateUser(updatedUser);
+
+      if (result && result.success) {
+        // Update localStorage
+        localStorage.setItem("user", JSON.stringify({...storedUser, ...updatedUser }));
+
+        // Show success confirmation message
+        showConfirmation("Changes Applied!", "Your profile has been successfully updated.", true);
+      } else {
+        // Show error message
+        showConfirmation("Update Failed", result?.message || "An error occurred while updating your profile.", false);
       }
-      
-      // Update the users array in localStorage
-      localStorage.setItem("users", JSON.stringify(users));
-      
-      // Show confirmation message
-      confirmationMessage.innerHTML = `
-        <div class="confirmation-container">
-          <h2>Changes Applied!</h2>
-          <p>Your profile has been successfully updated.</p>
-          <button class="continue-btn" onclick="window.location.href='Dashboard.html'">
-            Continue <i class="fa fa-arrow-right"></i>
-          </button>
-        </div>
-      `;
-      
-      confirmationMessage.style.display = "block";
-      overlay.style.display = "block";
-    });
+
+    } catch (error) {
+      console.error("Error updating user settings:", error);
+      showConfirmation("Update Failed", "There was an error connecting to the server. Please try again later.", false);
+    }
   });
+
+  // Function to show confirmation message
+  function showConfirmation(title, message, isSuccess) {
+    confirmationMessage.innerHTML = `
+      <div class="confirmation-container">
+        <h2>${title}</h2>
+        <p>${message}</p>
+        <button class="continue-btn" id="closeConfirmation">
+          ${isSuccess ? "Continue" : "Try Again"} <i class="fa ${isSuccess ? "fa-arrow-right" : "fa-refresh"}"></i>
+        </button>
+      </div>
+    `;
+
+    // Show the overlay
+    confirmationMessage.style.display = "block";
+    overlay.style.display = "block";
+
+    // Handle close action
+    document.getElementById("closeConfirmation").addEventListener("click", () => {
+      overlay.style.display = "none";
+      confirmationMessage.style.display = "none";
+
+      if (isSuccess) {
+        window.location.reload(); // Refresh after success
+      }
+    });
+  }
+});
