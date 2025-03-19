@@ -52,8 +52,7 @@ router.post('/api/pullDevices', async (req, res) => {
         const [deviceResults] = await connection.execute(queryFancy, [homeID]);
 
         connection.release();
-
-        console.log("SQL deviceResults:", deviceResults);
+;
 
         if (deviceResults.length === 0) {
             return res.status(401).json({ success: false, message: 'No device data found' });
@@ -63,8 +62,6 @@ router.post('/api/pullDevices', async (req, res) => {
             ...device,
             status: device.status === 1 // Convert 1 to true, 0 to false
         }));
-
-        console.log("Processed Energy Data:", formattedDeviceResults);
 
         return res.status(200).json({ 
             success: true, 
