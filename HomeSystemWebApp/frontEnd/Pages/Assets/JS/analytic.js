@@ -39,6 +39,7 @@ function updateTime() {
 }
 
 window.updateCurrentEnergyStats = function(energyData24hr) {
+  energyGrid();
   console.log("updateCurrentEnergyStats function is running...");
 
   //  check sif energyCost exists in local storage
@@ -60,7 +61,6 @@ window.updateCurrentEnergyStats = function(energyData24hr) {
   if (!localStorage.getItem('carbonIntensity')) {
     console.log("carbonIntensity not in local storage");
   }
-  const carbonIntensity = localStorage.getItem('carbonIntensity');
 
   // energy stuff elements after a short delay because its weird
   setTimeout(() => {
@@ -75,7 +75,7 @@ window.updateCurrentEnergyStats = function(energyData24hr) {
     // Update dailyUsage display
     const dailyUsageElement = document.getElementById('dailyUsage');
     if (dailyUsageElement) {
-      dailyUsageElement.textContent = `${dailyUsageValue} kWh`;
+      dailyUsageElement.textContent = `${totalUsage} kWh`;
     } else {
       console.error("dailyUsage element not found in the DOM!");
     }
@@ -89,6 +89,7 @@ window.updateCurrentEnergyStats = function(energyData24hr) {
       console.error("estimatedCost element not found in the DOM!");
     }
     
+    const carbonIntensity = parseInt(localStorage.getItem('carbonIntensity'));
     // carbonIntensity display
     const carbonIntensityElement = document.getElementById('carbonIntensity');
     if (carbonIntensityElement) {
