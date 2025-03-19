@@ -2,9 +2,9 @@ const mysql = require('mysql2');
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "root",//SmallPlum
-    password: "plum",//PlumPassword
-    database: "plum",//test2
+    user: "root",
+    password: "plumPassword",
+    database: "plumDB",
     port: 3306
 });
 
