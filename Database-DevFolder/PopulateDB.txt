@@ -5,6 +5,7 @@ INSERT INTO homedetails (NoOfResidents, HomeManager, AdminCode) VALUES
 (3, 'Lucas Clark', '99101'),
 (4, 'Diana Ross', '31121'),
 (5, 'Evan Green', '53141');
+(99, 'Evan Green', '53241');
 
 -- ---------------------------------------------------------------------
 
