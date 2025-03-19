@@ -35,7 +35,9 @@ app.use(energyDataRoutesUI);
 app.use(energyDataRoutesDI);
 app.use(deviceDataRoutes);
 app.use(energyGridRoute);
-// app.use("api", emailRoutes);
+
+const emailRoutes = require("./routes/emailRoutes");
+app.use("/api", emailRoutes); 
 
 app.get('/', (req, res) => {
     res.send('Server is up and running');
