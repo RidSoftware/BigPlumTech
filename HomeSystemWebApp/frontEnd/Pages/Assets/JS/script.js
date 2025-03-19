@@ -215,59 +215,51 @@ async function updateEnergyPanel() {
     const energyValue = document.getElementById('energy-value');
     const reportButton = document.getElementById('report-button');
 
-    let energyLevel = 50; // Default value
-
     try {
-        let energyData = {};
+        // Calculate energy status using the modified function
+        const energyStatus = await calculateTotalEnergy(userID);
+        const totalEnergy = energyStatus.value;
+        const status = energyStatus.status;
         
-        if (selectedDeviceID) {
-            // Use device-specific data if a device is selected
-            energyData = await energyAPI.syncEnergy24hrDevice(selectedDeviceID);
-        } else if (userID) {
-            // Otherwise use user aggregate data
-            energyData = await energyAPI.syncEnergy24hrUser(userID);
+        // Make sure totalEnergy is a number before using toFixed
+        const formattedEnergy = typeof totalEnergy === 'number' ? totalEnergy.toFixed(2) : '0.00';
+        
+        // Map to energy level for display (inverse relationship - lower energy use = higher level)
+        let energyLevel;
+        if (status === "optimal") {
+            energyLevel = 20;
+            panel.style.background = "#28a745";
+            message.innerText = "Energy level is optimal! Good job! 😊";
+            reportButton.classList.add("hidden");
+        } else if (status === "warning") {
+            energyLevel = 60;
+            panel.style.background = "#ffc107";
+            message.innerText = `Your energy level is starting to decrease! Total Energy: ${formattedEnergy} kWh ⚠️ Stay aware!`;
+            reportButton.classList.add("hidden");
+        } else {
+            energyLevel = 90;
+            panel.style.background = "#dc3545";
+            message.innerText = `Oh no! Your Total Energy level is critical! Total Energy: ${formattedEnergy} kWh 🚨 Check report now!`;
+            reportButton.classList.remove("hidden");
         }
         
-        if (Object.keys(energyData).length > 0) {
-            // Calculate energy level based on data
-            const totalEnergy = Object.values(energyData).reduce((sum, val) => sum + val, 0);
-            
-            // Set a threshold (adjust based on your requirements)
-            const lowThreshold = selectedDeviceID ? 20 : 50; // Lower threshold for individual devices
-            const highThreshold = selectedDeviceID ? 50 : 100; // Lower threshold for individual devices
-            
-            // Map the energy consumption to a 0-100 scale inversely (lower consumption = higher score)
-            if (totalEnergy <= lowThreshold) {
-                energyLevel = 100;
-            } else if (totalEnergy >= highThreshold) {
-                energyLevel = 0;
-            } else {
-                // Linear mapping between thresholds
-                energyLevel = 100 - ((totalEnergy - lowThreshold) / (highThreshold - lowThreshold) * 100);
-            }
-            
-            // Ensure energyLevel is within bounds
-            energyLevel = Math.max(0, Math.min(100, Math.round(energyLevel)));
+        energyValue.innerText = `Energy Level: ${energyLevel}%`;
+        energyFill.style.width = `${energyLevel}%`;
+        
+        // Add a separate element to always show the total energy usage
+        const totalEnergyDisplay = document.getElementById('total-energy-display') || document.createElement('div');
+        totalEnergyDisplay.id = 'total-energy-display';
+        totalEnergyDisplay.style.marginTop = '10px';
+        totalEnergyDisplay.style.fontWeight = 'bold';
+        totalEnergyDisplay.innerText = `Total Energy Usage: ${formattedEnergy} kWh`;
+        
+        // Append the total energy display if it doesn't exist yet
+        if (!document.getElementById('total-energy-display')) {
+            panel.appendChild(totalEnergyDisplay);
         }
+        
     } catch (error) {
         console.error("Error updating energy panel:", error);
-    }
-
-    energyValue.innerText = `Energy Level: ${energyLevel}%`;
-    energyFill.style.width = `${energyLevel}%`;
-
-    if (energyLevel > 70) {
-        panel.style.background = "#28a745"; 
-        message.innerText = "Energy level is optimal! Good job! 😊";
-        reportButton.classList.add("hidden");
-    } else if (energyLevel > 40) {
-        panel.style.background = "#ffc107"; 
-        message.innerText = "Your energy level is starting to decrease! ⚠️ Stay aware!";
-        reportButton.classList.add("hidden");
-    } else {
-        panel.style.background = "#dc3545"; 
-        message.innerText = "Oh no! Energy level is critical! 🚨 Check report now!";
-        reportButton.classList.remove("hidden");
     }
 }
 
@@ -289,6 +281,46 @@ function makePanelDraggable() {
   });
 
   document.addEventListener("mouseup", () => isDragging = false);
+}
+
+// Function to calculate total energy usage from 24-hour data
+async function calculateTotalEnergy(userID) {
+    try {
+        // Use the proper API function to get energy data for past 24 hours
+        const energyData = await energyAPI.syncEnergy24hrUser(userID);
+        
+        if (!energyData || Object.keys(energyData).length === 0) {
+            console.warn("No energy data received for the past 24 hours");
+            return { value: 0, status: "unknown" };
+        }
+        
+        // Sum up all hourly values
+        const totalEnergy = Object.values(energyData).reduce(
+            (sum, value) => sum + (typeof value === 'number' ? value : 0), 
+            0
+        );
+        
+        console.log("Total energy consumption for past 24 hours:", totalEnergy);
+        
+        // Determine status based on thresholds
+        let status;
+        if (totalEnergy >= 100) {
+            status = "critical";
+        } else if (totalEnergy >= 50) {
+            status = "warning";
+        } else {
+            status = "optimal";
+        }
+        
+        // Return both the total energy value and status
+        return {
+            value: totalEnergy,
+            status: status
+        };
+    } catch (error) {
+        console.error("Error calculating total energy:", error);
+        return { value: 0, status: "unknown" };
+    }
 }
 
 // Function to refresh data when needed
@@ -466,12 +498,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Show draggable panel only if the user is a regular "user"
   if (user.userType === "homeUser") {
       energyPanel.style.display = "block"; // Make it visible
-      enableDrag(energyPanel); // Ensure it's draggable
+      makePanelDraggable();
   } else {
       energyPanel.style.display = "none"; // Hide for homeManager
       energyPanelPin.style.display = "none";
   }
 });
+
+
 
 // Main dashboard device handling with API calls
 document.addEventListener("DOMContentLoaded", async () => {

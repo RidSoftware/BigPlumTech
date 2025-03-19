@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const lastnameInput = document.getElementById("lastname");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
-  const profilePicInput = document.getElementById("profilePic");
 
   // Display confirmation message
   let overlay = document.getElementById("confirmationOverlay");
@@ -42,11 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
   overlay.style.display = "none";
 
   // If user is found, pre-fill the form
-  if (currentUser) {
-      firstnameInput.value = currentUser.firstname || "";
-      lastnameInput.value = currentUser.Surname || "";
-      emailInput.value = currentUser.Email || "";
-      profilePicInput.value = currentUser.profilePic || "";
+  if (users) {
+      firstnameInput.value = users.firstname || "";
+      lastnameInput.value = users.Surname || "";
+      emailInput.value = users.Email || "";
   } else {
       alert("No user found. Please log in.");
       window.location.href = "login.html"; // Redirect user to login if no session found
@@ -69,20 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update `lastLoggedInEmail` in case the email was changed
       localStorage.setItem("Email", currentUser.Email);
-
-      // Show confirmation message
-      confirmationMessage.innerHTML = `
-          <div class="confirmation-container">
-              <h2>Changes Applied!</h2>
-              <p>Your profile has been successfully updated.</p>
-              <button class="continue-btn" onclick="window.location.href='Dashboard.html'">
-                  Continue <i class="fa fa-arrow-right"></i>
-              </button>
-          </div>
-      `;
-
-      confirmationMessage.style.display = "block";
-      overlay.style.display = "block";
   });
 });
 

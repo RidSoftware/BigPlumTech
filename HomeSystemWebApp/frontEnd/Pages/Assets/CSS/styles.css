@@ -99,8 +99,99 @@ select, input {
     align-items: flex-start;/* left-align text */
 }
 
+/* Add this to your stylesheet or include directly in your HTML */
 
-
+.energy-panel {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: #28a745;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    overflow: hidden;
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+  
+  .panel-header {
+    padding: 10px;
+    cursor: grab;
+    background: rgba(255, 255, 255, 0.1);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .panel-content {
+    padding: 15px;
+  }
+  
+  .energy-bar-container {
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .energy-fill {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+  
+  .energy-message {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .energy-value {
+    margin-top: 10px;
+    font-size: 1.1em;
+  }
+  
+  .report-button {
+    background: white;
+    color: #dc3545;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+  }
+  
+  .report-button:hover {
+    background: #f8f9fa;
+    transform: translateY(-2px);
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  /* Threshold panel styling */
+  .threshold-panel {
+    transition: all 0.3s ease;
+  }
+  
+  .threshold-panel.hidden {
+    display: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .energy-panel,
+    .threshold-panel {
+      width: 90%;
+      left: 5%;
+      right: auto;
+    }
+  }
 /* Chart Container */
 .chart-container {
     width: 100%;
