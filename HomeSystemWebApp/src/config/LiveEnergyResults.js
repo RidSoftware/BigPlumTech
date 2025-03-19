@@ -16,7 +16,7 @@ async function liveHourlyUpdates() {
         `
 
         const insertEnergyHourly = `
-            INSERT INTO energyhourly (DeviceID, EnergyVal, Hour, Date)
+            INSERT INTO energyhourly (DeviceID, EnergyVal, Hour, Date) VALUES (DeviceID, ?, ?, ?)
         `
 
         const [onlineDevices] = await connection.execute(checkDeviceOn);
