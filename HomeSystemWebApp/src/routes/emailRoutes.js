@@ -5,6 +5,7 @@ const emailService = require("../Services/emailService");
 
 
 router.post("/api/contact", async (req, res) => {
+    console.log("request body: ", req.body);
     const { name, email, message } = req.body;
 
     if (!name || !email || !message) {
