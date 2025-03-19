@@ -58,3 +58,48 @@ export const getUsers = async () => {
     console.error("Error fetching users:", error);
   }
 };
+
+
+
+
+
+///////////////////////
+export const updateUser = async (user) => {
+  try {
+    if (!user.userID) {
+      console.error("UserID is required for updating user");
+      return { success: false, message: "UserID is required" };
+    }
+
+    // Retrieve existing user data from localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+
+    // Merge provided data with stored data (fallback for missing fields)
+    const updatedUser = {
+      userID: user.userID, // Mandatory
+      firstname: user.firstname ?? storedUser.firstname,
+      surname: user.surname ?? storedUser.Surname,
+      email: user.email ?? storedUser.Email,
+    };
+
+    // Ensure at least one field (firstname, surname, email) is provided
+    if (!updatedUser.firstname && !updatedUser.surname && !updatedUser.email) {
+      console.error("At least one of firstname, surname, or email is required");
+      return { success: false, message: "At least one field (firstname, surname, email) is required" };
+    }
+
+    const response = await fetch("/api/updateUser", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedUser),
+    });
+
+    const result = await response.json();
+    console.log("Update User API response:", result);
+    return result;
+
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return { success: false, message: "Request failed" };
+  }
+};

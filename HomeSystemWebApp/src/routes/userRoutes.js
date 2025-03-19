@@ -147,6 +147,55 @@ router.post('/api/login', async (req, res) => {
 
 
 
+
+
+
+/////////
+router.post("/api/updateUser", async (req, res) => {
+    const { userID, firstname, surname, email } = req.body;
+
+    if (!userID) {
+        return res.status(400).json({ success: false, message: "UserID is required" });
+    }
+
+    try {
+        // Check if the user exists
+        const checkQuery = "SELECT * FROM userdetails WHERE userID = ?";
+        db.query(checkQuery, [userID], (err, results) => {
+            if (err) {
+                console.error("DB error checking user", err);
+                return res.status(500).json({ success: false, message: "Database error" });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ success: false, message: "User not found" });
+            }
+
+            // If user exists, proceed with update
+            const updateQuery = "UPDATE userdetails SET firstname = ?, surname = ?, email = ? WHERE userID = ?";
+            db.query(updateQuery, [firstname, surname, email, userID], (updateErr, updateResults) => {
+                if (updateErr) {
+                    console.error("DB error updating user", updateErr);
+                    return res.status(500).json({ success: false, message: "Failed to update user" });
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "User updated successfully",
+                });
+            });
+        });
+    } catch (error) {
+        console.error("Error in updating user", error);
+        res.status(500).json({ success: false, message: "Server error, try again later" });
+    }
+});
+
+//////////
+
+
+
+
 ////////////////test pull user info
 router.get('/users', (req, res) => {
     db.query('SELECT * FROM userdetails', (err, results) => {

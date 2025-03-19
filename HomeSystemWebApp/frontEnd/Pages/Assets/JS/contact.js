@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await contact(formData); // Calls emailAPI.js function
             console.log("API Response:", response);
             if (response) {
-                alert(response.message);
+                alert(response.message);//////////////////////////////////////////
             } else {
                 console.error("No response received from API.");
                 alert("Unexpected error. Please try again.");

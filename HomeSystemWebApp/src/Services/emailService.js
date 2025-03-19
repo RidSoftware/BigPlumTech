@@ -18,9 +18,9 @@ const transporter = nodemailer.createTransport({
 
 async function sendContactEmail(name, email, message) {
     const mailOptions = {
-        from: `"${name}" <${process.env.EMAIL_USER}>`, // ✅ Always send from the authenticated email
-        replyTo: email, // ✅ Allows recipient to reply to the sender
-        to: process.env.EMAIL_USER, // ✅ Send to your own email for testing
+        from: `"${name}" <${process.env.EMAIL_USER}>`, 
+        replyTo: email, 
+        to: process.env.EMAIL_USER, 
         subject: `New Contact Message from ${name}`,
         text: `You have received a new message from ${name} (${email}):\n\n${message}`,
     };
