@@ -381,7 +381,7 @@ async function loadDeviceStatus() {
             <p>Status: <span class="device-status ${device.status ? "active" : "inactive"}">${device.status ? "On" : "Off"}</span></p>
             <p>Room: ${device.room || "Not assigned"}</p>
             <p>Past 24hr Usage: <strong>${device.usage24hr}</strong> kWh</p>
-            <p>Past 24hr Cost: <strong>${(device.usage24hr)*(localStorage.getItem("energyCost"))}</strong> kWh</p>
+            <p>Past 24hr Cost: <strong>£${((device.usage24hr)*(localStorage.getItem("energyCost"))).toFixed(2)}</strong></p>
           `;
           
           deviceContainer.appendChild(deviceCard);
