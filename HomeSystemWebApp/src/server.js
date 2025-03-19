@@ -19,7 +19,7 @@ const db = require('./config/DBConnection');
 const pool = require('./config/DBPool');
 
 
-const emailRoutes = require("./routes/emailRoutes");
+// const emailRoutes = require("./routes/emailRoutes");
 const userRoutes = require('./routes/userRoutes');
 const energyDataRoutesUA = require('./routes/energyDataRoutesUserArray');
 const energyDataRoutesDA = require('./routes/energyDataRoutesDeviceArray');
@@ -35,7 +35,7 @@ app.use(energyDataRoutesUI);
 app.use(energyDataRoutesDI);
 app.use(deviceDataRoutes);
 app.use(energyGridRoute);
-app.use("api", emailRoutes);
+// app.use("api", emailRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is up and running');
