@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     console.log("Contact form found, adding event listener.");
-    contactForm.addEventListener("submit", async function (event) {
+    contactForm.addEventListener("submitt", async function (event) {
         event.preventDefault(); 
         console.log("Form submission event triggered.");
 
