@@ -25,7 +25,6 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
              errorMessage.style.display = "block";
              return;
          }
-        let userID = user.userID;
 
         // Show confirmation message & overlay
         confirmationMessage.innerHTML = `

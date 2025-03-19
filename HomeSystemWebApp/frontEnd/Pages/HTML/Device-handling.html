@@ -12,7 +12,8 @@
   <link rel="stylesheet" href="../Assets/CSS/Device-handling.css" />
 
   <!-- Main Logic -->
-  <script defer src="../Assets/JS/device-handling.js"></script>
+  <script defer src="../Assets/JS/device-handling.js" type="module"></script>
+  <script defer src="../Assets/JS/deviceAPI.js" type="module"></script>
 </head>
 <body>
   <!-- Navbar -->
@@ -32,13 +33,18 @@
           <input type="text" id="deviceName" required />
         </div>
         <div id="nameValid"></div>
+
         <div class="form-group">
           <label for="deviceRoom">Room:</label>
           <select id="deviceRoom" required>
             <option value="Living Room">Living Room</option>
-            <option value="Kitchen">Kitchen</option>
             <option value="Bedroom">Bedroom</option>
-            <option value="All">All</option>
+            <option value="Entrance">Entrance</option>
+            <option value="Kitchen">Kitchen</option>
+            <option value="Hallway">Hallway</option>
+            <option value="Laundry">Laundry</option>
+            <option value="Garage">Garage</option>
+            <option value="Roof">Roof</option>
           </select>
         </div>
 
@@ -46,7 +52,8 @@
           <label for="deviceInfo">Info (optional):</label>
           <input type="text" id="deviceInfo" placeholder="Additional info..." />
         </div>
-        <div id = "infoValid"></div>
+        <div id="infoValid"></div>
+
         <div class="form-group">
           <label for="deviceType">Device Type:</label>
           <select id="deviceType" required>
@@ -55,15 +62,17 @@
             <option value="Main Door">Main Door</option>
             <option value="Robot">Robot</option>
             <option value="Air Conditioning">Air Conditioning</option>
+            <option value="Washing Machine">Washing Machine</option>
+            <option value="Dryer">Dryer</option>
           </select>
         </div>
 
-        <!-- AC Slider Group (hidden unless "Air Conditioning" is selected) -->
         <div class="form-group hidden" id="acAddSliderGroup">
           <label for="acAddTemp">Temperature:</label>
           <input type="range" id="acAddTemp" min="16" max="30" value="24" />
           <span id="acAddTempValue">24°C</span>
         </div>
+
 
         <button type="submit" class="primary-button">Add Product</button>
       </form>
@@ -84,12 +93,17 @@
         <select id="roomFilter">
           <option value="all">All</option>
           <option value="Living Room">Living Room</option>
-          <option value="Kitchen">Kitchen</option>
           <option value="Bedroom">Bedroom</option>
+          <option value="Entrance">Entrance</option>
+          <option value="Kitchen">Kitchen</option>
+          <option value="Hallway">Hallway</option>
+          <option value="Laundry">Laundry</option>
+          <option value="Garage">Garage</option>
+          <option value="Roof">Roof</option>
         </select>
       </div>
 
-      <!-- Device List -->
+      <!-- Device List (will be populated dynamically) -->
       <div class="device-list"></div>
     </div>
   </div>
@@ -109,9 +123,13 @@
           <label for="editRoom">Room:</label>
           <select id="editRoom" required>
             <option value="Living Room">Living Room</option>
-            <option value="Kitchen">Kitchen</option>
             <option value="Bedroom">Bedroom</option>
-            <option value="All">All</option>
+            <option value="Entrance">Entrance</option>
+            <option value="Kitchen">Kitchen</option>
+            <option value="Hallway">Hallway</option>
+            <option value="Laundry">Laundry</option>
+            <option value="Garage">Garage</option>
+            <option value="Roof">Roof</option>
           </select>
         </div>
 
@@ -128,10 +146,11 @@
             <option value="Main Door">Main Door</option>
             <option value="Robot">Robot</option>
             <option value="Air Conditioning">Air Conditioning</option>
+            <option value="Washing Machine">Washing Machine</option>
+            <option value="Dryer">Dryer</option>
           </select>
         </div>
 
-        <!-- AC Slider for Edit (only show if device type is AC) -->
         <div class="form-group hidden" id="acEditSliderGroup">
           <label for="acEditTemp">Temperature:</label>
           <input type="range" id="acEditTemp" min="16" max="30" value="24" />
@@ -139,7 +158,6 @@
         </div>
 
         <button type="submit" class="primary-button">Save Changes</button>
-         
       </form>
     </div>
   </div>

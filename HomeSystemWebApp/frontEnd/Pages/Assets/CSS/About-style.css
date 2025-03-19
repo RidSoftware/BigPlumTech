@@ -90,40 +90,62 @@ h2::after {
 /* Team Section */
 .team {
     background: white;
-    padding: 80px;
+    padding: 50px 0;
     border-radius: 15px;
-    margin-bottom: 10px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Team Grid */
-.team-grid {
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-    flex-wrap: wrap;
-    margin-top: 30px;
-}
-
-.team-member {
-    width: 220px;
     text-align: center;
-    background: #fff;
-    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Container to Hide Overflow */
+.team-container {
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Wrapper for scrolling effect */
+.team-wrapper {
+    display: flex;
+    gap: 20px;
+    animation: scrollTeam 15s linear infinite; 
+}
+
+/* Team Member */
+.team-member {
+    flex: 0 0 auto;
+    width: 220px;
+    background: white;
+    padding: 15px;
     border-radius: 12px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
     transition: transform 0.3s ease-in-out;
+    border: 2px solid rgba(0, 0, 0, 0.1); 
 }
 
-.team-member:hover {
-    transform: scale(1.05);
-}
-
+/* Team Member Image */
 .team-member img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     margin-bottom: 10px;
+}
+
+/* Keyframes for scrolling effect */
+@keyframes scrollTeam {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Pause scrolling on hover */
+.team-wrapper:hover {
+    animation-play-state: paused;
 }
 
 /* Call to Action */
@@ -167,4 +189,43 @@ h2::after {
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Mobile Styles - Only Applies for Screens Smaller Than 768px */
+@media (max-width: 768px) {
+    
+    /* Ensuring sections don't touch the screen edges */
+    section, .features, .mission, .team, .cta {
+        max-width: 95%;
+        padding: 50px 15px; 
+    }
+
+    /* Adjusting feature grid to stack vertically */
+    .feature-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Making feature cards fit well on small screens */
+    .feature-card {
+        width: 90%; 
+        max-width: 320px;
+    }
+
+    /* Adjusting team container for better visibility */
+    .team-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Call to Action Section Adjustments */
+    .cta {
+        padding: 40px 15px;
+    }
+
+    /* Buttons should not be too large on mobile */
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
 }

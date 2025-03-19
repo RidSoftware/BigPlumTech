@@ -20,9 +20,8 @@ const userRoutes = require('./routes/userRoutes');
 const energyDataRoutesUA = require('./routes/energyDataRoutesUserArray');
 const energyDataRoutesDA = require('./routes/energyDataRoutesDeviceArray');
 const energyDataRoutesUI = require('./routes/energyDataRoutesUserInt');
-const energyDataRoutesDI = require('./routes/energyDataRoutesDeviceInt');
-
-
+const energyDataRoutesDI = require('./routes/energyGridRoute');
+const energyGridRoute = require('./routes/energyDataRoutesDeviceInt');
 const deviceDataRoutes = require('./routes/deviceDataRoutes');
 // Routes
 app.use(userRoutes);
@@ -31,6 +30,7 @@ app.use(energyDataRoutesDA);
 app.use(energyDataRoutesUI);
 app.use(energyDataRoutesDI);
 app.use(deviceDataRoutes);
+app.use(energyGridRoute);
 
 app.get('/', (req, res) => {
     res.send('Server is up and running');
@@ -41,7 +41,10 @@ app.get('/api/data', (req, res) => {
 });
 
 
+//energy service start
+const energyService = require('./Services/LiveEnergy');
 // Start the server
 app.listen(port, () => {
+    energyService.start();
     console.log(`Server running at http://localhost:${port}`);
 });

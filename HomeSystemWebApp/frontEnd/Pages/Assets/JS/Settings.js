@@ -6,7 +6,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
   const password = document.getElementById("loginPassword").value.trim();
 
   // Retrieve users from localStorage
-  let users = JSON.parse(localStorage.getItem("users")) || [];
+  let users = JSON.parse(localStorage.getItem("user")) || [];
 
   // Check if user exists
   let user = users.find(user => user.Email === email && user.password === password);
@@ -25,13 +25,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
 document.addEventListener("DOMContentLoaded", function () {
   // Retrieve users from localStorage
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  // Get last logged-in email from localStorage
-  let lastLoggedInEmail = localStorage.getItem("lastLoggedInEmail");
-
-  // Find the user based on email
-  let currentUser = users.find(user => user.Email === lastLoggedInEmail);
+  let users = JSON.parse(localStorage.getItem("user")) || [];
 
   // Get references to form inputs
   const firstnameInput = document.getElementById("firstname");
@@ -73,14 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
           currentUser.password = passwordInput.value;
       }
 
-      currentUser.profilePic = profilePicInput.value.trim();
-
-      // Update users array
-      let updatedUsers = users.map(user => (user.Email === lastLoggedInEmail ? currentUser : user));
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
-
       // Update `lastLoggedInEmail` in case the email was changed
-      localStorage.setItem("lastLoggedInEmail", currentUser.Email);
+      localStorage.setItem("Email", currentUser.Email);
 
       // Show confirmation message
       confirmationMessage.innerHTML = `

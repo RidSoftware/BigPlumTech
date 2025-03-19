@@ -40,35 +40,20 @@
                 <br>
                 <button type="submit" class="submit-button">Login</button>
 
-                <p><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+        <div id="confirmationOverlay" class="overlay" style="display: none;"></div>
+        <div id="confirmationMessage" class="confirmatin-message" style="display: none;"></div> 
+
+                <!-- Updated Forgot Password Link -->
+                <p><a href="forgot-password.html" id="forgotPasswordLink">Forgot Password?</a></p>
             </form>
             <br>
             <p>Don't have an account? <a href="Registration.html">Register here</a></p>
-        </div>
-        
-        <!-- This is just example, we can omit this or change it later on -->
-        <!-- Forgot Password Modal (Initially Hidden) -->
-        <div id="forgotPasswordModal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="closeModal">&times;</span>
-                <h2>Reset Password</h2>
-                <p>Enter your registered email to reset your password.</p>
-                <input type="email" id="resetEmail" placeholder="Enter your email">
-                <p id="resetErrorMessage" class="error-message"></p>
-                <button id="resetPasswordButton">Reset Password</button>
-            </div>
         </div>
     </div>
 
     <div class="return-href">
         <a id="return-id" href="index.html">Return</a>
     </div>
-
-    <!-- Dark Overlay -->
-    <div id="confirmationOverlay" class="confirmation-overlay"></div>
-
-    <!-- Confirmation Message -->
-    <div id="confirmationMessage"></div>
 
     <!-- Footer-->
     <div id="footer"></div>
