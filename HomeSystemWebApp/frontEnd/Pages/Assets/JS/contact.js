@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await contact(formData); // Calls emailAPI.js function
             if (response) {
                 alert(response.message);
-                // contactForm.reset();
             } else {
                 alert("Unexpected error. Please try again.");
             }
