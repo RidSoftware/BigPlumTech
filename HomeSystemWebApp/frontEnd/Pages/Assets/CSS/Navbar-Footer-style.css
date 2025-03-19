@@ -44,9 +44,16 @@ header {
 }
 
 /* Logo Images */
-#logo-img-1, #logo-img-2 {
-    width: 70px;
-    height: 55px;
+#logo-img-1 {
+    width: 15%;
+    height: 15%;
+    transition: all 0.5s ease-in-out;
+    flex-shrink: 0;
+}
+
+#logo-img-2 {
+    width: 17%;
+    height: 80%;
     transition: all 0.5s ease-in-out;
     flex-shrink: 0;
 }
@@ -71,7 +78,7 @@ header {
 
 /* Logo Text */
 #logo-text {
-    margin-left: 10px;
+    margin-left: 30px;
     font-size: 18px;
     font-weight: bold;
     color: #007BFF;
