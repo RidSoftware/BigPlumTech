@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const updatedUser = {
       userID: storedUser.userID, // Ensure userID is included
       firstname: firstnameInput.value.trim(),
-      surname: lastnameInput.value.trim(),
-      email: emailInput.value.trim()
+      Surname: lastnameInput.value.trim(),
+      Email: emailInput.value.trim()
     };
 
     try {
