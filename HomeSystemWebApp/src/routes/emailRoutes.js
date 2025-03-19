@@ -4,7 +4,7 @@ const emailService = require("../Services/emailService");
 
 
 
-router.post('/anytest', async (req, res) => {
+router.post('/contactEmail', async (req, res) => {
     console.log("request body: ", req.body);
     const { name, email, message } = req.body;
 

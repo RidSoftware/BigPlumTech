@@ -1,7 +1,7 @@
 export const contact = async (formData) => {
 
     try {
-      const response = await fetch("/anytest", {
+      const response = await fetch("/contactEmail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
