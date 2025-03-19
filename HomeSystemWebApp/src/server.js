@@ -27,9 +27,7 @@ const energyDataRoutesUI = require('./routes/energyDataRoutesUserInt');
 const energyDataRoutesDI = require('./routes/energyGridRoute');
 const energyGridRoute = require('./routes/energyDataRoutesDeviceInt');
 const deviceDataRoutes = require('./routes/deviceDataRoutes');
-const contactRoutes = require('./routes/contact'); 
 // Routes
-app.use(contactRoutes);
 app.use(userRoutes);
 app.use(energyDataRoutesUA);
 app.use(energyDataRoutesDA);
