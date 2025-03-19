@@ -328,3 +328,20 @@ export const sumRangeEnergyUser = async (userID, startDate, endDate) => {
       return 0;
   }
 }
+
+
+
+///simple save the energyGrid informatio
+export const energyGrid = async () => {
+  try {
+    console.log("starting energy grid");
+    const response = await fetch("/api/energyGrid", { method: "GET" });
+    const result = await response.json();
+    console.log("enrgy grid response", result);
+    localStorage.setItem("energyCost", JSON.stringify(result.energyCost));
+    localStorage.setItem("carbonIntensity", JSON.stringify(result.carbonIntensity));
+    return result;
+  } catch (error) {
+    console.error("Error fetching grid info: ", error);
+  }
+};

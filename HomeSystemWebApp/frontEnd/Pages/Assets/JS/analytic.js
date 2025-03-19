@@ -2,14 +2,14 @@
 import { 
   syncEnergy24hrUser, 
   syncEnergy7daysUser, 
-  pullDailyEnergyRangeUser 
-} from '../path/to/energyAPI.js';
-
+  pullDailyEnergyRangeUser,
+  energyGrid
+} from './energyAPI.js';
+energyGrid();
 document.addEventListener('DOMContentLoaded', async () => {
   // Initialize clock and update it every second
   updateTime();
   setInterval(updateTime, 1000);
-
   // Fetch user ID from local storage or use default
   const userID = localStorage.getItem('userID') || 1;
   
@@ -38,26 +38,35 @@ function updateTime() {
   document.getElementById('currentTime').textContent = timeString;
 }
 
-/**
- * Updates energy statistics in the UI
- * @param {Object} energyData24hr - Energy data for the past 24 hours
- */
-function updateCurrentEnergyStats(energyData24hr) {
+window.updateCurrentEnergyStats = function(energyData24hr) {
+  console.log("updateCurrentEnergyStats function is running...");
+ 
+  // Ensure energyCost exists in local storage
+  if (!localStorage.getItem('energyCost')) {
+    localStorage.setItem('energyCost', 1);
+    console.log("energyCost was missing; set to default 1");
+  }
+ 
+  // Retrieve energy cost
+  let energyCost = parseFloat(localStorage.getItem('energyCost')) || 1;
+  console.log("Retrieved Energy Cost:", energyCost);
+ 
   // Calculate total daily usage
   const totalUsage = Object.values(energyData24hr).reduce((sum, value) => sum + value, 0);
-  
-  // Update DOM elements
-  document.getElementById('dailyUsage').textContent = `${totalUsage.toFixed(1)} kWh`;
-  
-  // Calculate estimated cost (assuming £0.30 per kWh)
-  const estimatedCost = totalUsage * 0.30;
-  document.getElementById('estimatedCost').textContent = `£${estimatedCost.toFixed(2)}`;
-  
-  // Set current power to the most recent hour's usage
-  const currentHour = new Date().getHours();
-  const currentPower = energyData24hr[currentHour] || 0;
-  document.getElementById('currentPower').textContent = `${currentPower.toFixed(1)} kW`;
-}
+  console.log("Total Usage for 24hrs:", totalUsage);
+ 
+  // **Ensure UI updates correctly**
+  setTimeout(() => {
+    const costElement = document.getElementById('estimatedCost');
+    if (costElement) {
+      const estimatedCost = totalUsage * energyCost;
+      console.log("New Estimated Cost:", estimatedCost);
+      costElement.textContent = `£${estimatedCost.toFixed(2)}`;
+    } else {
+      console.error("Estimated cost element not found in the DOM!");
+    }
+  }, 500);
+};
 
 /**
  * Determines and displays the best time to use appliances based on energy usage
