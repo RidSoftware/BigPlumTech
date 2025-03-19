@@ -25,6 +25,17 @@ body {
     align-items: center;     
     min-height: calc(100vh - 50px); 
     width: 100vw;
+    gap: 40px; /* Added gap between elements */
+    padding: 0 20px; /* Added padding to avoid touching edges */
+    max-width: 1200px; /* Added max-width for very large screens */
+}
+
+.container-registration h1, 
+.container-registration h2 {
+    font-size: 24px; 
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px; 
 }
 
 /* Promo Section*/
@@ -80,7 +91,7 @@ body {
 .container-registration form, .container-login form {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 15px; /* Increased from 8px for better spacing */
 }
 
 .container-registration label, .container-login label {
@@ -125,12 +136,34 @@ body {
     text-align: left;
 }
 
+/* Terms Checkbox Styling */
+.terms-checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 5px 0;
+}
+
+.terms-checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+}
+
 /* Terms */
 .terms {
     text-align: left;
-    font-weight: bold;
     font-size: 14px;
     margin-top: 8px;
+}
+
+.terms a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.terms a:hover {
+    text-decoration: underline;
 }
 
 /* Buttons */
@@ -255,7 +288,6 @@ body {
 }
 
 /* Center the confirmation message */
-
 #confirmationMessage {
     display: none;
     position: fixed;
@@ -291,7 +323,6 @@ body {
     background: #218838;
 }
 
-
 /*Responsive Adjustments */
 @media (max-width: 1024px) {
     .page-container {
@@ -299,6 +330,7 @@ body {
         align-items: center;
         text-align: center;
         width: 90%;
+        gap: 30px;
     }
 
     .promo-text {
@@ -318,11 +350,11 @@ body {
         font-size: 14px;
     }
 }
+
 @media (max-width: 768px) {
-    
     /* Ensuring sections don't touch the screen edges */
     .page-container {
-        flex-direction: column;
+        flex-direction: column-reverse; /* Form appears first on mobile */
         align-items: center;
         text-align: center;
         width: 95%;
