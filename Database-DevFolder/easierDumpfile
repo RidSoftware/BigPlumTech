@@ -46,7 +46,7 @@ AUTO_INCREMENT=25
 CREATE TABLE `alldevices` (
     `DeviceID` INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
     `DeviceName` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
-    `DeviceType` ENUM('Robot','EnergyGeneration','EnergyUsage') NOT NULL COLLATE 'utf8mb4_unicode_ci',
+    `DeviceType` ENUM('Robot','EnergyGeneration','EnergyUsage', 'AirConditioning', 'Light') NOT NULL COLLATE 'utf8mb4_unicode_ci',
     `Status` ENUM('On','Off','N/A') NOT NULL DEFAULT 'Off' COLLATE 'utf8mb4_unicode_ci',
     `LocationRoom` VARCHAR(25) NOT NULL COLLATE 'utf8mb4_unicode_ci',
     `HomeID` INT(3) UNSIGNED NOT NULL DEFAULT '0',
