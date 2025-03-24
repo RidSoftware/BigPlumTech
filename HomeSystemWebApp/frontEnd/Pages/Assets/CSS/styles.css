@@ -753,10 +753,10 @@ select, input {
 }
 
 /* Facebook Button */
-.facebook {
+.linkedin {
     background: #1877F2;
 }
-.facebook:hover {
+.linkedin:hover {
     background: #155dbb;
 }
 
