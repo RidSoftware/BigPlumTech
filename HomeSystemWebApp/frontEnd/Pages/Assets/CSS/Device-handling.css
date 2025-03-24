@@ -226,6 +226,7 @@ input[type="range"] {
 /* Add these styles to your Device-handling.css file */
 
 /* Modal enhancements */
+/* this broke the edit panel making some massive extra white panel behind it
 .modal {
   position: fixed;
   z-index: 1001;
@@ -238,8 +239,8 @@ input[type="range"] {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
+}*/
+/*
 .modal-content {
   background-color: #fefefe;
   margin: auto;
@@ -250,7 +251,7 @@ input[type="range"] {
   max-width: 90%;
   animation: modalFadeIn 0.3s ease-in-out;
 }
-
+*/
 @keyframes modalFadeIn {
   from {
     opacity: 0;
@@ -264,7 +265,7 @@ input[type="range"] {
 
 .close-btn {
   color: #aaa;
-  float: right;
+  /*float: right;* was so much to the right to the point it wasn't in the box, taking this out seems to of fixed it */
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
