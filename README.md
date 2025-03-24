@@ -5,7 +5,7 @@ This is a [RESTful Webserver](https://www.codecademy.com/article/what-is-rest), 
 # Tech Stack
 - *Backend:* NodeJS, ExpressJS
 - *Database:* MariaDB
-- *Authentication/Security:* ...  
+- *Authentication/Security:* BCrypt, Express-Validator,...
 
 # Installation Requirements
 You must have the following installed:
