@@ -210,7 +210,6 @@ async function initializeChart(deviceSelection) {
 }
 
 document.getElementById("resetZoom").addEventListener("click", function () {
-    console.log("bitch");
     window.energyChart.resetZoom()
     
 });
