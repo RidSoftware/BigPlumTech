@@ -208,6 +208,12 @@ async function initializeChart(deviceSelection) {
 
     return window.energyChart;
 }
+
+document.getElementById("resetZoom").addEventListener("click", function () {
+    window.energyChart.resetZoom()
+    
+});
+
 // Update Energy Panel Based on Selected Device or User Data
 async function updateEnergyPanel() {
     const panel = document.getElementById('energy-panel');
@@ -751,7 +757,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   
     // Edit device with backend sync
-    async function openEditModal(deviceId) {
+    async function openEditModal(deviceId) { 
       const device = devices.find(d => d.id === deviceId);
       if (!device) return;
       
@@ -780,6 +786,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           console.error(`Failed to update device ${deviceId} in backend:`, error);
           alert("Failed to update device. Please try again.");
       }
+      
     }
     
     // Delete device with backend sync
@@ -1034,4 +1041,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
 });
-
