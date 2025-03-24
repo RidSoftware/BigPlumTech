@@ -4,7 +4,6 @@ const mysql = require('mysql2');
 const path = require('path');
 
 const app = express();
-//const port = 3307;
 const port = process.env.PORT || 8080;
 
 const bodyParser = require("body-parser");
