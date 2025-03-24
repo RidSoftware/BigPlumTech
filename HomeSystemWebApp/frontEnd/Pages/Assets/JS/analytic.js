@@ -52,8 +52,7 @@ window.updateCurrentEnergyStats = function(energyData24hr) {
   let energyCost = parseFloat(localStorage.getItem('energyCost'));
   const totalUsage = Object.values(energyData24hr).reduce((sum, value) => sum + parseFloat(value), 0);
   console.log("Total Usage for 24hrs:", totalUsage);
-
-  /// last recorded value from energyData24hr as the current power
+    /// last recorded value from energyData24hr as the current power
     const lastHr = Object.keys(energyData24hr).sort().pop();
     const currentPower = energyData24hr[lastHr];
 
