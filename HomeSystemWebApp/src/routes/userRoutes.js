@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const db = require('../config/DBConnection'); 
+//const db = require('../config/DBConnection'); 
 const { body, validationResult } = require("express-validator");
 const validator = require("validator");
-
+const pool = require('../config/DBPool');
 
 
 //////// REGISTRATION
@@ -49,17 +49,19 @@ router.post("/api/register",
         const q =
           "INSERT INTO userdetails (firstname, surname, email, password, admin, homeid) VALUES (?, ?, ?, ?, ?, ?)";
   
-        db.query(q, [firstname, lastname, email, hashPassword, admin, homeid], (err, results) => {
-          if (err) {
-            console.error("DB error on inserting new user", err);
-            return res.status(500).json({ success: false, message: "Failed to register user in DB" });
-          }
+        await pool.execute(q, [firstname, lastname, email, hashPassword, admin, homeid]);
+
+        // db.query(q, [firstname, lastname, email, hashPassword, admin, homeid], (err, results) => {
+        //   if (err) {
+        //     console.error("DB error on inserting new user", err);
+        //     return res.status(500).json({ success: false, message: "Failed to register user in DB" });
+        //   }
   
           res.status(201).json({
             success: true,
             message: "User registration successful",
           });
-        });
+        
       } catch (error) {
         console.error("Error in password hashing", error);
         res.status(500).json({ success: false, message: "Server error, try again later" });
@@ -81,14 +83,8 @@ router.post('/api/login', async (req, res) => {
 
     try {
         const q = 'SELECT * FROM userdetails WHERE email = ?';
-        db.query(q, [email], async (err, results) => {
-            if (err) {
-                console.error('db error selecting user', err);
-                return res.status(500).json({ 
-                    success: false, 
-                    message: 'db err' 
-                });
-            }
+        const [results] = await pool.execute(q, [email]);
+
 
             if (results.length === 0) {
                 return res.status(401).json({ 
@@ -135,7 +131,7 @@ router.post('/api/login', async (req, res) => {
                     homeID: results[0].HomeID
                 }
             });
-        });
+        
     } catch (error) {
         console.error('Error from login:', error);
         res.status(500).json({ success: false });
@@ -161,11 +157,7 @@ router.post("/api/updateUser", async (req, res) => {
     try {
         // Check if the user exists
         const checkQuery = "SELECT * FROM userdetails WHERE userID = ?";
-        db.query(checkQuery, [userID], (err, results) => {
-            if (err) {
-                console.error("DB error checking user", err);
-                return res.status(500).json({ success: false, message: "Database error" });
-            }
+        const [results] = await pool.execute(checkQuery,[userID]);
 
             if (results.length === 0) {
                 return res.status(404).json({ success: false, message: "User not found" });
@@ -173,18 +165,14 @@ router.post("/api/updateUser", async (req, res) => {
 
             // If user exists, proceed with update
             const updateQuery = "UPDATE userdetails SET firstname = ?, surname = ?, email = ? WHERE userID = ?";
-            db.query(updateQuery, [firstname, surname, email, userID], (updateErr, updateResults) => {
-                if (updateErr) {
-                    console.error("DB error updating user", updateErr);
-                    return res.status(500).json({ success: false, message: "Failed to update user" });
-                }
+            await pool.execute(updateQuery, [firstname,surname, email, userID])
 
                 res.status(200).json({
                     success: true,
                     message: "User updated successfully",
                 });
-            });
-        });
+            
+        
     } catch (error) {
         console.error("Error in updating user", error);
         res.status(500).json({ success: false, message: "Server error, try again later" });
@@ -198,14 +186,7 @@ router.post("/api/updateUser", async (req, res) => {
 
 ////////////////test pull user info
 router.get('/users', (req, res) => {
-    db.query('SELECT * FROM userdetails', (err, results) => {
-        if (err) {
-            console.error(err);
-            res.status(500).send('Error fetching users');
-        } else {
-            res.json(results);
-        }
-    });
+    //removed, as couldnt be bothered
 });
 //////////////////test pull user s..
 
