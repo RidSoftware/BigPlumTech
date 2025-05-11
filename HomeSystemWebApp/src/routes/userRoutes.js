@@ -46,11 +46,13 @@ router.post("/api/register",
       try {
         const hashPassword = await bcrypt.hash(password, 13);
   
-        const q =
-          "INSERT INTO userdetails (firstname, surname, email, password, admin, homeid) VALUES (?, ?, ?, ?, ?, ?)";
+        const q = "INSERT INTO userdetails (firstname, surname, email, password, admin, homeid) VALUES (?, ?, ?, ?, ?, ?)";
   
-        await pool.execute(q, [firstname, lastname, email, hashPassword, admin, homeid]);
+        console.log("About to execute SQL query...");
 
+        await pool.execute(q, [firstname, lastname, email, hashPassword, admin, homeid]);
+          
+        console.log("Query executed successfully");
         // db.query(q, [firstname, lastname, email, hashPassword, admin, homeid], (err, results) => {
         //   if (err) {
         //     console.error("DB error on inserting new user", err);
