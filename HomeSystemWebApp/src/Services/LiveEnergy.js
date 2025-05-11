@@ -56,7 +56,7 @@ async function fetchRetailEnergyCost() {
       
       // Convert from pence to GBP.
       energyData.retailEnergyCost = latestRecord.value_inc_vat / 100;
-      console.log('Most recent Agile tariff record:', latestRecord);
+      //console.log('Most recent Agile tariff record:', latestRecord);
     } else {
       console.warn('Unexpected structure from Octopus API; using fallback value.');
       energyData.retailEnergyCost = 0.20;
@@ -72,7 +72,7 @@ async function fetchRetailEnergyCost() {
 async function updateEnergyData() {
   await Promise.all([fetchCarbonData(), fetchRetailEnergyCost()]);
   energyData.lastUpdated = new Date().toISOString();
-  console.log('Updated energy data:', energyData);
+  //console.log('Updated energy data:', energyData);
 }
 
 let intervalId = null;
