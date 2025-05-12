@@ -3,14 +3,18 @@ import random
 output_file = "energyhourly_inserts.sql"
 
 with open(output_file, "w") as f:
-    for day in range(1, 32):  # May 1 to May 31
-        for hour in range(24):  # 0 to 23 hours
-            base_energy = 1.2 + (hour * 0.1)
-            energy_val = base_energy + random.uniform(-0.05, 0.05)
-
-            # Boost energy for 7 PM – 11 PM (19:00–23:00)
-            if 19 <= hour <= 23:
-                energy_val *= 1.15
+    for day in range(1, 32):  # May 1 to 31
+        for hour in range(24):  # 0 to 23
+            if 0 <= hour <= 5:
+                energy_val = random.uniform(0.3, 0.6)
+            elif 6 <= hour <= 10:
+                energy_val = random.uniform(0.6, 1.2)
+            elif 11 <= hour <= 17:
+                energy_val = random.uniform(0.8, 1.5)
+            elif 18 <= hour <= 20:
+                energy_val = random.uniform(1.4, 2.0)
+            else:  # 21–23
+                energy_val = random.uniform(1.2, 1.8)
 
             energy_val = round(energy_val, 2)
             date_str = f"2025-05-{day:02d}"
