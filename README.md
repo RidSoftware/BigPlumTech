@@ -69,7 +69,7 @@ There should now be an clone of the repo on your machine that is set up with you
 Now navigate to the folder of the team you intend to work on. \
 
 ---
-2. 🌿 **Working with Branches**
+2. 🌿 **Working with Branches** \
 Here is how branches work and were used in development. \
 `git checkout <branch name>` is the standard cmd for swapping to a branch. \
 `git checkout -b <branch name>` is the same but it will create a new branch if one does not yet exist. \
