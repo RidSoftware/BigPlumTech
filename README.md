@@ -56,7 +56,7 @@ Newer vesions may also use a DBPool.js file to get a different kinds of db conne
 5. `git push origin newBranch`
 
 ---
-1. **Clone the Repo**
+1. **Clone the Repo** \
 I recommend that you clone the repository initially with SSH. \
 This requires that you have a working SSH auth key on your github account, this is in: \ 
 Settings/Access/SSH and GPG keys \
@@ -85,26 +85,26 @@ The following branches were made to organise work:
 
 
 ---
-3. 🔄 **Keeping up-to-date**
+3. 🔄 **Keeping up-to-date** \
 Whenever we are doing work we want to be up-to-date with our teams, \
 **BEFORE** you start working or **PUSHING CHANGES** you **must**:
 	- Pull any updates from your team branch: `git pull origin <branch name>`
 
 ---
-4. 🛠  **Doing work**
+4. 🛠  **Doing Work** \
 OK, you wanna make sure you are on the intended branch still, some useful commands to see where you are at are: `git branch -a` and `git status` \
 Then you wanna `git add <file name>` or `git add .` to stage, `git commit -m "add a commit message describing what you are pushing"`, \
 Once you are ready to push `git push origin <branch name>` \
 ** Do Not  `git push`, this pushes to the default branch (probably main)... bad** 
 
 ---
-5. **Deleting Branches**
+5. **Deleting Branches** \
 Once you have merged a branch and are confident it worked the way you wanted, delete it: \
 `git branch -d <branch name>` this deletes the branch locally. \
 However, if you are going to delete a branch remotely from the repo `git push origin --delete <branch name>` 
 
 ---
-6. **Integrating**
+6. **Integrating** \
 Never commit or integrate directly to the main branch. \
 Periodically our teams should be integrating with main and you should always have an updated main locally: \
 	- When you sit down and intend to work, `git pull origin main`: this means that your local version of main is up to date.
@@ -113,7 +113,7 @@ Periodically our teams should be integrating with main and you should always hav
 	- If you wann add your changes to the branch *above* the one you've worked, then you should create a pull request.
 
 ---
-7. **Pull requests/Merging**
+7. **Pull Requests/Merging** \
 You can't do this in a CLI, it's not a git thing, its a GitHub thing. \
 Thus, you go to https://github.com/RidSoftware/BigPlumTech, then 'Pull requests' above the code, 'New pull request'. \
 **Base & Compare** 
