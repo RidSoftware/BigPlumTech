@@ -11,7 +11,7 @@
 Main repository for heriot-watt yr3 software engineering project
 This is a [RESTful Webserver](https://www.codecademy.com/article/what-is-rest), built with Node.js and Express, using MariaDB as it's Database. It provides APIs for web users to track their smart devices usage and energy statistics.
 
-# Tech Stack
+# Technology Stack
 - *Backend:* NodeJS, ExpressJS
 - *Database:* MariaDB
 - *Authentication/Security:* BCrypt, Express-Validator,...
@@ -19,7 +19,7 @@ This is a [RESTful Webserver](https://www.codecademy.com/article/what-is-rest), 
 # Installation Requirements
 You must have the following installed:
 - [NodeJS](https://nodejs.org/en/download)
-- [MariaDB](https://mariadb.com/downloads/) **or heidiSQL or MySQL Workbench etc...** as long as you got sql working it should be fine
+- [MariaDB](https://mariadb.com/downloads/) **or any GUI tool for the management of databases, such mySQLWorkbench**
 
 # Setting up your version to work
 1️⃣ Clone the Repository
