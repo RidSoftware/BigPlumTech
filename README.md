@@ -7,6 +7,7 @@
 ![Framework](https://img.shields.io/badge/Framework-ExpressJS-red)
 ![Security](https://img.shields.io/badge/Security%20&%20Validation-BCrypt-blue)
 ![Security](https://img.shields.io/badge/Security%20&%20Validation-ExpressValidator-blue)
+![Database](https://img.shields.io/badge/Database-MariaDB-green)
 
 Main repository for heriot-watt yr3 software engineering project
 This is a [RESTful Webserver](https://www.codecademy.com/article/what-is-rest), built with Node.js and Express, using MariaDB as it's Database. It provides APIs for web users to track their smart devices usage and energy statistics.
